@@ -1,0 +1,316 @@
+<div [formGroup]="form">
+    <div class="fv-row mb-10">
+        <div class="mb-3">
+            <label for="identificationType" class="form-label required">Tipo de identificacion</label>
+            <select id="identificationType" class="form-select form-select-lg form-select-solid" formControlName="identificationType"
+                [ngClass]="{
+                    'is-invalid': form.controls['identificationType'].invalid && form.controls['identificationType'].touched,
+                    'is-valid': form.controls['identificationType'].valid
+                }"
+            >
+                <option value="">Seleccione tipo de documento</option>
+                <option value="cedula">Cedula</option>
+                <option value="pasaporte">Pasaporte</option>
+            </select>
+            <ng-container [ngTemplateOutlet]="formError" [ngTemplateOutletContext]="{
+                validation: 'required',
+                message: 'Tipo de identificacion es requerido',
+                control: form.controls['identificationType']
+            }"></ng-container>
+        </div>
+        <div class="mb-3">
+            <label for="identification" class="form-label required">Identificacion</label>
+            <input id="identification" type="text" class="form-control form-control-sm form-control-solid" formControlName="identification" 
+                [ngClass]="{
+                    'is-invalid': form.controls['identification'].invalid && form.controls['identification'].touched,
+                    'is-valid': form.controls['identification'].valid
+                }"
+            />
+            <ng-container [ngTemplateOutlet]="formError" [ngTemplateOutletContext]="{
+                validation: 'required',
+                message: 'Identificacion es requerido',
+                control: form.controls['identification']
+            }"></ng-container>
+            <ng-container [ngTemplateOutlet]="formError" [ngTemplateOutletContext]="{
+                validation: 'invalidIdentification',
+                message: 'La cedula ingresada no es valida',
+                control: form.controls['identification']
+            }"></ng-container>
+            <ng-container [ngTemplateOutlet]="formError" [ngTemplateOutletContext]="{
+                validation: 'invalidPassport',
+                message: 'La identificacion ingresada no es valida',
+                control: form.controls['identification']
+            }"></ng-container>
+            <ng-container [ngTemplateOutlet]="formError" [ngTemplateOutletContext]="{
+                validation: 'minlength',
+                message: 'Minimo debe tener 6 caracteres',
+                control: form.controls['identification']
+              }"></ng-container>
+            <ng-container [ngTemplateOutlet]="formError" [ngTemplateOutletContext]="{
+                validation: 'maxlength',
+                message: 'Maximo puede tener 20 caracteres',
+                control: form.controls['identification']
+              }"></ng-container>
+        </div>
+        <div class="mb-3">
+            <label for="lastName" class="form-label required">Apellidos</label>
+            <input id="lastName" type="text" class="form-control form-control-sm form-control-solid" formControlName="lastName"
+                [ngClass]="{
+                    'is-invalid': form.controls['lastName'].invalid && form.controls['lastName'].touched,
+                    'is-valid': form.controls['lastName'].valid
+                }"
+            />
+            <ng-container [ngTemplateOutlet]="formError" [ngTemplateOutletContext]="{
+                validation: 'required',
+                message: 'Apellidos es requerido',
+                control: form.controls['lastName']
+            }"></ng-container>
+            <ng-container [ngTemplateOutlet]="formError" [ngTemplateOutletContext]="{
+                validation: 'maxlength',
+                message: 'Maximo puede tener 100 caracteres',
+                control: form.controls['lastName']
+              }"></ng-container>
+        </div>
+        <div class="mb-3">
+        <label for="name" class="form-label required">Nombres</label>
+        <input id="name" type="text" class="form-control form-control-sm form-control-solid" formControlName="name"
+            [ngClass]="{
+                'is-invalid': form.controls['name'].invalid && form.controls['name'].touched,
+                'is-valid': form.controls['name'].valid
+            }"
+        />
+        <ng-container [ngTemplateOutlet]="formError" [ngTemplateOutletContext]="{
+                validation: 'required',
+                message: 'Nombres es requerido',
+                control: form.controls['name']
+            }"></ng-container>
+        <ng-container [ngTemplateOutlet]="formError" [ngTemplateOutletContext]="{
+            validation: 'maxlength',
+            message: 'Maximo puede tener 100 caracteres',
+            control: form.controls['name']
+          }"></ng-container>
+        </div>
+        <div class="mb-3">
+            <label for="birthdate" class="form-label required">Fecha de nacimiento</label>
+            <input
+                id="birthdate"
+                type="date"
+                formControlName="birthdate"
+                class="form-control form-control-sm form-control-solid"
+                [ngClass]="{
+                    'is-invalid': form.controls['birthdate'].invalid && form.controls['birthdate'].touched,
+                    'is-valid': form.controls['birthdate'].valid
+                }"
+            />
+            <ng-container [ngTemplateOutlet]="formError" [ngTemplateOutletContext]="{
+                validation: 'required',
+                message: 'Fecha de nacimiento es requerido',
+                control: form.controls['birthdate']
+            }"></ng-container>
+            <ng-container [ngTemplateOutlet]="formError" [ngTemplateOutletContext]="{
+                validation: 'invalidDate',
+                message: 'Fecha de nacimiento no puede ser mayor al dia actual',
+                control: form.controls['birthdate']
+            }"></ng-container>
+        </div>
+        <div class="mb-3">
+            <label for="gender" class="form-label required">Genero</label>
+            <select id="gender" class="form-select form-select-lg form-select-solid" formControlName="gender"
+                [ngClass]="{
+                    'is-invalid': form.controls['gender'].invalid && form.controls['gender'].touched,
+                    'is-valid': form.controls['gender'].valid
+                }"
+            >
+                <option value="">Seleccione Genero</option>
+                <option value="m">Masculino</option>
+                <option value="f">Femenino</option>
+            </select>
+            <ng-container [ngTemplateOutlet]="formError" [ngTemplateOutletContext]="{
+                validation: 'required',
+                message: 'Genero es requerido',
+                control: form.controls['gender']
+            }"></ng-container>
+        </div>
+        <div class="mb-3">
+            <label for="maritalStatus" class="form-label required">Estado Civil</label>
+            <select id="maritalStatus" class="form-select form-select-lg form-select-solid" formControlName="maritalStatus"
+                [ngClass]="{
+                    'is-invalid': form.controls['maritalStatus'].invalid && form.controls['maritalStatus'].touched,
+                    'is-valid': form.controls['maritalStatus'].valid
+                }"
+            >
+                <option value="">Seleccione Estado Civil</option>
+                <option value="S">Soltero</option>
+                <option value="C">Casado</option>
+                <option value="V">Viudo</option>
+                <option value="U">Union de Hechos</option>
+            </select>
+            <ng-container [ngTemplateOutlet]="formError" [ngTemplateOutletContext]="{
+                validation: 'required',
+                message: 'Estado Civil es requerido',
+                control: form.controls['maritalStatus']
+            }"></ng-container>
+        </div>
+        <div class="mb-3">
+            <label for="ethnicity" class="form-label required">Etnia</label>
+            <select id="ethnicity" class="form-select form-select-lg form-select-solid" formControlName="ethnicity"
+                [ngClass]="{
+                    'is-invalid': form.controls['ethnicity'].invalid && form.controls['ethnicity'].touched,
+                    'is-valid': form.controls['ethnicity'].valid
+                }"
+            >
+                <option value="">Seleccione etnia</option>
+                <option value="Mestizo">Mestizo</option>
+                <option value="Montuvio">Montuvio</option>
+            </select>
+            <ng-container [ngTemplateOutlet]="formError" [ngTemplateOutletContext]="{
+                validation: 'required',
+                message: 'Etnia es requerido',
+                control: form.controls['ethnicity']
+            }"></ng-container>
+        </div>
+        <div class="form-check mb-3">
+            <label for="disability" class="form-label">Discapacidad</label>
+            <input
+                id="disability"
+                type="checkbox"
+                formControlName="disability"
+                class="form-check-input pl-5"
+            />
+        </div>
+        <div class="mb-3" *ngIf="form.get('disability')?.value">
+            <label for="disabilityType" class="form-label required">Tipo de Discapacidad</label>
+            <select id="disabilityType" class="form-select form-select-lg form-select-solid" formControlName="disabilityType"
+                [ngClass]="{
+                    'is-invalid': form.controls['disabilityType'].invalid && form.controls['disabilityType'].touched,
+                    'is-valid': form.controls['disabilityType'].valid
+                }"
+            >
+                <option value="">Seleccione tipo de discapacidad</option>
+                <option value="Auditiva">Auditiva</option>
+                <option value="Fisica">Fisica</option>
+            </select>
+            <ng-container [ngTemplateOutlet]="formError" [ngTemplateOutletContext]="{
+                validation: 'required',
+                message: 'Tipo de discapacidad es requerido',
+                control: form.controls['disabilityType']
+            }"></ng-container>
+        </div>
+        <div class="mb-3" *ngIf="form.get('disability')?.value">
+            <label for="disabilityPercent" class="form-label required">Porcentaje de Discapacidad</label>
+            <input id="disabilityPercent" type="text" class="form-control form-control-sm form-control-solid" formControlName="disabilityPercent" 
+                [ngClass]="{
+                    'is-invalid': form.controls['disabilityPercent'].invalid && form.controls['disabilityPercent'].touched,
+                    'is-valid': form.controls['disabilityPercent'].valid
+                }"
+            />
+            <ng-container [ngTemplateOutlet]="formError" [ngTemplateOutletContext]="{
+                validation: 'required',
+                message: 'Porcentaje de discapacidad es requerido',
+                control: form.controls['disabilityPercent']
+            }"></ng-container>
+        </div>
+        <div class="mb-3">
+            <label for="nacionality" class="form-label required">Nacionalidad</label>
+            <select id="nacionality" class="form-select form-select-lg form-select-solid" formControlName="nacionality"
+                [ngClass]="{
+                    'is-invalid': form.controls['nacionality'].invalid && form.controls['nacionality'].touched,
+                    'is-valid': form.controls['nacionality'].valid
+                }"
+            >
+                <option value="">Seleccione nacionalidad</option>
+                <option value="Ecuatoriana">Ecuatoriana</option>
+                <option value="Española">Española</option>
+            </select>
+            <ng-container [ngTemplateOutlet]="formError" [ngTemplateOutletContext]="{
+                validation: 'required',
+                message: 'Nacionalidad es requerido',
+                control: form.controls['nacionality']
+            }"></ng-container>
+        </div>
+        <div class="mb-3">
+            <label for="emailAddress" class="form-label required">Correo Electronico Principal</label>
+            <input id="emailAddress" type="email" class="form-control form-control-sm form-control-solid" formControlName="emailAddress" 
+                [ngClass]="{
+                    'is-invalid': form.controls['emailAddress'].invalid && form.controls['emailAddress'].touched,
+                    'is-valid': form.controls['emailAddress'].valid
+                }"
+            />
+            <ng-container [ngTemplateOutlet]="formError" [ngTemplateOutletContext]="{
+                validation: 'required',
+                message: 'Correo Electronico Principal es requerido',
+                control: form.controls['emailAddress']
+            }"></ng-container>
+        </div>
+        <div class="mb-3">
+            <label for="confirmEmailAddress" class="form-label required">Correo Electronico Principal</label>
+            <input id="confirmEmailAddress" type="email" class="form-control form-control-sm form-control-solid" formControlName="confirmEmailAddress" 
+                [ngClass]="{
+                    'is-invalid': form.controls['confirmEmailAddress'].invalid && form.controls['confirmEmailAddress'].touched,
+                    'is-valid': form.controls['confirmEmailAddress'].valid
+                }"
+            />
+            <ng-container [ngTemplateOutlet]="formError" [ngTemplateOutletContext]="{
+                validation: 'required',
+                message: 'Correo Electronico Principal es requerido',
+                control: form.controls['confirmEmailAddress']
+            }"></ng-container>
+        </div>
+        <div class="mb-3">
+            <label for="secondEmailAddress" class="form-label">Correo Electronico Alternativo</label>
+            <input id="secondEmailAddress" type="email" class="form-control form-control-sm form-control-solid" formControlName="secondEmailAddress" 
+                [ngClass]="{
+                    'is-invalid': form.controls['secondEmailAddress'].invalid && form.controls['secondEmailAddress'].touched,
+                    'is-valid': form.controls['secondEmailAddress'].valid
+                }"
+            />
+        </div>
+        <div class="mb-3">
+            <label for="phoneNumber" class="form-label required">Telefono Convencional</label>
+            <input id="phoneNumber" type="text" class="form-control form-control-sm form-control-solid" formControlName="phoneNumber" 
+                [ngClass]="{
+                    'is-invalid': form.controls['phoneNumber'].invalid && form.controls['phoneNumber'].touched,
+                    'is-valid': form.controls['phoneNumber'].valid
+                }"
+            />
+            <ng-container [ngTemplateOutlet]="formError" [ngTemplateOutletContext]="{
+                validation: 'required',
+                message: 'Telefono Convencional requerido',
+                control: form.controls['phoneNumber']
+            }"></ng-container>
+        </div>
+        <div class="mb-3">
+            <label for="cellPhone" class="form-label required">Celular #1</label>
+            <input id="cellPhone" type="text" class="form-control form-control-sm form-control-solid" formControlName="cellPhone" 
+                [ngClass]="{
+                    'is-invalid': form.controls['cellPhone'].invalid && form.controls['cellPhone'].touched,
+                    'is-valid': form.controls['cellPhone'].valid
+                }"
+            />
+            <ng-container [ngTemplateOutlet]="formError" [ngTemplateOutletContext]="{
+                validation: 'required',
+                message: 'Celular #1 es requerido',
+                control: form.controls['cellPhone']
+            }"></ng-container>
+        </div>
+        <div class="mb-3">
+            <label for="secondCellPhone" class="form-label">Celular #2</label>
+            <input id="secondCellPhone" type="text" class="form-control form-control-sm form-control-solid" formControlName="secondCellPhone" 
+                [ngClass]="{
+                    'is-invalid': form.controls['secondCellPhone'].invalid && form.controls['secondCellPhone'].touched,
+                    'is-valid': form.controls['secondCellPhone'].valid
+                }"
+            />
+        </div>
+    </div>
+</div>
+
+<ng-template #formError let-control="control" let-message="message" let-validation="validation">
+    <ng-container *ngIf="control.hasError(validation) && (control.dirty || control.touched)">
+        <div class="fv-plugins-message-container">
+            <span role="alert" class="text-danger">
+                {{ message }}
+            </span>
+        </div>
+    </ng-container>
+</ng-template>

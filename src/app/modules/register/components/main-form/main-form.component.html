@@ -1,0 +1,145 @@
+<div class="card">
+  <div class="card-header">
+    <h2 class="mx-auto mt-7">Registro de usuario</h2>
+  </div>
+  <div class="card-body">
+    <div
+      class="stepper stepper-links d-flex flex-column pt-15"
+      id="kt_create_account_stepper"
+    >
+      <div class="stepper-nav mb-5">
+        <div
+          class="stepper-item"
+          [ngClass]="{
+            current: currentStep$.value === 1,
+            completed: currentStep$.value > 1
+          }"
+        >
+          <h3 class="stepper-title">Datos Generales</h3>
+        </div>
+
+        <div
+          class="stepper-item"
+          [ngClass]="{
+            current: currentStep$.value === 2,
+            completed: currentStep$.value > 2
+          }"
+        >
+          <h3 class="stepper-title">Contraseña y seguridad</h3>
+        </div>
+
+        <div
+          class="stepper-item"
+          [ngClass]="{
+            current: currentStep$.value === 3,
+            completed: currentStep$.value > 3
+          }"
+        >
+          <h3 class="stepper-title">Lugar de nacimiento</h3>
+        </div>
+
+        <div
+          class="stepper-item"
+          [ngClass]="{
+            current: currentStep$.value === 4,
+            completed: currentStep$.value > 4
+          }"
+        >
+          <h3 class="stepper-title">Lugar de residencia</h3>
+        </div>
+
+        <div
+          class="stepper-item"
+          [ngClass]="{ current: currentStep$.value === 5 }"
+        >
+          <h3 class="stepper-title">Final</h3>
+        </div>
+      </div>
+
+      <form
+        class="mx-auto mw-600px w-100 pt-15 pb-10"
+        noValidate
+        id="kt_create_account_form"
+      >
+        <div class="current">
+          <ng-container *ngIf="currentStep$.value === 1">
+            <app-personal-information 
+              class="w-100"
+              [updateParentModel]="updateAccount"
+              [defaultValues]="account$.value"
+            ></app-personal-information>
+          </ng-container>
+
+          <ng-container *ngIf="currentStep$.value === 2">
+            <app-password-security 
+              class="w-100"
+              [updateParentModel]="updateAccount"
+              [defaultValues]="account$.value"
+            ></app-password-security>
+          </ng-container>
+
+          <ng-container *ngIf="currentStep$.value === 3">
+            <app-place-birth 
+              class="w-100"
+              [updateParentModel]="updateAccount"
+              [defaultValues]="account$.value"
+            ></app-place-birth>
+          </ng-container>
+
+          <ng-container *ngIf="currentStep$.value === 4">
+            <app-place-residence 
+              class="w-100"
+              [updateParentModel]="updateAccount"
+              [defaultValues]="account$.value"
+            ></app-place-residence>
+          </ng-container>
+
+          <ng-container *ngIf="currentStep$.value === 5">
+            <app-final-form class="w-100"></app-final-form>
+          </ng-container>
+        </div>
+
+        <div class="mx-auto mw-600px w-100 pt-15 pb-10" *ngIf="!isCurrentFormValid$.value">
+          <span class="hasError">Debes completar correctamente los campos mandatorios el formulario para continuar</span>
+        </div>
+
+        <div class="d-flex flex-stack pt-15">
+          <div class="mr-2">
+            <ng-container *ngIf="currentStep$.value !== 1">
+              <button
+                type="button"
+                class="btn btn-lg btn-light-primary me-3"
+                (click)="prevStep()"
+              >
+                <app-keenicon name="arrow-left" class="fs-3 ms-4 me-1"></app-keenicon>
+                Atras
+              </button>
+            </ng-container>
+          </div>
+
+          <ng-container *ngIf="currentStep$.value !== formsCount">
+            <div>
+              <button
+                type="button"
+                class="btn btn-lg btn-primary me-3"
+                [disabled]="!isCurrentFormValid$.value"
+                (click)="nextStep()"
+                [title]="!isCurrentFormValid$.value ? 'Debes completar correctamente el formulario' : 'Formulario correcto'"
+              >
+                <span class="indicator-label">
+                  <ng-container *ngIf="currentStep$.value < formsCount - 1">
+                    Siguiente {{ " " }}
+                    <app-keenicon name="arrow-right" class="fs-3 ms-2 me-0"></app-keenicon>
+                  </ng-container>
+                  <ng-container *ngIf="currentStep$.value === formsCount - 1">
+                    Guardar
+                  </ng-container>
+                </span>
+              </button>
+            </div>
+          </ng-container>
+        </div>
+      </form>
+    </div>
+  </div>
+</div>

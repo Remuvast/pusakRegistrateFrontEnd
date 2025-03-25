@@ -1,0 +1,183 @@
+<div [formGroup]="form">
+    <div class="fv-row mb-10">
+        <div class="mb-3">
+            <label for="country" class="form-label">Pais</label>
+            <select id="country" class="form-control" formControlName="country"
+                [ngClass]="{
+                    'is-invalid': form.controls['country'].invalid && form.controls['country'].touched,
+                    'is-valid': form.controls['country'].valid
+                }"
+            >
+                <option value="">Seleccione pais</option>
+                <option value="Ecuador">Ecuador</option>
+                <option value="España">España</option>
+            </select>
+            <ng-container [ngTemplateOutlet]="formError" [ngTemplateOutletContext]="{
+                validation: 'required',
+                message: 'Pais es requerido',
+                control: form.controls['country']
+            }"></ng-container>
+        </div>
+        <div class="mb-3">
+            <label for="province" class="form-label">Estado / Provincia</label>
+            <select id="province" class="form-control" formControlName="province"
+                [ngClass]="{
+                    'is-invalid': form.controls['province'].invalid && form.controls['province'].touched,
+                    'is-valid': form.controls['province'].valid
+                }"
+            >
+                <option value="">Seleccione Estado / Provincia</option>
+                <option value="Guayas">Guayas</option>
+                <option value="Pichincha">Pichincha</option>
+            </select>
+            <ng-container [ngTemplateOutlet]="formError" [ngTemplateOutletContext]="{
+                validation: 'required',
+                message: 'Estado / Provincia es requerido',
+                control: form.controls['province']
+            }"></ng-container>
+        </div>
+        <div class="mb-3">
+            <label for="city" class="form-label">Canton / Ciudad</label>
+            <select id="city" class="form-control" formControlName="city"
+                [ngClass]="{
+                    'is-invalid': form.controls['city'].invalid && form.controls['city'].touched,
+                    'is-valid': form.controls['city'].valid
+                }"
+            >
+                <option value="">Seleccione Canton / Ciudad</option>
+                <option value="S">Quito</option>
+                <option value="C">Cayambe</option>
+            </select>
+            <ng-container [ngTemplateOutlet]="formError" [ngTemplateOutletContext]="{
+                validation: 'required',
+                message: 'Canton / Ciudad es requerido',
+                control: form.controls['city']
+            }"></ng-container>
+        </div>
+        <div class="mb-3">
+            <label for="parish" class="form-label">Parroquia</label>
+            <select id="parish" class="form-control" formControlName="parish"
+                [ngClass]="{
+                    'is-invalid': form.controls['parish'].invalid && form.controls['parish'].touched,
+                    'is-valid': form.controls['parish'].valid
+                }"
+            >
+                <option value="">Seleccione parroquia</option>
+                <option value="Carcelen">Carcelen</option>
+                <option value="Calderon">Calderon</option>
+            </select>
+            <ng-container [ngTemplateOutlet]="formError" [ngTemplateOutletContext]="{
+                validation: 'required',
+                message: 'Parroquia es requerido',
+                control: form.controls['parish']
+            }"></ng-container>
+        </div>
+        <div class="mb-3">
+            <label for="zone" class="form-label">Zona</label>
+            <select id="zone" class="form-control" formControlName="zone"
+                [ngClass]="{
+                    'is-invalid': form.controls['zone'].invalid && form.controls['zone'].touched,
+                    'is-valid': form.controls['zone'].valid
+                }"
+            >
+                <option value="">Seleccione parroquia</option>
+                <option value="Carcelen">Carcelen</option>
+                <option value="Calderon">Calderon</option>
+            </select>
+            <ng-container [ngTemplateOutlet]="formError" [ngTemplateOutletContext]="{
+                validation: 'required',
+                message: 'Parroquia es requerido',
+                control: form.controls['parish']
+            }"></ng-container>
+        </div>
+        <div class="mb-3">
+            <label for="sector" class="form-label">Identificacion</label>
+            <input id="sector" type="text" class="form-control" formControlName="sector" 
+                [ngClass]="{
+                    'is-invalid': form.controls['sector'].invalid && form.controls['sector'].touched,
+                    'is-valid': form.controls['sector'].valid
+                }"
+            />
+            <ng-container [ngTemplateOutlet]="formError" [ngTemplateOutletContext]="{
+                validation: 'required',
+                message: 'Sector es requerido',
+                control: form.controls['sector']
+            }"></ng-container>
+        </div>
+        <div class="mb-3">
+            <label for="street" class="form-label">Calle Principal</label>
+            <input id="street" type="text" class="form-control" formControlName="street" 
+                [ngClass]="{
+                    'is-invalid': form.controls['street'].invalid && form.controls['street'].touched,
+                    'is-valid': form.controls['street'].valid
+                }"
+            />
+            <ng-container [ngTemplateOutlet]="formError" [ngTemplateOutletContext]="{
+                validation: 'required',
+                message: 'Calle Principal es requerido',
+                control: form.controls['street']
+            }"></ng-container>
+        </div>
+        <div class="mb-3">
+            <label for="secondaryStreet" class="form-label">Calle Secundaria</label>
+            <input id="secondaryStreet" type="text" class="form-control" formControlName="secondaryStreet" 
+                [ngClass]="{
+                    'is-invalid': form.controls['secondaryStreet'].invalid && form.controls['secondaryStreet'].touched,
+                    'is-valid': form.controls['secondaryStreet'].valid
+                }"
+            />
+            <ng-container [ngTemplateOutlet]="formError" [ngTemplateOutletContext]="{
+                validation: 'required',
+                message: 'Calle Secundaria es requerida',
+                control: form.controls['secondaryStreet']
+            }"></ng-container>
+        </div>
+        <div class="mb-3">
+            <label for="number" class="form-label">Numero</label>
+            <input id="number" type="text" class="form-control" formControlName="number" 
+                [ngClass]="{
+                    'is-invalid': form.controls['number'].invalid && form.controls['number'].touched,
+                    'is-valid': form.controls['number'].valid
+                }"
+            />
+            <ng-container [ngTemplateOutlet]="formError" [ngTemplateOutletContext]="{
+                validation: 'required',
+                message: 'Numero es requerido',
+                control: form.controls['number']
+            }"></ng-container>
+        </div>
+        <div class="mb-3">
+            <label for="geographicReference" class="form-label">Referencia Geografica</label>
+            <input id="geographicReference" type="text" class="form-control" formControlName="geographicReference" 
+                [ngClass]="{
+                    'is-invalid': form.controls['geographicReference'].invalid && form.controls['geographicReference'].touched,
+                    'is-valid': form.controls['geographicReference'].valid
+                }"
+            />
+            <ng-container [ngTemplateOutlet]="formError" [ngTemplateOutletContext]="{
+                validation: 'required',
+                message: 'Referencia Geografica es requerido',
+                control: form.controls['geographicReference']
+            }"></ng-container>
+        </div>
+        <div class="mb-3">
+            <label for="postalCode" class="form-label">Codigo Postal</label>
+            <input id="postalCode" type="text" class="form-control" formControlName="postalCode" 
+                [ngClass]="{
+                    'is-invalid': form.controls['postalCode'].invalid && form.controls['postalCode'].touched,
+                    'is-valid': form.controls['postalCode'].valid
+                }"
+            />
+        </div>
+    </div>
+</div>
+
+<ng-template #formError let-control="control" let-message="message" let-validation="validation">
+    <ng-container *ngIf="control.hasError(validation) && (control.dirty || control.touched)">
+        <div class="fv-plugins-message-container">
+            <span role="alert" class="text-danger">
+                {{ message }}
+            </span>
+        </div>
+    </ng-container>
+</ng-template>
