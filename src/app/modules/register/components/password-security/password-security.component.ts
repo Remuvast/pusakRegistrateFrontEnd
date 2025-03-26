@@ -28,35 +28,35 @@ export class PasswordSecurityComponent implements OnInit {
   initForm(): void {
     this.form = this.fb.group({
       password: [
-        '', 
+        this.defaultValues.password, 
         Validators.required
       ],
       confirmPassword: [
-        '', 
+        this.defaultValues.confirmPassword, 
         Validators.required
       ],
       securityQuestionOne: [
-        '', 
+        this.defaultValues.securityQuestionOne, 
         Validators.required
       ],
       securityAnswerOne: [
-        '', 
+        this.defaultValues.securityAnswerOne, 
         Validators.required
       ],
       securityQuestionTwo: [
-        '', 
+        this.defaultValues.securityQuestionTwo, 
         Validators.required
       ],
       securityAnswerTwo: [
-        '', 
+        this.defaultValues.securityAnswerTwo, 
         Validators.required
       ],
       securityQuestionThree: [
-        '', 
+        this.defaultValues.securityQuestionThree, 
         Validators.required
       ],
       securityAnswerThree: [
-        '', 
+        this.defaultValues.securityAnswerThree, 
         Validators.required
       ],
     });

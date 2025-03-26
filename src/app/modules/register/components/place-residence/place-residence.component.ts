@@ -27,48 +27,48 @@ export class PlaceResidenceComponent {
 
   initForm(): void {
     this.form = this.fb.group({
-      country: [
-        '',
+      countryResidence: [
+        this.defaultValues.countryResidence,
         Validators.required
       ],
       province: [
-        '',
+        this.defaultValues.provinceResidence,
         Validators.required
       ],
-      city: [
-        '',
+      cityResidence: [
+        this.defaultValues.cityResidence,
         Validators.required
       ],
-      parish: [
-        '',
+      parishResidence: [
+        this.defaultValues.parishResidence,
         Validators.required
       ],
       zone: [
-        '',
+        this.defaultValues.zone,
         Validators.required
       ],
       sector: [
-        '',
+        this.defaultValues.sector,
         Validators.required
       ],
       street: [
-        '',
+        this.defaultValues.sector,
         Validators.required
       ],
       secondaryStreet: [
-        '',
+        this.defaultValues.secondaryStreet,
         Validators.required
       ],
       number: [
-        '',
+        this.defaultValues.number,
         Validators.required
       ],
       geographicReference: [
-        '',
+        this.defaultValues.geographicReference,
         Validators.required
       ],
       postalCode: [
-        '',
+        this.defaultValues.postalCode,
       ],
     });
     const formChangesSubscr = this.form.valueChanges.subscribe((val) => {

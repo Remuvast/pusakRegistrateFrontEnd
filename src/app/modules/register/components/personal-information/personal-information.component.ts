@@ -4,6 +4,9 @@ import { IRegister } from '../../models/register.model';
 import { Subscription } from 'rxjs';
 import { identificationValidation } from 'src/app/validators/identification.validator';
 import { maxDateValidator } from 'src/app/validators/birthdate.validator';
+import { emailMatchValidator } from 'src/app/validators/email-match.validator';
+import { cellPhoneMatchValidator } from 'src/app/validators/cellphone-match.validator';
+import { CONSTANTS } from 'src/app/common/const';
 
 @Component({
   selector: 'app-personal-information',
@@ -12,8 +15,6 @@ import { maxDateValidator } from 'src/app/validators/birthdate.validator';
 })
 export class PersonalInformationComponent implements OnInit {
 
-  /*personalInformationForm: FormGroup;
-  @Output() complete = new EventEmitter<void>();*/
   @Input('updateParentModel') updateParentModel: (
     part: Partial<IRegister>,
     isFormValid: boolean
@@ -21,6 +22,7 @@ export class PersonalInformationComponent implements OnInit {
   form: FormGroup;
   @Input() defaultValues: Partial<IRegister>;
   private unsubscribe: Subscription[] = [];
+  protected readonly labels = CONSTANTS.register;
 
   get f() {
     return this.form.controls;
@@ -36,36 +38,43 @@ export class PersonalInformationComponent implements OnInit {
     this.form?.get('disability')?.valueChanges.subscribe(value => {
       this.updateValidations(value);
     });
-    this.form?.get('identificationType')?.valueChanges.subscribe(value => {
-      this.form.reset({
-        identificationType: value,
-        identification: '',
-        lastName: '',
-        name: '', 
-        birthdate: '',
-        gender: '',
-        maritalStatus: '',
-        ethnicity: '',
-        disability: false,
-        disabilityType: '',
-        disabilityPercent: '',
-        nacionality: '',
-        emailAddress: '',
-        confirmEmailAddress: '',
-        secondEmailAddress: '',
-        phoneNumber: '',
-        cellPhone: '',
-        secondCellPhone: '',
-      });
+  }
+
+  clearForm(value: string): void {
+    this.form.reset({
+      identificationType: value,
+      identification: '',
+      lastName: '',
+      name: '', 
+      birthdate: '',
+      gender: '',
+      maritalStatus: '',
+      ethnicity: '',
+      disability: false,
+      disabilityType: '',
+      disabilityPercent: null,
+      nacionality: '',
+      emailAddress: '',
+      confirmEmailAddress: '',
+      secondEmailAddress: '',
+      phoneNumber: '',
+      cellPhone: '',
+      secondCellPhone: '',
     });
   }
 
-  updateValidations(value: boolean): void {
+  updateValidations(disability: boolean): void {
     const disabilityType = this.form.get('disabilityType');
     const disabilityPercent = this.form.get('disabilityPercent');
-    if (value) {
+    if (disability) {
       disabilityType?.setValidators([Validators.required]);
-      disabilityPercent?.setValidators([Validators.required]);
+      disabilityPercent?.setValidators(
+        [
+          Validators.required, 
+          Validators.min(1),
+          Validators.max(100),
+          Validators.pattern(/^\d+$/),
+        ]);
     } else {
       disabilityType?.clearValidators();
       disabilityPercent?.clearValidators();
@@ -77,89 +86,120 @@ export class PersonalInformationComponent implements OnInit {
   }
 
   initForm(): void {
-    this.form = this.fb.group({
-      identificationType: [
-        '', 
-        [Validators.required]
-      ],
-      identification: [
-        '', 
-        [
-          Validators.required,
-          Validators.minLength(6),
-          Validators.maxLength(20),
-          identificationValidation(),
-        ]
-      ],
-      lastName: [
-        '', 
-        [
-          Validators.required,
-          Validators.maxLength(100),
-        ]
-      ],
-      name: [
-        '', 
-        [
-          Validators.required,
-          Validators.maxLength(100),
-        ]
-      ],
-      birthdate: [
-        '', 
-        [
-          Validators.required,
-          maxDateValidator(),
-        ]
-      ],
-      gender: [
-        '', 
-        [Validators.required]
-      ],
-      maritalStatus: [
-        '', 
-        [Validators.required]
-      ],
-      ethnicity: [
-        '', 
-        [Validators.required]
-      ],
-      disability: [
-        false,
-      ],
-      disabilityType: [
-        ''
-      ],
-      disabilityPercent: [
-        ''
-      ],
-      nacionality: [
-        '', 
-        [Validators.required]
-      ],
-      emailAddress: [
-        '', 
-        [Validators.required]
-      ],
-      confirmEmailAddress: [
-        '', 
-        [Validators.required]
-      ],
-      secondEmailAddress: [
-        '',
-      ],
-      phoneNumber: [
-        '', 
-        [Validators.required]
-      ],
-      cellPhone: [
-        '', 
-        [Validators.required]
-      ],
-      secondCellPhone: [
-        '',
-      ],
-    });
+    this.form = this.fb.group(
+      {
+        identificationType: [
+          this.defaultValues.identificationType, 
+          [Validators.required]
+        ],
+        identification: [
+          this.defaultValues.identification, 
+          [
+            Validators.required,
+            Validators.minLength(6),
+            Validators.maxLength(20),
+            identificationValidation(),
+          ]
+        ],
+        lastName: [
+          this.defaultValues.lastName, 
+          [
+            Validators.required,
+            Validators.maxLength(100),
+          ]
+        ],
+        name: [
+          this.defaultValues.name, 
+          [
+            Validators.required,
+            Validators.maxLength(100),
+          ]
+        ],
+        birthdate: [
+          this.defaultValues.birthdate, 
+          [
+            Validators.required,
+            maxDateValidator(),
+          ]
+        ],
+        gender: [
+          this.defaultValues.gender, 
+          [Validators.required]
+        ],
+        maritalStatus: [
+          this.defaultValues.maritalStatus, 
+          [Validators.required]
+        ],
+        ethnicity: [
+          this.defaultValues.ethnicity, 
+          [Validators.required]
+        ],
+        disability: [
+          this.defaultValues.disability,
+        ],
+        disabilityType: [
+          this.defaultValues.disabilityType
+        ],
+        disabilityPercent: [
+          this.defaultValues.disabilityPercent
+        ],
+        nacionality: [
+          this.defaultValues.nacionality, 
+          [Validators.required]
+        ],
+        emailAddress: [
+          this.defaultValues.emailAddress, 
+          [
+            Validators.required,
+            // eslint-disable-next-line no-useless-escape
+            Validators.pattern(/^[a-zA-Z0-9](\.?[_.\-]*[a-zA-Z0-9]+)*@\w+([\.\-]\w+)*(\.[a-zA-Z]{2,})$/),
+            Validators.maxLength(100),
+          ]
+        ],
+        confirmEmailAddress: [
+          this.defaultValues.confirmEmailAddress, 
+          [
+            Validators.required,
+          ]
+        ],
+        secondEmailAddress: [
+          this.defaultValues.secondEmailAddress,
+          [
+            Validators.email,
+            // eslint-disable-next-line no-useless-escape
+            Validators.pattern(/^[a-zA-Z0-9](\.?[_.\-]*[a-zA-Z0-9]+)*@\w+([\.\-]\w+)*(\.[a-zA-Z]{2,})$/),
+            Validators.maxLength(100),
+          ]
+        ],
+        phoneNumber: [
+          this.defaultValues.phoneNumber, 
+          [
+            Validators.required,
+            Validators.pattern(/^\d+$/),
+            Validators.minLength(7),
+            Validators.maxLength(9),
+          ]
+        ],
+        cellPhone: [
+          this.defaultValues.cellPhone, 
+          [
+            Validators.required,
+            Validators.pattern(/^\d+$/),
+            Validators.minLength(10),
+            Validators.maxLength(10),
+          ]
+        ],
+        secondCellPhone: [
+          this.defaultValues.secondCellPhone,
+          [
+            Validators.pattern(/^\d+$/),
+            Validators.minLength(10),
+            Validators.maxLength(10),
+          ]
+        ],
+      },
+      { validators: [emailMatchValidator, cellPhoneMatchValidator] }
+    );
     const formChangesSubscr = this.form.valueChanges.subscribe((val) => {
       this.updateParentModel(val, this.form.valid);
     });

@@ -27,20 +27,20 @@ export class PlaceBirthComponent {
 
   initForm(): void {
     this.form = this.fb.group({
-      country: [
-        '', 
+      countryBirth: [
+        this.defaultValues.countryBirth, 
         Validators.required
       ],
-      province: [
-        '', 
+      provinceBirth: [
+        this.defaultValues.provinceBirth, 
         Validators.required
       ],
-      city: [
-        '', 
+      cityBirth: [
+        this.defaultValues.cityBirth, 
         Validators.required
       ],
-      parish: [
-        '', 
+      parishBirth: [
+        this.defaultValues.parishBirth, 
         Validators.required
       ],
     });

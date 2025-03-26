@@ -1,15 +1,15 @@
 import { AbstractControl, ValidatorFn, ValidationErrors } from "@angular/forms";
-import {CONSTANTS, REGEX_IDENTIFICATION} from "../common/const";
+import {CI, REGEX_IDENTIFICATION} from "../common/const";
 
 export function identificationValidation(): ValidatorFn {
     return (control: AbstractControl): ValidationErrors | null => {
         if (!control.parent) return null;
         const value = control.value;
         const documentType = control.parent.get('identificationType')?.value;
-        if (value && documentType === CONSTANTS.ci && !validateEcuadorianIdentification(value)) {
+        if (value && documentType === CI && !validateEcuadorianIdentification(value)) {
             return { invalidIdentification: true };
         } else if (value && !REGEX_IDENTIFICATION.test(value)) {
-            return { invalidPassport: true };
+            return { invalidDocument: true };
         }
         return null;
     }
