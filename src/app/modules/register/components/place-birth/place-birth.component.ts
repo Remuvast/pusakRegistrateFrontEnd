@@ -2,6 +2,7 @@ import { Component, Input } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { IRegister } from '../../models/register.model';
 import { Subscription } from 'rxjs';
+import { CONSTANTS } from 'src/app/common/const';
 
 @Component({
   selector: 'app-place-birth',
@@ -17,6 +18,7 @@ export class PlaceBirthComponent {
   form: FormGroup;
   @Input() defaultValues: Partial<IRegister>;
   private unsubscribe: Subscription[] = [];
+  protected readonly labels = CONSTANTS.register.placeBirth
 
   constructor(private fb: FormBuilder) { }
 
@@ -27,20 +29,20 @@ export class PlaceBirthComponent {
 
   initForm(): void {
     this.form = this.fb.group({
-      country: [
-        '', 
+      countryBirth: [
+        this.defaultValues.countryBirth, 
         Validators.required
       ],
-      province: [
-        '', 
+      provinceBirth: [
+        this.defaultValues.provinceBirth, 
         Validators.required
       ],
-      city: [
-        '', 
+      cityBirth: [
+        this.defaultValues.cityBirth, 
         Validators.required
       ],
-      parish: [
-        '', 
+      parishBirth: [
+        this.defaultValues.parishBirth, 
         Validators.required
       ],
     });

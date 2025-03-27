@@ -2,6 +2,7 @@ import { Component, Input } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { IRegister } from '../../models/register.model';
 import { Subscription } from 'rxjs';
+import { CONSTANTS } from 'src/app/common/const';
 
 @Component({
   selector: 'app-place-residence',
@@ -17,6 +18,7 @@ export class PlaceResidenceComponent {
   form: FormGroup;
   @Input() defaultValues: Partial<IRegister>;
   private unsubscribe: Subscription[] = [];
+  protected readonly labels = CONSTANTS.register.placeResidence
 
   constructor(private fb: FormBuilder) { }
 
@@ -27,48 +29,74 @@ export class PlaceResidenceComponent {
 
   initForm(): void {
     this.form = this.fb.group({
-      country: [
-        '',
-        Validators.required
+      countryResidence: [
+        this.defaultValues.countryResidence,
+        [
+          Validators.required,
+        ],
       ],
-      province: [
-        '',
-        Validators.required
+      provinceResidence: [
+        this.defaultValues.provinceResidence,
+        [
+          Validators.required,
+        ],
       ],
-      city: [
-        '',
-        Validators.required
+      cityResidence: [
+        this.defaultValues.cityResidence,
+        [
+          Validators.required,
+        ],
       ],
-      parish: [
-        '',
-        Validators.required
+      parishResidence: [
+        this.defaultValues.parishResidence,
+        [
+          Validators.required,
+        ],
       ],
       zone: [
-        '',
-        Validators.required
+        this.defaultValues.zone,
+        [
+          Validators.required,
+        ],
       ],
       sector: [
-        '',
-        Validators.required
+        this.defaultValues.sector,
+        [
+          Validators.required,
+          Validators.maxLength(50)
+        ],
       ],
       street: [
-        '',
-        Validators.required
+        this.defaultValues.sector,
+        [
+          Validators.required,
+          Validators.maxLength(50)
+        ],
       ],
       secondaryStreet: [
-        '',
-        Validators.required
+        this.defaultValues.secondaryStreet,
+        [
+          Validators.required,
+          Validators.maxLength(50)
+        ],
       ],
       number: [
-        '',
-        Validators.required
+        this.defaultValues.number,
+        [
+          Validators.required,
+          Validators.maxLength(20)
+        ],
       ],
       geographicReference: [
-        '',
-        Validators.required
+        this.defaultValues.geographicReference,
+        [
+          Validators.required,
+          Validators.maxLength(200)
+        ],
       ],
       postalCode: [
-        '',
+        this.defaultValues.postalCode,
+        Validators.maxLength(20)
       ],
     });
     const formChangesSubscr = this.form.valueChanges.subscribe((val) => {

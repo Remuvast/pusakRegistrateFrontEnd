@@ -1,6 +1,6 @@
 <div class="card">
   <div class="card-header">
-    <h2 class="mx-auto mt-7">Registro de usuario</h2>
+    <h2 class="mx-auto mt-7">{{labels.title}}</h2>
   </div>
   <div class="card-body">
     <div
@@ -15,7 +15,7 @@
             completed: currentStep$.value > 1
           }"
         >
-          <h3 class="stepper-title">Datos Generales</h3>
+          <h3 class="stepper-title">{{labels.generalDataTitle}}</h3>
         </div>
 
         <div
@@ -25,7 +25,7 @@
             completed: currentStep$.value > 2
           }"
         >
-          <h3 class="stepper-title">Contraseña y seguridad</h3>
+          <h3 class="stepper-title">{{labels.passwordSecurityTitle}}</h3>
         </div>
 
         <div
@@ -35,7 +35,7 @@
             completed: currentStep$.value > 3
           }"
         >
-          <h3 class="stepper-title">Lugar de nacimiento</h3>
+          <h3 class="stepper-title">{{labels.placeBirthTitle}}</h3>
         </div>
 
         <div
@@ -45,14 +45,14 @@
             completed: currentStep$.value > 4
           }"
         >
-          <h3 class="stepper-title">Lugar de residencia</h3>
+          <h3 class="stepper-title">{{labels.placeResidenceTitle}}</h3>
         </div>
 
         <div
           class="stepper-item"
           [ngClass]="{ current: currentStep$.value === 5 }"
         >
-          <h3 class="stepper-title">Final</h3>
+          <h3 class="stepper-title">{{labels.finalTitle}}</h3>
         </div>
       </div>
 
@@ -65,32 +65,32 @@
           <ng-container *ngIf="currentStep$.value === 1">
             <app-personal-information 
               class="w-100"
-              [updateParentModel]="updateAccount"
-              [defaultValues]="account$.value"
+              [updateParentModel]="updateRegister"
+              [defaultValues]="register$.value"
             ></app-personal-information>
           </ng-container>
 
           <ng-container *ngIf="currentStep$.value === 2">
             <app-password-security 
               class="w-100"
-              [updateParentModel]="updateAccount"
-              [defaultValues]="account$.value"
+              [updateParentModel]="updateRegister"
+              [defaultValues]="register$.value"
             ></app-password-security>
           </ng-container>
 
           <ng-container *ngIf="currentStep$.value === 3">
             <app-place-birth 
               class="w-100"
-              [updateParentModel]="updateAccount"
-              [defaultValues]="account$.value"
+              [updateParentModel]="updateRegister"
+              [defaultValues]="register$.value"
             ></app-place-birth>
           </ng-container>
 
           <ng-container *ngIf="currentStep$.value === 4">
             <app-place-residence 
               class="w-100"
-              [updateParentModel]="updateAccount"
-              [defaultValues]="account$.value"
+              [updateParentModel]="updateRegister"
+              [defaultValues]="register$.value"
             ></app-place-residence>
           </ng-container>
 
@@ -99,20 +99,38 @@
           </ng-container>
         </div>
 
-        <div class="mx-auto mw-600px w-100 pt-15 pb-10" *ngIf="!isCurrentFormValid$.value">
-          <span class="hasError">Debes completar correctamente los campos mandatorios el formulario para continuar</span>
+        <div
+          class="
+            notice
+            d-flex
+            bg-light-danger
+            rounded
+            border-danger border border-dashed
+            p-6
+          "
+          *ngIf="!isCurrentFormValid$.value && currentStep$.value !== 5"
+        >
+          <span class="svg-icon fs-2tx text-warning me-4"></span>
+          <div class="d-flex flex-stack flex-grow-1">
+            <div class="fw-bold">
+              <h4 class="text-gray-800 fw-bolder">{{labels.alertMessageTitle}}</h4>
+              <div class="fs-6 text-gray-600">
+                {{labels.alertMessage}}
+              </div>
+            </div>
+          </div>
         </div>
 
         <div class="d-flex flex-stack pt-15">
           <div class="mr-2">
-            <ng-container *ngIf="currentStep$.value !== 1">
+            <ng-container *ngIf="currentStep$.value !== 1 && currentStep$.value !== 5">
               <button
                 type="button"
                 class="btn btn-lg btn-light-primary me-3"
                 (click)="prevStep()"
               >
                 <app-keenicon name="arrow-left" class="fs-3 ms-4 me-1"></app-keenicon>
-                Atras
+                {{labels.back}}
               </button>
             </ng-container>
           </div>
@@ -128,11 +146,11 @@
               >
                 <span class="indicator-label">
                   <ng-container *ngIf="currentStep$.value < formsCount - 1">
-                    Siguiente {{ " " }}
+                    {{labels.next}} {{ " " }}
                     <app-keenicon name="arrow-right" class="fs-3 ms-2 me-0"></app-keenicon>
                   </ng-container>
                   <ng-container *ngIf="currentStep$.value === formsCount - 1">
-                    Guardar
+                    {{labels.save}}
                   </ng-container>
                 </span>
               </button>

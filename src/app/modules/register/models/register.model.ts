@@ -65,7 +65,7 @@ export interface IRegister {
     ethnicity: string;
     disability: boolean;
     disabilityType: string;
-    disabilityPercent: string;
+    disabilityPercent: number | null;
     nacionality: string;
     emailAddress: string;
     confirmEmailAddress: string;
@@ -111,7 +111,7 @@ export const init: IRegister = {
     ethnicity: '',
     disability: false,
     disabilityType: '',
-    disabilityPercent: '',
+    disabilityPercent: null,
     nacionality: '',
     emailAddress: '',
     confirmEmailAddress: '',
