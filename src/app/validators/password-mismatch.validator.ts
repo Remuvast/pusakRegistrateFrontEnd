@@ -7,11 +7,15 @@ export const passwordMatchValidator: ValidatorFn = (formGroup: AbstractControl):
     if (!password || !confirmPassword) {
         return null;
     }
+    const currentErrors = confirmPassword.errors || {};
     if (confirmPassword.value && password.value !== confirmPassword.value) {
-        confirmPassword.setErrors({ passwordMismatch: true });
+        confirmPassword.setErrors({ ...currentErrors, passwordMismatch: true });
         return { passwordMismatch: true };
     } else {
-        confirmPassword.setErrors(null);
+        if(currentErrors.passwordMismatch) {
+            delete currentErrors.passwordMismatch;
+        }
+        confirmPassword.setErrors(Object.keys(currentErrors).length > 0 ? currentErrors : null);
         return null;
     }
 };

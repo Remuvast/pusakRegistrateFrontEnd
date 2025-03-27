@@ -3,6 +3,17 @@ export const CI = 'cedula';
 export const PASSPORT = 'pasaporte';
 export const CONSTANTS = {
     register: {
+        alertMessage: '* Debes completar correctamente los campos mandatorios el formulario para continuar.',
+        alertMessageTitle: 'Atencion!',
+        back: 'Atras',
+        next: 'Siguiente',
+        save: 'Guardar',
+        title: 'Registro de usuario',
+        generalDataTitle: 'Datos Generales',
+        passwordSecurityTitle: 'Contraseña y seguridad',
+        placeBirthTitle: 'Lugar de nacimiento',
+        placeResidenceTitle: 'Lugar de residencia',
+        finalTitle: 'Final',
         personalInformation: {
             identificationType: {
                 label: 'Tipo de identificacion',
@@ -106,13 +117,127 @@ export const CONSTANTS = {
             }
         },
         passwordSecurity: {
-
+            password: {
+                label: 'Contraseña',
+                required: 'Contraseña es requerido',
+                pattern: 'La contraseña debe contener al menos 1 mayuscula, 1 minuscula, 1 numero y un caracter especial que puede ser @ $ # %',
+                minlength: 'La contraseña debe tener al menos 6 caracteres',
+                maxlength: 'La contraseña debe tener maximo 20 caracteres',
+            },
+            confirmPassword: {
+                label: 'Confirmar Contraseña',
+                required: 'Confirmar Contraseña es requerido',
+                passwordMismatch: 'Las contraseñas no coinciden'
+            },
+            securityQuestionOne: {
+                label: 'Pregunta de Seguridad #1',
+                default: 'Seleccione Pregunta de Seguridad',
+                required: 'Pregunta de Seguridad #1 es requerido',
+            },
+            securityAnswerOne: {
+                label: 'Respuesta #1',
+                required: 'Respuesta #1 es requerido',
+                maxlength: 'Respuesta #1 debe tener maximo 20 caracteres',
+            },
+            securityQuestionTwo: {
+                label: 'Pregunta de Seguridad #2',
+                default: 'Seleccione Pregunta de Seguridad',
+                required: 'Pregunta de Seguridad #2 es requerido',
+            },
+            securityAnswerTwo: {
+                label: 'Respuesta #2',
+                required: 'Respuesta #2 es requerido',
+                maxlength: 'Respuesta #2 debe tener maximo 20 caracteres',
+            },
+            securityQuestionThree: {
+                label: 'Pregunta de Seguridad #3',
+                default: 'Seleccione Pregunta de Seguridad',
+                required: 'Pregunta de Seguridad #3 es requerido',
+            },
+            securityAnswerThree: {
+                label: 'Respuesta #3',
+                required: 'Respuesta #3 es requerido',
+                maxlength: 'Respuesta #3 debe tener maximo 20 caracteres',
+            },
         },
         placeBirth: {
-
+            country: {
+                label: 'Pais',
+                default: 'Seleccione pais',
+                required: 'Pais es requerido',
+            },
+            province: {
+                label: 'Estado / Provincia',
+                default: 'Seleccione Estado / Provincia',
+                required: 'Estado / Provincia es requerido',
+            },
+            city: {
+                label: 'Canton / Ciudad',
+                default: 'Seleccione Canton / Ciudad',
+                required: 'Canton / Ciudad es requerido',
+            },
+            parish: {
+                label: 'Parroquia',
+                default: 'Seleccione parroquia',
+                required: 'Parroquia es requerido',
+            },
         },
         placeResidence: {
-
+            country: {
+                label: 'Pais',
+                default: 'Seleccione pais',
+                required: 'Pais es requerido',
+            },
+            province: {
+                label: 'Estado / Provincia',
+                default: 'Seleccione Estado / Provincia',
+                required: 'Estado / Provincia es requerido',
+            },
+            city: {
+                label: 'Canton / Ciudad',
+                default: 'Seleccione Canton / Ciudad',
+                required: 'Canton / Ciudad es requerido',
+            },
+            parish: {
+                label: 'Parroquia',
+                default: 'Seleccione parroquia',
+                required: 'Parroquia es requerido',
+            },
+            zone: {
+                label: 'Zona',
+                default: 'Seleccione zona',
+                required: 'Zona es requerido',
+            },
+            sector: {
+                label: 'Sector',
+                required: 'Sector es requerido',
+                maxlength: 'Sector debe tener maximo 50 caracteres'
+            },
+            street: {
+                label: 'Calle Principal',
+                required: 'Calle Principal es requerido',
+                maxlength: 'Calle Principal debe tener maximo 50 caracteres'
+            },
+            secondaryStreet: {
+                label: 'Calle Secundaria',
+                required: 'Calle Secundaria es requerido',
+                maxlength: 'Calle Secundaria debe tener maximo 50 caracteres'
+            },
+            number: {
+                label: 'Numero',
+                required: 'Numero es requerido',
+                maxlength: 'Numero debe tener maximo 20 caracteres'
+            },
+            geographicReference: {
+                label: 'Referencia Geografica',
+                required: 'Referencia Geografica es requerido',
+                maxlength: 'Referencia Geografica debe tener maximo 200 caracteres'
+            },
+            postalCode: {
+                label: 'Codigo postal',
+                required: 'Codigo postal es requerido',
+                maxlength: 'Codigo postal debe tener maximo 20 caracteres'
+            },
         }
     }
 }

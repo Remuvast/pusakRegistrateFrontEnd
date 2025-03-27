@@ -8,18 +8,26 @@ export const emailMatchValidator: ValidatorFn = (formGroup: AbstractControl): Va
     if (!email || !confirmEmail) {
         return null;
     }
+    const currentErrors = secondEmail?.errors || {};
     if(secondEmail) {
         if(email.value === secondEmail.value) {
-            secondEmail.setErrors({ repeatedEmailAddress: true });
+            secondEmail.setErrors({ ...currentErrors, repeatedEmailAddress: true });
         } else {
-            secondEmail.setErrors(null);
+            if (currentErrors.emailAddressMismatch) {
+                delete currentErrors.emailAddressMismatch;
+            }
+            secondEmail.setErrors(Object.keys(currentErrors).length ? currentErrors : null);
         }
     }
+    const currentErrors2 = confirmEmail?.errors || {};
     if (confirmEmail.value && email.value !== confirmEmail.value) {
-        confirmEmail.setErrors({ emailAddressMismatch: true });
+        confirmEmail.setErrors({ ...currentErrors2, emailAddressMismatch: true });
         return { emailAddressMismatch: true };
     } else {
-        confirmEmail.setErrors(null);
+        if (currentErrors.emailAddressMismatch) {
+            delete currentErrors.emailAddressMismatch;
+        }
+        confirmEmail.setErrors(Object.keys(currentErrors).length ? currentErrors2 : null);
         return null;
     }
 };

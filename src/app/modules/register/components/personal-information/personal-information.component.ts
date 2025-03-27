@@ -22,7 +22,7 @@ export class PersonalInformationComponent implements OnInit {
   form: FormGroup;
   @Input() defaultValues: Partial<IRegister>;
   private unsubscribe: Subscription[] = [];
-  protected readonly labels = CONSTANTS.register;
+  protected readonly labels = CONSTANTS.register.personalInformation;
 
   get f() {
     return this.form.controls;
@@ -34,7 +34,7 @@ export class PersonalInformationComponent implements OnInit {
 
   ngOnInit(): void {
     this.initForm();
-    this.updateParentModel({}, false);
+    this.updateParentModel({}, !!this.form?.get('identificationType')?.value);
     this.form?.get('disability')?.valueChanges.subscribe(value => {
       this.updateValidations(value);
     });

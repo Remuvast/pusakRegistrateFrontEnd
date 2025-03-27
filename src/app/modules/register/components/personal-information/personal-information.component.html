@@ -1,7 +1,7 @@
 <div [formGroup]="form">
     <div class="fv-row mb-10">
         <div class="mb-3">
-            <label for="identificationType" class="form-label required">{{labels.personalInformation.identificationType.label}}</label>
+            <label for="identificationType" class="form-label required">{{labels.identificationType.label}}</label>
             <select 
                 id="identificationType"
                 class="form-select form-select-lg form-select-solid"
@@ -12,18 +12,18 @@
                     'is-valid': form.controls['identificationType'].valid
                 }"
             >
-                <option value="">{{labels.personalInformation.identificationType.label}}</option>
+                <option value="">{{labels.identificationType.label}}</option>
                 <option value="cedula">Cedula</option>
                 <option value="pasaporte">Pasaporte</option>
             </select>
             <ng-container [ngTemplateOutlet]="formError" [ngTemplateOutletContext]="{
                 validation: 'required',
-                message: labels.personalInformation.identificationType.required,
+                message: labels.identificationType.required,
                 control: form.controls['identificationType']
             }"></ng-container>
         </div>
         <div class="mb-3">
-            <label for="identification" class="form-label required"> {{labels.personalInformation.identification.label}} </label>
+            <label for="identification" class="form-label required"> {{labels.identification.label}} </label>
             <input id="identification" type="text" class="form-control form-control-sm form-control-solid" formControlName="identification" 
                 [ngClass]="{
                     'is-invalid': form.controls['identification'].invalid && form.controls['identification'].touched,
@@ -32,32 +32,32 @@
             />
             <ng-container [ngTemplateOutlet]="formError" [ngTemplateOutletContext]="{
                 validation: 'required',
-                message: labels.personalInformation.identification.required,
+                message: labels.identification.required,
                 control: form.controls['identification']
             }"></ng-container>
             <ng-container [ngTemplateOutlet]="formError" [ngTemplateOutletContext]="{
                 validation: 'invalidIdentification',
-                message: labels.personalInformation.identification.invalidIdentification,
+                message: labels.identification.invalidIdentification,
                 control: form.controls['identification']
             }"></ng-container>
             <ng-container [ngTemplateOutlet]="formError" [ngTemplateOutletContext]="{
                 validation: 'invalidDocument',
-                message: labels.personalInformation.identification.invalidDocument,
+                message: labels.identification.invalidDocument,
                 control: form.controls['identification']
             }"></ng-container>
             <ng-container [ngTemplateOutlet]="formError" [ngTemplateOutletContext]="{
                 validation: 'minlength',
-                message: labels.personalInformation.identification.minlength,
+                message: labels.identification.minlength,
                 control: form.controls['identification']
               }"></ng-container>
             <ng-container [ngTemplateOutlet]="formError" [ngTemplateOutletContext]="{
                 validation: 'maxlength',
-                message: labels.personalInformation.identification.maxlength,
+                message: labels.identification.maxlength,
                 control: form.controls['identification']
               }"></ng-container>
         </div>
         <div class="mb-3">
-            <label for="lastName" class="form-label required"> {{labels.personalInformation.lastName.label}} </label>
+            <label for="lastName" class="form-label required"> {{labels.lastName.label}} </label>
             <input id="lastName" type="text" class="form-control form-control-sm form-control-solid" formControlName="lastName"
                 [ngClass]="{
                     'is-invalid': form.controls['lastName'].invalid && form.controls['lastName'].touched,
@@ -66,17 +66,17 @@
             />
             <ng-container [ngTemplateOutlet]="formError" [ngTemplateOutletContext]="{
                 validation: 'required',
-                message: labels.personalInformation.lastName.required,
+                message: labels.lastName.required,
                 control: form.controls['lastName']
             }"></ng-container>
             <ng-container [ngTemplateOutlet]="formError" [ngTemplateOutletContext]="{
                 validation: 'maxlength',
-                message: labels.personalInformation.lastName.maxlength,
+                message: labels.lastName.maxlength,
                 control: form.controls['lastName']
               }"></ng-container>
         </div>
         <div class="mb-3">
-        <label for="name" class="form-label required"> {{labels.personalInformation.name.label}} </label>
+        <label for="name" class="form-label required"> {{labels.name.label}} </label>
         <input id="name" type="text" class="form-control form-control-sm form-control-solid" formControlName="name"
             [ngClass]="{
                 'is-invalid': form.controls['name'].invalid && form.controls['name'].touched,
@@ -85,17 +85,17 @@
         />
         <ng-container [ngTemplateOutlet]="formError" [ngTemplateOutletContext]="{
                 validation: 'required',
-                message: labels.personalInformation.name.required,
+                message: labels.name.required,
                 control: form.controls['name']
             }"></ng-container>
         <ng-container [ngTemplateOutlet]="formError" [ngTemplateOutletContext]="{
             validation: 'maxlength',
-            message: labels.personalInformation.name.maxlength,
+            message: labels.name.maxlength,
             control: form.controls['name']
           }"></ng-container>
         </div>
         <div class="mb-3">
-            <label for="birthdate" class="form-label required"> {{labels.personalInformation.birthday.label}} </label>
+            <label for="birthdate" class="form-label required"> {{labels.birthday.label}} </label>
             <input
                 id="birthdate"
                 type="date"
@@ -108,42 +108,42 @@
             />
             <ng-container [ngTemplateOutlet]="formError" [ngTemplateOutletContext]="{
                 validation: 'required',
-                message: labels.personalInformation.birthday.required,
+                message: labels.birthday.required,
                 control: form.controls['birthdate']
             }"></ng-container>
             <ng-container [ngTemplateOutlet]="formError" [ngTemplateOutletContext]="{
                 validation: 'invalidDate',
-                message: labels.personalInformation.birthday.invalidDate,
+                message: labels.birthday.invalidDate,
                 control: form.controls['birthdate']
             }"></ng-container>
         </div>
         <div class="mb-3">
-            <label for="gender" class="form-label required"> {{labels.personalInformation.gender.label}} </label>
+            <label for="gender" class="form-label required"> {{labels.gender.label}} </label>
             <select id="gender" class="form-select form-select-lg form-select-solid" formControlName="gender"
                 [ngClass]="{
                     'is-invalid': form.controls['gender'].invalid && form.controls['gender'].touched,
                     'is-valid': form.controls['gender'].valid
                 }"
             >
-                <option value="">{{labels.personalInformation.gender.default}}</option>
+                <option value="">{{labels.gender.default}}</option>
                 <option value="m">Masculino</option>
                 <option value="f">Femenino</option>
             </select>
             <ng-container [ngTemplateOutlet]="formError" [ngTemplateOutletContext]="{
                 validation: 'required',
-                message: labels.personalInformation.gender.required,
+                message: labels.gender.required,
                 control: form.controls['gender']
             }"></ng-container>
         </div>
         <div class="mb-3">
-            <label for="maritalStatus" class="form-label required">{{labels.personalInformation.maritalStatus.label}}</label>
+            <label for="maritalStatus" class="form-label required">{{labels.maritalStatus.label}}</label>
             <select id="maritalStatus" class="form-select form-select-lg form-select-solid" formControlName="maritalStatus"
                 [ngClass]="{
                     'is-invalid': form.controls['maritalStatus'].invalid && form.controls['maritalStatus'].touched,
                     'is-valid': form.controls['maritalStatus'].valid
                 }"
             >
-                <option value="">{{labels.personalInformation.maritalStatus.default}}</option>
+                <option value="">{{labels.maritalStatus.default}}</option>
                 <option value="S">Soltero</option>
                 <option value="C">Casado</option>
                 <option value="V">Viudo</option>
@@ -151,30 +151,30 @@
             </select>
             <ng-container [ngTemplateOutlet]="formError" [ngTemplateOutletContext]="{
                 validation: 'required',
-                message: labels.personalInformation.maritalStatus.required,
+                message: labels.maritalStatus.required,
                 control: form.controls['maritalStatus']
             }"></ng-container>
         </div>
         <div class="mb-3">
-            <label for="ethnicity" class="form-label required">{{labels.personalInformation.ethnicity.label}}</label>
+            <label for="ethnicity" class="form-label required">{{labels.ethnicity.label}}</label>
             <select id="ethnicity" class="form-select form-select-lg form-select-solid" formControlName="ethnicity"
                 [ngClass]="{
                     'is-invalid': form.controls['ethnicity'].invalid && form.controls['ethnicity'].touched,
                     'is-valid': form.controls['ethnicity'].valid
                 }"
             >
-                <option value="">{{labels.personalInformation.ethnicity.default}}</option>
+                <option value="">{{labels.ethnicity.default}}</option>
                 <option value="Mestizo">Mestizo</option>
                 <option value="Montuvio">Montuvio</option>
             </select>
             <ng-container [ngTemplateOutlet]="formError" [ngTemplateOutletContext]="{
                 validation: 'required',
-                message: labels.personalInformation.ethnicity.required,
+                message: labels.ethnicity.required,
                 control: form.controls['ethnicity']
             }"></ng-container>
         </div>
         <div class="form-check mb-3">
-            <label for="disability" class="form-label"> {{labels.personalInformation.disability.label}} </label>
+            <label for="disability" class="form-label"> {{labels.disability.label}} </label>
             <input
                 id="disability"
                 type="checkbox"
@@ -183,25 +183,25 @@
             />
         </div>
         <div class="mb-3" *ngIf="form.get('disability')?.value">
-            <label for="disabilityType" class="form-label required">{{labels.personalInformation.disabilityType.label}}</label>
+            <label for="disabilityType" class="form-label required">{{labels.disabilityType.label}}</label>
             <select id="disabilityType" class="form-select form-select-lg form-select-solid" formControlName="disabilityType"
                 [ngClass]="{
                     'is-invalid': form.controls['disabilityType'].invalid && form.controls['disabilityType'].touched,
                     'is-valid': form.controls['disabilityType'].valid
                 }"
             >
-                <option value="">{{labels.personalInformation.disabilityType.default}}</option>
+                <option value="">{{labels.disabilityType.default}}</option>
                 <option value="Auditiva">Auditiva</option>
                 <option value="Fisica">Fisica</option>
             </select>
             <ng-container [ngTemplateOutlet]="formError" [ngTemplateOutletContext]="{
                 validation: 'required',
-                message: labels.personalInformation.disabilityType.required,
+                message: labels.disabilityType.required,
                 control: form.controls['disabilityType']
             }"></ng-container>
         </div>
         <div class="mb-3" *ngIf="form.get('disability')?.value">
-            <label for="disabilityPercent" class="form-label required">{{labels.personalInformation.disabilityPercent.label}}</label>
+            <label for="disabilityPercent" class="form-label required">{{labels.disabilityPercent.label}}</label>
             <input id="disabilityPercent" type="number" class="form-control form-control-sm form-control-solid" formControlName="disabilityPercent" 
                 [ngClass]="{
                     'is-invalid': form.controls['disabilityPercent'].invalid && form.controls['disabilityPercent'].touched,
@@ -210,45 +210,45 @@
             />
             <ng-container [ngTemplateOutlet]="formError" [ngTemplateOutletContext]="{
                 validation: 'required',
-                message: labels.personalInformation.disabilityPercent.required,
+                message: labels.disabilityPercent.required,
                 control: form.controls['disabilityPercent']
             }"></ng-container>
             <ng-container [ngTemplateOutlet]="formError" [ngTemplateOutletContext]="{
                 validation: 'min',
-                message: labels.personalInformation.disabilityPercent.min,
+                message: labels.disabilityPercent.min,
                 control: form.controls['disabilityPercent']
             }"></ng-container>
             <ng-container [ngTemplateOutlet]="formError" [ngTemplateOutletContext]="{
                 validation: 'max',
-                message: labels.personalInformation.disabilityPercent.max,
+                message: labels.disabilityPercent.max,
                 control: form.controls['disabilityPercent']
             }"></ng-container>
             <ng-container [ngTemplateOutlet]="formError" [ngTemplateOutletContext]="{
                 validation: 'pattern',
-                message: labels.personalInformation.disabilityPercent.pattern,
+                message: labels.disabilityPercent.pattern,
                 control: form.controls['disabilityPercent']
             }"></ng-container>
         </div>
         <div class="mb-3">
-            <label for="nacionality" class="form-label required">{{labels.personalInformation.nacionality.label}}</label>
+            <label for="nacionality" class="form-label required">{{labels.nacionality.label}}</label>
             <select id="nacionality" class="form-select form-select-lg form-select-solid" formControlName="nacionality"
                 [ngClass]="{
                     'is-invalid': form.controls['nacionality'].invalid && form.controls['nacionality'].touched,
                     'is-valid': form.controls['nacionality'].valid
                 }"
             >
-                <option value="">{{labels.personalInformation.nacionality.default}}</option>
+                <option value="">{{labels.nacionality.default}}</option>
                 <option value="Ecuatoriana">Ecuatoriana</option>
                 <option value="Española">Española</option>
             </select>
             <ng-container [ngTemplateOutlet]="formError" [ngTemplateOutletContext]="{
                 validation: 'required',
-                message: labels.personalInformation.nacionality.required,
+                message: labels.nacionality.required,
                 control: form.controls['nacionality']
             }"></ng-container>
         </div>
         <div class="mb-3">
-            <label for="emailAddress" class="form-label required">{{labels.personalInformation.emailAddress.label}}</label>
+            <label for="emailAddress" class="form-label required">{{labels.emailAddress.label}}</label>
             <input id="emailAddress" type="email" class="form-control form-control-sm form-control-solid" formControlName="emailAddress" 
                 [ngClass]="{
                     'is-invalid': form.controls['emailAddress'].invalid && form.controls['emailAddress'].touched,
@@ -257,22 +257,22 @@
             />
             <ng-container [ngTemplateOutlet]="formError" [ngTemplateOutletContext]="{
                 validation: 'required',
-                message: labels.personalInformation.emailAddress.required,
+                message: labels.emailAddress.required,
                 control: form.controls['emailAddress']
             }"></ng-container>
             <ng-container [ngTemplateOutlet]="formError" [ngTemplateOutletContext]="{
                 validation: 'maxlength',
-                message: labels.personalInformation.emailAddress.maxlength,
+                message: labels.emailAddress.maxlength,
                 control: form.controls['emailAddress']
             }"></ng-container>
             <ng-container [ngTemplateOutlet]="formError" [ngTemplateOutletContext]="{
                 validation: 'pattern',
-                message: labels.personalInformation.emailAddress.pattern,
+                message: labels.emailAddress.pattern,
                 control: form.controls['emailAddress']
             }"></ng-container>
         </div>
         <div class="mb-3">
-            <label for="confirmEmailAddress" class="form-label required">{{labels.personalInformation.confirmEmailAddress.label}}</label>
+            <label for="confirmEmailAddress" class="form-label required">{{labels.confirmEmailAddress.label}}</label>
             <input id="confirmEmailAddress" type="email" class="form-control form-control-sm form-control-solid" formControlName="confirmEmailAddress" 
                 [ngClass]="{
                     'is-invalid': form.controls['confirmEmailAddress'].invalid && form.controls['confirmEmailAddress'].touched,
@@ -281,17 +281,17 @@
             />
             <ng-container [ngTemplateOutlet]="formError" [ngTemplateOutletContext]="{
                 validation: 'required',
-                message: labels.personalInformation.confirmEmailAddress.required,
+                message: labels.confirmEmailAddress.required,
                 control: form.controls['confirmEmailAddress']
             }"></ng-container>
             <ng-container [ngTemplateOutlet]="formError" [ngTemplateOutletContext]="{
                 validation: 'emailAddressMismatch',
-                message: labels.personalInformation.confirmEmailAddress.emailAddressMismatch,
+                message: labels.confirmEmailAddress.emailAddressMismatch,
                 control: form.controls['confirmEmailAddress']
             }"></ng-container>
         </div>
         <div class="mb-3">
-            <label for="secondEmailAddress" class="form-label">{{labels.personalInformation.secondEmailAddress.label}}</label>
+            <label for="secondEmailAddress" class="form-label">{{labels.secondEmailAddress.label}}</label>
             <input id="secondEmailAddress" type="email" class="form-control form-control-sm form-control-solid" formControlName="secondEmailAddress" 
                 [ngClass]="{
                     'is-invalid': form.controls['secondEmailAddress'].invalid && form.controls['secondEmailAddress'].touched,
@@ -300,17 +300,17 @@
             />
             <ng-container [ngTemplateOutlet]="formError" [ngTemplateOutletContext]="{
                 validation: 'pattern',
-                message: labels.personalInformation.secondEmailAddress.pattern,
+                message: labels.secondEmailAddress.pattern,
                 control: form.controls['secondEmailAddress']
             }"></ng-container>
             <ng-container [ngTemplateOutlet]="formError" [ngTemplateOutletContext]="{
                 validation: 'repeatedEmailAddress',
-                message: labels.personalInformation.secondEmailAddress.repeatedEmailAddress,
+                message: labels.secondEmailAddress.repeatedEmailAddress,
                 control: form.controls['secondEmailAddress']
             }"></ng-container>
         </div>
         <div class="mb-3">
-            <label for="phoneNumber" class="form-label required">{{labels.personalInformation.phoneNumber.label}}</label>
+            <label for="phoneNumber" class="form-label required">{{labels.phoneNumber.label}}</label>
             <input id="phoneNumber" type="text" class="form-control form-control-sm form-control-solid" formControlName="phoneNumber" 
                 [ngClass]="{
                     'is-invalid': form.controls['phoneNumber'].invalid && form.controls['phoneNumber'].touched,
@@ -319,27 +319,27 @@
             />
             <ng-container [ngTemplateOutlet]="formError" [ngTemplateOutletContext]="{
                 validation: 'required',
-                message: labels.personalInformation.phoneNumber.required,
+                message: labels.phoneNumber.required,
                 control: form.controls['phoneNumber']
             }"></ng-container>
             <ng-container [ngTemplateOutlet]="formError" [ngTemplateOutletContext]="{
                 validation: 'minlength',
-                message: labels.personalInformation.phoneNumber.minlength,
+                message: labels.phoneNumber.minlength,
                 control: form.controls['phoneNumber']
             }"></ng-container>
             <ng-container [ngTemplateOutlet]="formError" [ngTemplateOutletContext]="{
                 validation: 'maxlength',
-                message: labels.personalInformation.phoneNumber.maxlength,
+                message: labels.phoneNumber.maxlength,
                 control: form.controls['phoneNumber']
             }"></ng-container>
             <ng-container [ngTemplateOutlet]="formError" [ngTemplateOutletContext]="{
                 validation: 'pattern',
-                message: labels.personalInformation.phoneNumber.pattern,
+                message: labels.phoneNumber.pattern,
                 control: form.controls['phoneNumber']
             }"></ng-container>
         </div>
         <div class="mb-3">
-            <label for="cellPhone" class="form-label required">{{labels.personalInformation.cellPhone.label}}</label>
+            <label for="cellPhone" class="form-label required">{{labels.cellPhone.label}}</label>
             <input id="cellPhone" type="text" class="form-control form-control-sm form-control-solid" formControlName="cellPhone" 
                 [ngClass]="{
                     'is-invalid': form.controls['cellPhone'].invalid && form.controls['cellPhone'].touched,
@@ -348,27 +348,27 @@
             />
             <ng-container [ngTemplateOutlet]="formError" [ngTemplateOutletContext]="{
                 validation: 'required',
-                message: labels.personalInformation.cellPhone.required,
+                message: labels.cellPhone.required,
                 control: form.controls['cellPhone']
             }"></ng-container>
             <ng-container [ngTemplateOutlet]="formError" [ngTemplateOutletContext]="{
                 validation: 'pattern',
-                message: labels.personalInformation.cellPhone.pattern,
+                message: labels.cellPhone.pattern,
                 control: form.controls['cellPhone']
             }"></ng-container>
             <ng-container [ngTemplateOutlet]="formError" [ngTemplateOutletContext]="{
                 validation: 'minlength',
-                message: labels.personalInformation.cellPhone.minlength,
+                message: labels.cellPhone.minlength,
                 control: form.controls['cellPhone']
             }"></ng-container>
             <ng-container [ngTemplateOutlet]="formError" [ngTemplateOutletContext]="{
                 validation: 'maxlength',
-                message: labels.personalInformation.cellPhone.maxlength,
+                message: labels.cellPhone.maxlength,
                 control: form.controls['cellPhone']
             }"></ng-container>
         </div>
         <div class="mb-3">
-            <label for="secondCellPhone" class="form-label">{{labels.personalInformation.secondCellPhone.label}}</label>
+            <label for="secondCellPhone" class="form-label">{{labels.secondCellPhone.label}}</label>
             <input id="secondCellPhone" type="text" class="form-control form-control-sm form-control-solid" formControlName="secondCellPhone" 
                 [ngClass]="{
                     'is-invalid': form.controls['secondCellPhone'].invalid && form.controls['secondCellPhone'].touched,
@@ -377,22 +377,22 @@
             />
             <ng-container [ngTemplateOutlet]="formError" [ngTemplateOutletContext]="{
                 validation: 'pattern',
-                message: labels.personalInformation.secondCellPhone.pattern,
+                message: labels.secondCellPhone.pattern,
                 control: form.controls['secondCellPhone']
             }"></ng-container>
             <ng-container [ngTemplateOutlet]="formError" [ngTemplateOutletContext]="{
                 validation: 'minlength',
-                message: labels.personalInformation.secondCellPhone.minlength,
+                message: labels.secondCellPhone.minlength,
                 control: form.controls['secondCellPhone']
             }"></ng-container>
             <ng-container [ngTemplateOutlet]="formError" [ngTemplateOutletContext]="{
                 validation: 'maxlength',
-                message: labels.personalInformation.secondCellPhone.maxlength,
+                message: labels.secondCellPhone.maxlength,
                 control: form.controls['secondCellPhone']
             }"></ng-container>
             <ng-container [ngTemplateOutlet]="formError" [ngTemplateOutletContext]="{
                 validation: 'cellPhoneMatch',
-                message: labels.personalInformation.secondCellPhone.cellPhoneMatch,
+                message: labels.secondCellPhone.cellPhoneMatch,
                 control: form.controls['secondCellPhone']
             }"></ng-container>
         </div>
