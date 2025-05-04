@@ -133,6 +133,7 @@ export const CONSTANTS = {
                 label: 'Pregunta de Seguridad #1',
                 default: 'Seleccione Pregunta de Seguridad',
                 required: 'Pregunta de Seguridad #1 es requerido',
+                fieldsNotDistinct: 'No se pueden repetir las preguntas',
             },
             securityAnswerOne: {
                 label: 'Respuesta #1',
@@ -143,6 +144,7 @@ export const CONSTANTS = {
                 label: 'Pregunta de Seguridad #2',
                 default: 'Seleccione Pregunta de Seguridad',
                 required: 'Pregunta de Seguridad #2 es requerido',
+                fieldsNotDistinct: 'No se pueden repetir las preguntas',
             },
             securityAnswerTwo: {
                 label: 'Respuesta #2',
@@ -153,6 +155,7 @@ export const CONSTANTS = {
                 label: 'Pregunta de Seguridad #3',
                 default: 'Seleccione Pregunta de Seguridad',
                 required: 'Pregunta de Seguridad #3 es requerido',
+                fieldsNotDistinct: 'No se pueden repetir las preguntas',
             },
             securityAnswerThree: {
                 label: 'Respuesta #3',
