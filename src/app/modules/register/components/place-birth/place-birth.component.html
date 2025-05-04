@@ -1,76 +1,76 @@
 <div [formGroup]="form">
     <div class="fv-row mb-10">
-        <div class="mb-3">
-            <label for="countryBirth" class="form-label required">{{labels.country.label}}</label>
-            <select id="countryBirth" class="form-control" formControlName="countryBirth"
-                [ngClass]="{
-                    'is-invalid': form.controls['countryBirth'].invalid && form.controls['countryBirth'].touched,
-                    'is-valid': form.controls['countryBirth'].valid
-                }"
-            >
-                <option value="">{{labels.country.default}}</option>
-                <option value="Ecuador">Ecuador</option>
-                <option value="España">España</option>
-            </select>
-            <ng-container [ngTemplateOutlet]="formError" [ngTemplateOutletContext]="{
-                validation: 'required',
-                message: labels.country.required,
-                control: form.controls['countryBirth']
-            }"></ng-container>
+        <div class="row">
+            <div class="mb-3 col-lg-6 col-sm-12">
+                <label for="countryBirth" class="form-label required">{{labels.country.label}}</label>
+                <select id="countryBirth" class="form-control" formControlName="countryBirth"
+                    [ngClass]="{
+                        'is-invalid': form.controls['countryBirth'].invalid && form.controls['countryBirth'].touched,
+                        'is-valid': form.controls['countryBirth'].valid
+                    }"
+                >
+                    <option value="">{{labels.country.default}}</option>
+                    <option *ngFor="let country of countries" [value]="country.id">{{country.name}}</option>
+                </select>
+                <ng-container [ngTemplateOutlet]="formError" [ngTemplateOutletContext]="{
+                    validation: 'required',
+                    message: labels.country.required,
+                    control: form.controls['countryBirth']
+                }"></ng-container>
+            </div>
+            <div class="mb-3 col-lg-6 col-sm-12">
+                <label for="provinceBirth" class="form-label required">{{labels.province.label}}</label>
+                <select id="provinceBirth" class="form-control" formControlName="provinceBirth"
+                    [ngClass]="{
+                        'is-invalid': form.controls['provinceBirth'].invalid && form.controls['provinceBirth'].touched,
+                        'is-valid': form.controls['provinceBirth'].valid
+                    }"
+                >
+                    <option value="">{{labels.province.default}}</option>
+                    <option *ngFor="let province of provinces" [value]="province.id">{{province.name}}</option>
+                </select>
+                <ng-container [ngTemplateOutlet]="formError" [ngTemplateOutletContext]="{
+                    validation: 'required',
+                    message: labels.province.required,
+                    control: form.controls['provinceBirth']
+                }"></ng-container>
+            </div>
         </div>
-        <div class="mb-3">
-            <label for="provinceBirth" class="form-label required">{{labels.province.label}}</label>
-            <select id="provinceBirth" class="form-control" formControlName="provinceBirth"
-                [ngClass]="{
-                    'is-invalid': form.controls['provinceBirth'].invalid && form.controls['provinceBirth'].touched,
-                    'is-valid': form.controls['provinceBirth'].valid
-                }"
-            >
-                <option value="">{{labels.province.default}}</option>
-                <option value="Guayas">Guayas</option>
-                <option value="Pichincha">Pichincha</option>
-            </select>
-            <ng-container [ngTemplateOutlet]="formError" [ngTemplateOutletContext]="{
-                validation: 'required',
-                message: labels.province.required,
-                control: form.controls['provinceBirth']
-            }"></ng-container>
-        </div>
-        <div class="mb-3">
-            <label for="cityBirth" class="form-label required">{{labels.city.label}}</label>
-            <select id="cityBirth" class="form-control" formControlName="cityBirth"
-                [ngClass]="{
-                    'is-invalid': form.controls['cityBirth'].invalid && form.controls['cityBirth'].touched,
-                    'is-valid': form.controls['cityBirth'].valid
-                }"
-            >
-                <option value="">{{labels.city.default}}</option>
-                <option value="S">Quito</option>
-                <option value="C">Cayambe</option>
-            </select>
-            <ng-container [ngTemplateOutlet]="formError" [ngTemplateOutletContext]="{
-                validation: 'required',
-                message: labels.city.required,
-                control: form.controls['cityBirth']
-            }"></ng-container>
-        </div>
-        <div class="mb-3">
-            <label for="parishBirth" class="form-label required">{{labels.parish.label}}</label>
-            <select id="parishBirth" class="form-control" formControlName="parishBirth"
-                [ngClass]="{
-                    'is-invalid': form.controls['parishBirth'].invalid && form.controls['parishBirth'].touched,
-                    'is-valid': form.controls['parishBirth'].valid
-                }"
-            >
-                <option value="">{{labels.parish.default}}</option>
-                <option value="Carcelen">Carcelen</option>
-                <option value="Calderon">Calderon</option>
-            </select>
-            <ng-container [ngTemplateOutlet]="formError" [ngTemplateOutletContext]="{
-                validation: 'required',
-                message: labels.parish.required,
-                control: form.controls['parishBirth']
-            }"></ng-container>
+        <div class="row">
+            <div class="mb-3 col-lg-6 col-sm-12">
+                <label for="cityBirth" class="form-label required">{{labels.city.label}}</label>
+                <select id="cityBirth" class="form-control" formControlName="cityBirth"
+                    [ngClass]="{
+                        'is-invalid': form.controls['cityBirth'].invalid && form.controls['cityBirth'].touched,
+                        'is-valid': form.controls['cityBirth'].valid
+                    }"
+                >
+                    <option value="">{{labels.city.default}}</option>
+                    <option *ngFor="let city of cities" [value]="city.id">{{city.name}}</option>
+                </select>
+                <ng-container [ngTemplateOutlet]="formError" [ngTemplateOutletContext]="{
+                    validation: 'required',
+                    message: labels.city.required,
+                    control: form.controls['cityBirth']
+                }"></ng-container>
+            </div>
+            <div class="mb-3 col-lg-6 col-sm-12">
+                <label for="parishBirth" class="form-label required">{{labels.parish.label}}</label>
+                <select id="parishBirth" class="form-control" formControlName="parishBirth"
+                    [ngClass]="{
+                        'is-invalid': form.controls['parishBirth'].invalid && form.controls['parishBirth'].touched,
+                        'is-valid': form.controls['parishBirth'].valid
+                    }"
+                >
+                    <option value="">{{labels.parish.default}}</option>
+                    <option *ngFor="let parishes of parishes" [value]="parishes.id">{{parishes.name}}</option>
+                </select>
+                <ng-container [ngTemplateOutlet]="formError" [ngTemplateOutletContext]="{
+                    validation: 'required',
+                    message: labels.parish.required,
+                    control: form.controls['parishBirth']
+                }"></ng-container>
+            </div>
         </div>
     </div>
 </div>

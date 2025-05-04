@@ -1,12 +1,16 @@
-import { Component, Input, OnInit } from '@angular/core';
+import { ChangeDetectorRef, Component, Input, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { IRegister } from '../../models/register.model';
 import { Subscription } from 'rxjs';
-import { identificationValidation } from 'src/app/validators/identification.validator';
+import { identificationValidation, validateEcuadorianIdentification } from 'src/app/validators/identification.validator';
 import { maxDateValidator } from 'src/app/validators/birthdate.validator';
-import { emailMatchValidator } from 'src/app/validators/email-match.validator';
-import { cellPhoneMatchValidator } from 'src/app/validators/cellphone-match.validator';
 import { CONSTANTS } from 'src/app/common/const';
+import { CatalogService } from '../../services/catalog.service';
+import { Catalogs, CatalogTypes } from '../../models/catalog.model';
+import { matchFields } from 'src/app/validators/match-fields.validator';
+import { notMatchFields } from 'src/app/validators/not-match-fields.validator';
+import { NgxSpinnerService } from 'ngx-spinner';
+import { WSService } from '../../services/ws.service';
 
 @Component({
   selector: 'app-personal-information',
@@ -23,12 +27,24 @@ export class PersonalInformationComponent implements OnInit {
   @Input() defaultValues: Partial<IRegister>;
   private unsubscribe: Subscription[] = [];
   protected readonly labels = CONSTANTS.register.personalInformation;
+  identificationTypes: Catalogs[] = [];
+  genders: Catalogs[] = [];
+  maritalStatuses: Catalogs[] = [];
+  ehtnicities: Catalogs[] = [];
+  disabilityTypes: Catalogs[] = [];
+  nacionalities: Catalogs[] = [];
 
   get f() {
     return this.form.controls;
   }
 
-  constructor(private fb: FormBuilder) {
+  constructor(
+    private fb: FormBuilder,
+    private catalogService: CatalogService,
+    private cdr: ChangeDetectorRef,
+    private spinner: NgxSpinnerService,
+    private wsService: WSService,
+  ) {
     
   }
 
@@ -38,6 +54,52 @@ export class PersonalInformationComponent implements OnInit {
     this.form?.get('disability')?.valueChanges.subscribe(value => {
       this.updateValidations(value);
     });
+    this.spinner.show()
+    this.getCatalogs()
+    this.loadCatalogs()
+    this.spinner.hide()
+  }
+
+  loadCatalogs(): void {
+    this.catalogService.disability$.subscribe((disabilities: Catalogs[]) => {
+      if(disabilities && disabilities.length > 0) {
+        this.disabilityTypes = disabilities;
+      }
+    })
+    this.catalogService.ethnicity$.subscribe((ethnicities: Catalogs[]) => {
+      if(ethnicities && ethnicities.length > 0) {
+        this.ehtnicities = ethnicities
+      }
+    })
+    this.catalogService.identificationType$.subscribe((identificationTypes: Catalogs[]) => {
+      if(identificationTypes && identificationTypes.length > 0) {
+        this.identificationTypes = identificationTypes
+      }
+    })
+    this.catalogService.maritalStatus$.subscribe((maritalStautes: Catalogs[]) => {
+      if(maritalStautes && maritalStautes.length > 0) {
+        this.maritalStatuses = maritalStautes
+      }
+    })
+    this.catalogService.nacionality$.subscribe((nacionalities: Catalogs[]) => {
+      if(nacionalities && nacionalities.length > 0) {
+        this.nacionalities = nacionalities
+      }
+    })
+    this.catalogService.gender$.subscribe((genders: Catalogs[]) => {
+      if(genders && genders.length > 0) {
+        this.genders = genders
+      }
+    })
+  }
+
+  getCatalogs(): void {
+    this.catalogService.getOptionsCatalog(CatalogTypes.IDENTIFICATION_TYPE).subscribe();
+    this.catalogService.getOptionsCatalog(CatalogTypes.GENDERS).subscribe();
+    this.catalogService.getOptionsCatalog(CatalogTypes.MARITAL_STATUS).subscribe();
+    this.catalogService.getOptionsCatalog(CatalogTypes.ETHNICITY).subscribe();
+    this.catalogService.getOptionsCatalog(CatalogTypes.DISABILITY).subscribe();
+    this.catalogService.getOptionsCatalog(CatalogTypes.NACIONALITY).subscribe();
   }
 
   clearForm(value: string): void {
@@ -83,6 +145,17 @@ export class PersonalInformationComponent implements OnInit {
     }
     disabilityType?.updateValueAndValidity();
     disabilityPercent?.updateValueAndValidity();
+  }
+
+  checkIdentification(): void {
+    if(this.f.identificationType.value === '' && this.f.identification.value){
+      const validIdentification = validateEcuadorianIdentification(this.f.identification.value)
+      if(validIdentification) {
+
+      } else {
+        
+      }
+    }
   }
 
   initForm(): void {
@@ -160,6 +233,7 @@ export class PersonalInformationComponent implements OnInit {
           this.defaultValues.confirmEmailAddress, 
           [
             Validators.required,
+            matchFields('emailAddress'),
           ]
         ],
         secondEmailAddress: [
@@ -169,6 +243,7 @@ export class PersonalInformationComponent implements OnInit {
             // eslint-disable-next-line no-useless-escape
             Validators.pattern(/^[a-zA-Z0-9](\.?[_.\-]*[a-zA-Z0-9]+)*@\w+([\.\-]\w+)*(\.[a-zA-Z]{2,})$/),
             Validators.maxLength(100),
+            notMatchFields('emailAddress'),
           ]
         ],
         phoneNumber: [
@@ -195,10 +270,10 @@ export class PersonalInformationComponent implements OnInit {
             Validators.pattern(/^\d+$/),
             Validators.minLength(10),
             Validators.maxLength(10),
+            notMatchFields('cellPhone'),
           ]
         ],
-      },
-      { validators: [emailMatchValidator, cellPhoneMatchValidator] }
+      }
     );
     const formChangesSubscr = this.form.valueChanges.subscribe((val) => {
       this.updateParentModel(val, this.form.valid);

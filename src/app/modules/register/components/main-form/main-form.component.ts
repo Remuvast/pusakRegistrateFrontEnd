@@ -1,7 +1,9 @@
-import { Component } from '@angular/core';
+import { ChangeDetectorRef, Component } from '@angular/core';
 import { BehaviorSubject, Subscription } from 'rxjs';
 import { init, IRegister } from '../../models/register.model';
 import { CONSTANTS } from 'src/app/common/const';
+import { LocationService } from '../../services/location.service';
+import { CatalogService } from '../../services/catalog.service';
 
 @Component({
   selector: 'app-main-form',
@@ -20,9 +22,44 @@ export class MainFormComponent {
   private unsubscribe: Subscription[] = [];
   protected readonly labels = CONSTANTS.register
 
-  constructor() {}
+  constructor(
+    private catalogService: CatalogService,
+    private locationService: LocationService,
+    private cdr: ChangeDetectorRef,
+  ) {}
 
-  ngOnInit(): void {}
+  ngOnInit(): void {
+    this.catalogService.disabilitiesUpdated.subscribe(() => {
+      this.cdr.detectChanges();
+    })
+    this.catalogService.ethnicitiesUpdated.subscribe(() => {
+      this.cdr.detectChanges();
+    })
+    this.catalogService.identificationTypesUpdated.subscribe(() => {
+      this.cdr.detectChanges();
+    })
+    this.catalogService.maritalStatusesUpdated.subscribe(() => {
+      this.cdr.detectChanges();
+    })
+    this.catalogService.nacionalitiesUpdated.subscribe(() => {
+      this.cdr.detectChanges();
+    })
+    this.catalogService.gendersUpdated.subscribe(() => {
+      this.cdr.detectChanges();
+    })
+    this.locationService.countriesUpdated.subscribe(() => {
+      this.cdr.detectChanges()
+    });
+    this.locationService.provincesUpdated.subscribe(() => {
+      this.cdr.detectChanges()
+    });
+    this.locationService.citiesUpdated.subscribe(() => {
+      this.cdr.detectChanges()
+    });
+    this.locationService.parishesUpdated.subscribe(() => {
+      this.cdr.detectChanges()
+    });
+  }
 
   updateRegister = (part: Partial<IRegister>, isFormValid: boolean) => {
     const currentRegister = this.register$.value;
