@@ -6,7 +6,7 @@ export const environment = {
   production: true,
   appVersion: 'v8.2.4',
   isMockEnabled: true,
-  apiUrl: 'api',
+  apiUrl: 'http://localhost:8080/api',
   appThemeName: 'Metronic',
   appPreviewDocsUrl: 'https://preview.keenthemes.com/metronic8/angular/docs',
   appPreviewChangelogUrl:
