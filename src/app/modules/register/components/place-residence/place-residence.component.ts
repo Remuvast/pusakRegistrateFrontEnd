@@ -40,7 +40,7 @@ export class PlaceResidenceComponent {
     this.updateParentModel({}, false);
     this.getCountries()
     this.locationService.countries$.subscribe(countries => {
-      if(countries && countries.length > 0) {
+      if(countries && countries.length > 0 && this.countries.length === 0) {
         this.countries = countries;
       }
     })
@@ -156,6 +156,15 @@ export class PlaceResidenceComponent {
       this.updateParentModel(val, this.form.valid);
     });
     this.unsubscribe.push(formChangesSubscr);
+  }
+
+  setZone(): void {
+    const parish = this.parishes.find(x => x.id.toString() === this.f.parishResidence.value);
+    if(parish) {
+      this.form.patchValue({
+        zone: parish.type,
+      });
+    }
   }
 
   ngOnDestroy() {

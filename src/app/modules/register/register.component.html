@@ -1,18 +1,38 @@
-<div class="d-flex flex-column flex-lg-row flex-column-fluid">
-
-    <!--begin::Body-->
-    <div class="d-flex flex-column flex-lg-row-fluid w-lg-50 p-10 order-2 order-lg-1">
-      <!--begin::Form-->
-      <div class="d-flex flex-center flex-column flex-lg-row-fluid">
-        <!--begin::Wrapper-->
-        <div class="<?php echo $params['wrapperClass']?> p-10">
-          <router-outlet></router-outlet>
-        </div>
-        <!--end::Wrapper-->
-      </div>
-      <!--end::Form-->
+<div class="page-container">
+  <header class="header">
+    <div class="row">
+      <img src="../../../assets/media/logos/HEader-SNCYT.png" alt="Imagen 1" class="img left">
+      <img src="../../../assets/media/logos/Header_Ecu.png" alt="Imagen 2" class="img right">
     </div>
-    <!--end::Body-->
-  
-  </div>
-  
+  </header>
+  <div class="d-flex flex-column flex-lg-row flex-column-fluid">
+      <!--begin::Body-->
+      <div class="d-flex flex-column flex-lg-row-fluid w-lg-50 p-10 order-2 order-lg-1">
+        <!--begin::Form-->
+        <div class="d-flex flex-center flex-column flex-lg-row-fluid">
+          <!--begin::Wrapper-->
+          <div class="<?php echo $params['wrapperClass']?> p-10">
+            <router-outlet></router-outlet>
+          </div>
+          <!--end::Wrapper-->
+        </div>
+        <!--end::Form-->
+      </div>
+      <!--end::Body-->
+    
+    </div>
+    
+  <footer class="footer">
+      <div class="footer-row top-row">
+        <img src="../../../assets/media/logos/Footer_Ecu.png" alt="Imagen izquierda" class="footer-img">
+        <div class="footer-text">
+          <p class="text-muted">Punto de Atención al Usuario: Whymper E7-37 y Alpallana, edificio Delfos, Quito</p>
+          <p class="text-muted">Edificio Matriz: Alpallana E7-183 entre Av. Diego de Almagro y Whymper. Código Postal: 170518. Quito - Ecuador</p>
+          <p class="text-muted">Teléfono: 593-2 3934-300</p>
+        </div>
+      </div>
+      <div class="footer-row bottom-row">
+        <img src="../../../assets/media/logos/Footer_line.png" alt="Imagen inferior" class="footer-full-img">
+      </div>
+  </footer>
+</div>

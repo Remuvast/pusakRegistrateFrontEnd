@@ -2,6 +2,7 @@ import { NgModule } from '@angular/core';
 import { Routes, RouterModule } from '@angular/router';
 import { RegisterComponent } from './register.component';
 import { MainFormComponent } from './components/main-form/main-form.component';
+import { ActivateComponent } from './components/activate/activate.component';
 
 
 const routes: Routes = [
@@ -17,6 +18,11 @@ const routes: Routes = [
       {
         path: 'register',
         component: MainFormComponent,
+        data: { returnUrl: window.location.pathname },
+      },
+      {
+        path: 'activate',
+        component: ActivateComponent,
         data: { returnUrl: window.location.pathname },
       },
       { path: '', redirectTo: 'register', pathMatch: 'full' },

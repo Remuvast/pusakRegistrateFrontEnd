@@ -4,7 +4,7 @@
       class="stepper stepper-links d-flex flex-column pt-15"
       id="kt_create_account_stepper"
     >
-      <div class="stepper-nav mb-5">
+      <div class="stepper-nav mb-5" *ngIf="currentStep$.value < 4">
         <div
           class="stepper-item"
           [ngClass]="{
@@ -22,7 +22,7 @@
             completed: currentStep$.value > 2
           }"
         >
-          <h3 class="stepper-title">{{labels.passwordSecurityTitle}}</h3>
+          <h3 class="stepper-title">{{labels.placeResidenceTitle}}</h3>
         </div>
 
         <div
@@ -32,24 +32,7 @@
             completed: currentStep$.value > 3
           }"
         >
-          <h3 class="stepper-title">{{labels.placeBirthTitle}}</h3>
-        </div>
-
-        <div
-          class="stepper-item"
-          [ngClass]="{
-            current: currentStep$.value === 4,
-            completed: currentStep$.value > 4
-          }"
-        >
-          <h3 class="stepper-title">{{labels.placeResidenceTitle}}</h3>
-        </div>
-
-        <div
-          class="stepper-item"
-          [ngClass]="{ current: currentStep$.value === 5 }"
-        >
-          <h3 class="stepper-title">{{labels.finalTitle}}</h3>
+          <h3 class="stepper-title">{{labels.passwordSecurityTitle}}</h3>
         </div>
       </div>
 
@@ -68,6 +51,14 @@
           </ng-container>
 
           <ng-container *ngIf="currentStep$.value === 2">
+            <app-place-residence 
+              class="w-100"
+              [updateParentModel]="updateRegister"
+              [defaultValues]="register$.value"
+            ></app-place-residence>
+          </ng-container>
+          
+          <ng-container *ngIf="currentStep$.value === 3">
             <app-password-security 
               class="w-100"
               [updateParentModel]="updateRegister"
@@ -75,23 +66,7 @@
             ></app-password-security>
           </ng-container>
 
-          <ng-container *ngIf="currentStep$.value === 3">
-            <app-place-birth 
-              class="w-100"
-              [updateParentModel]="updateRegister"
-              [defaultValues]="register$.value"
-            ></app-place-birth>
-          </ng-container>
-
           <ng-container *ngIf="currentStep$.value === 4">
-            <app-place-residence 
-              class="w-100"
-              [updateParentModel]="updateRegister"
-              [defaultValues]="register$.value"
-            ></app-place-residence>
-          </ng-container>
-
-          <ng-container *ngIf="currentStep$.value === 5">
             <app-final-form class="w-100"></app-final-form>
           </ng-container>
         </div>
@@ -105,7 +80,7 @@
             border-danger border border-dashed
             p-6
           "
-          *ngIf="!isCurrentFormValid$.value && currentStep$.value !== 5"
+          *ngIf="!isCurrentFormValid$.value && currentStep$.value !== 4"
         >
           <span class="svg-icon fs-2tx text-warning me-4"></span>
           <div class="d-flex flex-stack flex-grow-1">
@@ -120,7 +95,7 @@
 
         <div class="d-flex flex-stack pt-15">
           <div class="mr-2">
-            <ng-container *ngIf="currentStep$.value !== 1 && currentStep$.value !== 5">
+            <ng-container *ngIf="currentStep$.value !== 1 && currentStep$.value !== 4">
               <button
                 type="button"
                 class="btn btn-lg btn-light-primary me-3"

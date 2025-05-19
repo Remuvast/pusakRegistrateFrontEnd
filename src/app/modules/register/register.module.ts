@@ -1,5 +1,5 @@
 import { NgModule } from '@angular/core';
-import { CommonModule } from '@angular/common';
+import { CommonModule, DatePipe } from '@angular/common';
 import { TranslationModule } from '../i18n';
 import { RegisterRoutingModule } from './register-routing.module';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
@@ -36,6 +36,7 @@ import { FinalFormComponent } from './components/final-form/final-form.component
       SharedModule,
       HttpClientModule,
   ],
-  exports: []
+  exports: [],
+  providers: [DatePipe],
 })
 export class RegisterModule { }

@@ -66,17 +66,17 @@ export class PlaceBirthComponent {
   }
 
   getProvinces(): void {
-    const countryId: number = this.f.countryResidence.value;
+    const countryId: number = this.f.countryBirth.value;
     this.locationService.getProvinces(countryId).subscribe();
   }
 
   getCities(): void {
-    const provinceId: number = this.f.provinceResidence.value;
+    const provinceId: number = this.f.provinceBirth.value;
     this.locationService.getCities(provinceId).subscribe();
   }
 
   getParishes(): void {
-    const cityId: number = this.f.cityResidence.value;
+    const cityId: number = this.f.cityBirth.value;
     this.locationService.getParishes(cityId).subscribe();
   }
 
