@@ -1,7 +1,7 @@
 import { Component, Input, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { IRegister } from '../../models/register.model';
-import { Subscription } from 'rxjs';
+import { BehaviorSubject, Observable, Subscription } from 'rxjs';
 import { validateEcuadorianIdentification } from 'src/app/validators/identification.validator';
 import { maxDateValidator } from 'src/app/validators/birthdate.validator';
 import { CI, CONSTANTS } from 'src/app/common/const';
@@ -43,6 +43,8 @@ export class PersonalInformationComponent implements OnInit {
   parishes: Location[] = [];
   blockNames: boolean = false;
   fullname: string = '';
+  isLoadingLocations$: Observable<boolean>;
+  isLoadingSubject: BehaviorSubject<boolean>;
 
   get f() {
     return this.form.controls;
@@ -64,11 +66,9 @@ export class PersonalInformationComponent implements OnInit {
     this.form?.get('disability')?.valueChanges.subscribe(value => {
       this.updateValidations(value);
     });
-    this.spinner.show()
     this.getCatalogs()
     this.getCountries()
     this.loadCatalogs()
-    this.spinner.hide()
     this.form.valueChanges.subscribe(values => {
       if(this.f.identificationType.value === CI) {
         const name = values.name;
