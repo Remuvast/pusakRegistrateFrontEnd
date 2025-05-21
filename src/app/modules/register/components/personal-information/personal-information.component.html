@@ -5,7 +5,7 @@
                 <label for="identificationType" class="form-label required">{{labels.identificationType.label}}</label>
                 <select 
                     id="identificationType"
-                    class="form-select form-select-lg form-select-solid"
+                    class="form-select form-select-sm form-select-solid"
                     formControlName="identificationType"
                     (change)="clearForm(form.controls['identificationType'].value)"
                     [ngClass]="{
@@ -60,6 +60,11 @@
                     message: labels.identification.maxlength,
                     control: form.controls['identification']
                   }"></ng-container>
+                <ng-container [ngTemplateOutlet]="formError" [ngTemplateOutletContext]="{
+                    validation: 'duplicatedDocument',
+                    message: labels.identification.duplicatedDocument,
+                    control: form.controls['identification']
+                  }"></ng-container>
             </div>
         </div>
         <div class="row">
@@ -84,7 +89,7 @@
                 <ng-container [ngTemplateOutlet]="formError" [ngTemplateOutletContext]="{
                     validation: 'invalidFullname',
                     message: labels.lastName.invalidFullname,
-                    control: form.controls['invalidFullname']
+                    control: form.controls['lastName']
                   }"></ng-container>
             </div>
             <div class="mb-3 col-lg-6 col-sm-12">
@@ -108,7 +113,7 @@
                 <ng-container [ngTemplateOutlet]="formError" [ngTemplateOutletContext]="{
                     validation: 'invalidFullname',
                     message: labels.name.invalidFullname,
-                    control: form.controls['invalidFullname']
+                    control: form.controls['name']
                   }"></ng-container>
             </div>
         </div>
@@ -138,7 +143,7 @@
             </div>
             <div class="mb-3 col-lg-6 col-sm-12">
                 <label for="gender" class="form-label required"> {{labels.gender.label}} </label>
-                <select id="gender" class="form-select form-select-lg form-select-solid" formControlName="gender"
+                <select id="gender" class="form-select form-select-sm form-select-solid" formControlName="gender"
                     [ngClass]="{
                         'is-invalid': form.controls['gender'].invalid && form.controls['gender'].touched,
                         'is-valid': form.controls['gender'].valid
@@ -157,7 +162,7 @@
         <div class="row">
             <div class="mb-3 col-lg-6 col-sm-12">
                 <label for="countryBirth" class="form-label required">{{labels.country.label}}</label>
-                <select id="countryBirth" class="form-select form-select-lg form-select-solid" formControlName="countryBirth"
+                <select id="countryBirth" class="form-select form-select-sm form-select-solid" formControlName="countryBirth"
                     [ngClass]="{
                         'is-invalid': form.controls['countryBirth'].invalid && form.controls['countryBirth'].touched,
                         'is-valid': form.controls['countryBirth'].valid
@@ -175,7 +180,7 @@
             </div>
             <div class="mb-3 col-lg-6 col-sm-12">
                 <label for="provinceBirth" class="form-label required">{{labels.province.label}}</label>
-                <select id="provinceBirth" class="form-select form-select-lg form-select-solid" formControlName="provinceBirth"
+                <select id="provinceBirth" class="form-select form-select-sm form-select-solid" formControlName="provinceBirth"
                     [ngClass]="{
                         'is-invalid': form.controls['provinceBirth'].invalid && form.controls['provinceBirth'].touched,
                         'is-valid': form.controls['provinceBirth'].valid
@@ -195,7 +200,7 @@
         <div class="row">
             <div class="mb-3 col-lg-6 col-sm-12">
                 <label for="cityBirth" class="form-label required">{{labels.city.label}}</label>
-                <select id="cityBirth" class="form-select form-select-lg form-select-solid" formControlName="cityBirth"
+                <select id="cityBirth" class="form-select form-select-sm form-select-solid" formControlName="cityBirth"
                     [ngClass]="{
                         'is-invalid': form.controls['cityBirth'].invalid && form.controls['cityBirth'].touched,
                         'is-valid': form.controls['cityBirth'].valid
@@ -213,7 +218,7 @@
             </div>
             <div class="mb-3 col-lg-6 col-sm-12">
                 <label for="parishBirth" class="form-label required">{{labels.parish.label}}</label>
-                <select id="parishBirth" class="form-select form-select-lg form-select-solid" formControlName="parishBirth"
+                <select id="parishBirth" class="form-select form-select-sm form-select-solid" formControlName="parishBirth"
                     [ngClass]="{
                         'is-invalid': form.controls['parishBirth'].invalid && form.controls['parishBirth'].touched,
                         'is-valid': form.controls['parishBirth'].valid
@@ -232,7 +237,7 @@
         <div class="row">
             <div class="mb-3 col-lg-6 col-sm-12">
                 <label for="maritalStatus" class="form-label required">{{labels.maritalStatus.label}}</label>
-                <select id="maritalStatus" class="form-select form-select-lg form-select-solid" formControlName="maritalStatus"
+                <select id="maritalStatus" class="form-select form-select-sm form-select-solid" formControlName="maritalStatus"
                     [ngClass]="{
                         'is-invalid': form.controls['maritalStatus'].invalid && form.controls['maritalStatus'].touched,
                         'is-valid': form.controls['maritalStatus'].valid
@@ -249,7 +254,7 @@
             </div>
             <div class="mb-3 col-lg-6 col-sm-12">
                 <label for="ethnicity" class="form-label required">{{labels.ethnicity.label}}</label>
-                <select id="ethnicity" class="form-select form-select-lg form-select-solid" formControlName="ethnicity"
+                <select id="ethnicity" class="form-select form-select-sm form-select-solid" formControlName="ethnicity"
                     [ngClass]="{
                         'is-invalid': form.controls['ethnicity'].invalid && form.controls['ethnicity'].touched,
                         'is-valid': form.controls['ethnicity'].valid
@@ -266,7 +271,7 @@
             </div>
         </div>
         <div class="row">
-            <div class="form-check mb-3 col-lg-6 col-sm-12">
+            <div class="form-check mb-3 col-lg-6 col-sm-12 mt-10">
                 <label for="disability" class="form-label"> {{labels.disability.label}} </label>
                 <input
                     id="disability"
@@ -277,7 +282,7 @@
             </div>
             <div class="mb-3 col-lg-6 col-sm-12" *ngIf="form.get('disability')?.value">
                 <label for="disabilityType" class="form-label required">{{labels.disabilityType.label}}</label>
-                <select id="disabilityType" class="form-select form-select-lg form-select-solid" formControlName="disabilityType"
+                <select id="disabilityType" class="form-select form-select-sm form-select-solid" formControlName="disabilityType"
                     [ngClass]="{
                         'is-invalid': form.controls['disabilityType'].invalid && form.controls['disabilityType'].touched,
                         'is-valid': form.controls['disabilityType'].valid
@@ -325,7 +330,7 @@
             </div>
             <div class="mb-3 col-lg-6 col-sm-12">
                 <label for="nacionality" class="form-label required">{{labels.nacionality.label}}</label>
-                <select id="nacionality" class="form-select form-select-lg form-select-solid" formControlName="nacionality"
+                <select id="nacionality" class="form-select form-select-sm form-select-solid" formControlName="nacionality"
                     [ngClass]="{
                         'is-invalid': form.controls['nacionality'].invalid && form.controls['nacionality'].touched,
                         'is-valid': form.controls['nacionality'].valid
@@ -349,6 +354,7 @@
                         'is-invalid': form.controls['emailAddress'].invalid && form.controls['emailAddress'].touched,
                         'is-valid': form.controls['emailAddress'].valid
                     }"
+                    (blur)="checkEmail()"
                 />
                 <ng-container [ngTemplateOutlet]="formError" [ngTemplateOutletContext]="{
                     validation: 'required',
@@ -363,6 +369,11 @@
                 <ng-container [ngTemplateOutlet]="formError" [ngTemplateOutletContext]="{
                     validation: 'pattern',
                     message: labels.emailAddress.pattern,
+                    control: form.controls['emailAddress']
+                }"></ng-container>
+                <ng-container [ngTemplateOutlet]="formError" [ngTemplateOutletContext]="{
+                    validation: 'duplicatedEmail',
+                    message: labels.emailAddress.duplicatedEmail,
                     control: form.controls['emailAddress']
                 }"></ng-container>
             </div>

@@ -13,6 +13,7 @@ import { PasswordSecurityComponent } from './components/password-security/passwo
 import { NgbTooltipModule } from '@ng-bootstrap/ng-bootstrap';
 import { SharedModule } from 'src/app/_metronic/shared/shared.module';
 import { FinalFormComponent } from './components/final-form/final-form.component';
+import { ActivateComponent } from './components/activate/activate.component';
 
 
 
@@ -25,6 +26,7 @@ import { FinalFormComponent } from './components/final-form/final-form.component
     RegisterComponent,
     MainFormComponent,
     FinalFormComponent,
+    ActivateComponent,
   ],
   imports: [
       CommonModule,

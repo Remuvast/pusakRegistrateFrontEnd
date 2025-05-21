@@ -1,6 +1,6 @@
 import { ChangeDetectorRef, Component } from '@angular/core';
-import { BehaviorSubject, Subscription } from 'rxjs';
-import { init, IRegister } from '../../models/register.model';
+import { BehaviorSubject, first, Subscription } from 'rxjs';
+import { init, IRegister, IRegisterSuccess } from '../../models/register.model';
 import { CONSTANTS } from 'src/app/common/const';
 import { LocationService } from '../../services/location.service';
 import { CatalogService } from '../../services/catalog.service';
@@ -85,7 +85,8 @@ export class MainFormComponent {
   nextStep(): void {
     const nextStep = this.currentStep$.value + 1;
     if(nextStep === 4) {
-      this.saveForm()
+      this.saveForm(nextStep)
+      return;
     }
     if (nextStep > this.formsCount) {
       return;
@@ -104,9 +105,18 @@ export class MainFormComponent {
     this.currentStep$.next(prevStep);
   }
 
-  saveForm(): void {
+  saveForm(nextStep: number): void {
     this.register$.subscribe(form =>{
-      this.registerService.saveRegister(form).subscribe();
+      this.registerService.saveRegister(form)
+        .pipe(first())
+        .subscribe({
+          next: (result: IRegisterSuccess | boolean) => {
+            if(result) {
+              this.currentStep$.next(nextStep);
+              this.cdr.detectChanges()
+            }
+          }
+        });
     });
   }
 

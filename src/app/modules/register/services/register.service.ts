@@ -1,8 +1,10 @@
 import { HttpClient } from "@angular/common/http";
 import { Injectable } from "@angular/core";
-import { map, Observable, tap } from "rxjs";
+import { BehaviorSubject, catchError, finalize, map, Observable, of, tap } from "rxjs";
 import { environment } from "src/environments/environment";
-import { IRegister, IRegisterRequest } from "../models/register.model";
+import { IRegister, IRegisterRequest, IRegisterResponse, IRegisterSuccess } from "../models/register.model";
+import { NgxSpinnerService } from "ngx-spinner";
+import { ToastrService } from "ngx-toastr";
 
 @Injectable({
     providedIn: 'root'
@@ -10,17 +12,43 @@ import { IRegister, IRegisterRequest } from "../models/register.model";
 export class RegisterService {
 
     private API_URL = `${environment.apiUrl}/registro`;
+    statusSubject = new BehaviorSubject<boolean | null>(null);
+    status$ = this.statusSubject.asObservable();
 
-    constructor(private http: HttpClient) {
+    constructor(
+        private http: HttpClient,
+        private spinner: NgxSpinnerService,
+        private toastr: ToastrService,
+    ) {
     }
 
-    saveRegister(form: IRegister): Observable<boolean> {
-        return this.http.post<boolean>(this.API_URL, this.mapRequest(form)).pipe(
-            map((data: boolean) => data),
-            tap((response: boolean) => {
-                
-            })
+    saveRegister(form: IRegister): Observable<IRegisterSuccess | boolean> {
+        this.spinner.show();
+        return this.http.post<IRegisterResponse>(this.API_URL, this.mapRequest(form)).pipe(
+            map((data: IRegisterResponse) => this.mapResponse(data)),
+            tap((response: IRegisterSuccess) => {
+                if(response.message === 'Registro exitoso') {
+                    this.statusSubject.next(true);
+                } else {
+                    this.statusSubject.next(false);
+                }
+                return response;
+            }),
+            catchError(err => {
+                this.statusSubject.next(false);
+                if(typeof err.error === 'string') {
+                    this.toastr.warning(err.error, 'Error');
+                }
+                return of(false);
+            }),
+            finalize(() => this.spinner.hide())
         );
+    }
+
+    mapResponse(data: IRegisterResponse): IRegisterSuccess {
+        return {
+            message: data.mensaje
+        }
     }
 
     mapRequest(data: IRegister): IRegisterRequest {

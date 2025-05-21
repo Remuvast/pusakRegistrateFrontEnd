@@ -11,7 +11,6 @@ export function fullNameValidator(fullname: string): ValidatorFn {
         return null;
     }
     const combinated = `${lastname} ${name}`.trim();
-    console.log(combinated, fullname, combinated === fullname)
     return combinated === fullname
       ? null
       : { invalidFullname: true };

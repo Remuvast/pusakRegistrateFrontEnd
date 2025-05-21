@@ -9,12 +9,14 @@ import { CatalogService } from '../../services/catalog.service';
 import { Catalogs, CatalogTypes } from '../../models/catalog.model';
 import { matchFields } from 'src/app/validators/match-fields.validator';
 import { notMatchFields } from 'src/app/validators/not-match-fields.validator';
-import { NgxSpinnerService } from 'ngx-spinner';
 import { WSService } from '../../services/ws.service';
 import { CivilRegistry } from '../../models/civil-registry.model';
 import { LocationService } from '../../services/location.service';
 import { Location } from '../../models/location.model';
 import { normalize } from 'src/app/validators/fullname.validator';
+import { ToastrService } from 'ngx-toastr';
+import { UserService } from '../../services/user.service';
+import { CheckEmail } from '../../models/user.model';
 
 @Component({
   selector: 'app-personal-information',
@@ -53,9 +55,10 @@ export class PersonalInformationComponent implements OnInit {
   constructor(
     private fb: FormBuilder,
     private catalogService: CatalogService,
-    private spinner: NgxSpinnerService,
     private wsService: WSService,
     private locationService: LocationService,
+    private toast: ToastrService,
+    private userService: UserService,
   ) {
     
   }
@@ -69,6 +72,10 @@ export class PersonalInformationComponent implements OnInit {
     this.getCatalogs()
     this.getCountries()
     this.loadCatalogs()
+    this.validateNames();
+  }
+
+  validateNames(): void {
     this.form.valueChanges.subscribe(values => {
       if(this.f.identificationType.value === CI) {
         const name = values.name;
@@ -91,53 +98,67 @@ export class PersonalInformationComponent implements OnInit {
 
   loadCatalogs(): void {
     this.catalogService.disability$.subscribe((disabilities: Catalogs[]) => {
-      if(disabilities && disabilities.length > 0 && this.disabilityTypes.length === 0) {
+      if(disabilities && this.disabilityTypes.length === 0) {
         this.disabilityTypes = disabilities;
       }
     })
     this.catalogService.ethnicity$.subscribe((ethnicities: Catalogs[]) => {
-      if(ethnicities && ethnicities.length > 0 && this.ethnicities.length === 0) {
+      if(ethnicities && this.ethnicities.length === 0) {
         this.ethnicities = ethnicities
       }
     })
     this.catalogService.identificationType$.subscribe((identificationTypes: Catalogs[]) => {
-      if(identificationTypes && identificationTypes.length > 0 && this.identificationTypes.length === 0) {
+      if(identificationTypes && this.identificationTypes.length === 0) {
         this.identificationTypes = identificationTypes
       }
     })
     this.catalogService.maritalStatus$.subscribe((maritalStautes: Catalogs[]) => {
-      if(maritalStautes && maritalStautes.length > 0 && this.maritalStatuses.length === 0) {
+      if(maritalStautes && this.maritalStatuses.length === 0) {
         this.maritalStatuses = maritalStautes
       }
     })
     this.catalogService.nacionality$.subscribe((nacionalities: Catalogs[]) => {
-      if(nacionalities && nacionalities.length > 0 && this.nacionalities.length === 0) {
+      if(nacionalities && this.nacionalities.length === 0) {
         this.nacionalities = nacionalities
       }
     })
     this.catalogService.gender$.subscribe((genders: Catalogs[]) => {
-      if(genders && genders.length > 0 && this.genders.length === 0) {
+      if(genders && this.genders.length === 0) {
         this.genders = genders
       }
     })
     this.locationService.countriesBirth$.subscribe(countries => {
-      if(countries && countries.length > 0 && this.countries.length === 0) {
+      if(countries && this.countries.length === 0) {
         this.countries = countries;
       }
     })
     this.locationService.provincesBirth$.subscribe(provinces => {
-      if(provinces && provinces.length > 0) {
+      if(provinces) {
         this.provinces = provinces;
       }
     })
     this.locationService.citiesBirth$.subscribe(cities => {
-      if(cities && cities.length > 0) {
+      if(cities) {
         this.cities = cities;
       }
     })
     this.locationService.parishesBirth$.subscribe(parishes => {
-      if(parishes && parishes.length > 0) {
+      if(parishes) {
         this.parishes = parishes;
+      }
+    })
+    this.wsService.civilRegistryError$.subscribe(error => {
+      if(error?.message) {
+        this.toast.warning(error.message, 'Error');
+        this.addError('identification', 'duplicatedDocument');
+      }
+    })
+    this.userService.email$.subscribe((data: CheckEmail | null) => {
+      if(data?.exist) {
+        this.toast.warning(data.message, 'Error');
+        this.addError('emailAddress', 'duplicatedEmail');
+      } else {
+        this.removeError('emailAddress', 'duplicatedEmail');
       }
     })
     this.wsService.civilRegistry$.subscribe((data: CivilRegistry | null) => {
@@ -175,22 +196,36 @@ export class PersonalInformationComponent implements OnInit {
   }
 
   getCountries(): void {
-    this.locationService.getCountries().subscribe();
+    if(this.countries.length === 0) {
+      this.locationService.getCountries().subscribe();
+    }
   }
 
   getProvinces(): void {
     const countryId: number = this.f.countryBirth.value;
     this.locationService.getProvinces(countryId, true).subscribe();
+    this.form.patchValue({
+      provinceBirth: '',
+      cityBirth: '',
+      parishBirth: '',
+    })
   }
 
   getCities(): void {
     const provinceId: number = this.f.provinceBirth.value;
     this.locationService.getCities(provinceId, true).subscribe();
+    this.form.patchValue({
+      cityBirth: '',
+      parishBirth: '',
+    })
   }
 
   getParishes(): void {
     const cityId: number = this.f.cityBirth.value;
     this.locationService.getParishes(cityId, true).subscribe();
+    this.form.patchValue({
+      parishBirth: '',
+    })
   }
 
   getCatalogs(): void {
@@ -257,43 +292,38 @@ export class PersonalInformationComponent implements OnInit {
     if(!!this.f.identificationType.value && this.f.identification.value){
       if(this.checkIdentificationType()) {
         const validIdentification = validateEcuadorianIdentification(this.f.identification.value)
-        const identificationControl = this.f.identification;
-        const currentErrors = identificationControl?.errors || {};
         if(validIdentification) {
-          if(currentErrors.invalidDocument) {
-            delete currentErrors.invalidDocument
-          }
-          identificationControl?.setErrors(Object.keys(currentErrors).length ? currentErrors : null);
+          this.removeError('identification', 'invalidDocument');
           this.checkCivilRegistryWS();
         } else {
-          identificationControl?.setErrors({ ...currentErrors, invalidDocument: true });
+          this.addError('identification', 'invalidDocument');
         }
       }
     }
   }
 
   removeErrors(): void {
-    const nameControl = this.f.name;
-    const currentNameErrors = nameControl?.errors || {};
-    const lastNameControl = this.f.lastName;
-    const currentLastNameErrors = lastNameControl?.errors || {};
-    if(currentNameErrors.invalidFullname) {
-      delete currentNameErrors.invalidFullname
+    this.removeError('name', 'invalidFullname');
+    this.removeError('lastName', 'invalidFullname');
+  }
+  removeError(key: string, errorKey: string): void {
+    const control = this.f[key];
+    const currentErrors = control?.errors || {};
+    if(currentErrors[errorKey]) {
+      delete currentErrors[errorKey]
     }
-    nameControl?.setErrors(Object.keys(currentNameErrors).length ? currentNameErrors : null);
-    if(currentLastNameErrors.invalidFullname) {
-      delete currentLastNameErrors.invalidFullname
-    }
-    lastNameControl?.setErrors(Object.keys(currentLastNameErrors).length ? currentLastNameErrors : null);
+    control?.setErrors(Object.keys(currentErrors).length ? currentErrors : null);
   }
 
   addErrors(): void {
-    const nameControl = this.f.name;
-    const currentNameErrors = nameControl?.errors || {};
-    const lastNameControl = this.f.lastName;
-    const currentLastNameErrors = lastNameControl?.errors || {};
-    nameControl?.setErrors({ ...currentNameErrors, invalidFullname: true });
-    lastNameControl?.setErrors({ ...currentLastNameErrors, invalidFullname: true });
+    this.addError('name', 'invalidFullname');
+    this.addError('lastName', 'invalidFullname');
+  }
+
+  addError(key: string, errorKey: string): void {
+    const control = this.f[key];
+    const currentErrors = control?.errors || {};
+    control?.setErrors({ ...currentErrors, [errorKey]: true });
   }
   
   checkCivilRegistryWS(): void {
@@ -303,6 +333,9 @@ export class PersonalInformationComponent implements OnInit {
   checkIdentificationType(): boolean {
     const value = this.identificationTypes.filter(x => CI === this.f.identificationType.value );
     return value.length > 0;
+  }
+  checkEmail(): void {
+    this.userService.checkEmail(this.f.emailAddress.value).subscribe();
   }
 
   initForm(): void {
@@ -399,8 +432,8 @@ export class PersonalInformationComponent implements OnInit {
           this.defaultValues.phoneNumber, 
           [
             Validators.required,
-            Validators.pattern(/^\d+$/),
-            Validators.minLength(7),
+            Validators.pattern(/^(0[2-7])\d{7}$/),
+            Validators.minLength(9),
             Validators.maxLength(9),
           ]
         ],
@@ -408,7 +441,7 @@ export class PersonalInformationComponent implements OnInit {
           this.defaultValues.cellPhone, 
           [
             Validators.required,
-            Validators.pattern(/^\d+$/),
+            Validators.pattern(/^09\d{8}$/),
             Validators.minLength(10),
             Validators.maxLength(10),
           ]
@@ -416,7 +449,7 @@ export class PersonalInformationComponent implements OnInit {
         secondCellPhone: [
           this.defaultValues.secondCellPhone,
           [
-            Validators.pattern(/^\d+$/),
+            Validators.pattern(/^09\d{8}$/),
             Validators.minLength(10),
             Validators.maxLength(10),
             notMatchFields('cellPhone'),

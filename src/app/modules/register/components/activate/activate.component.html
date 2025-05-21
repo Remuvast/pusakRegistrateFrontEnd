@@ -1,5 +1,6 @@
 <div class="mb-0">
   <div
+    *ngIf="status$.value === 1"
     class="
       notice
       d-flex
@@ -9,13 +10,63 @@
       p-6
     "
   >
-    <span class="svg-icon fs-2tx text-success me-4"></span>
+    <div class="text-center m-5">
+      <i class="text-success bi bi-check-circle mb-5" style="font-size: 3rem;"></i><br>
+    </div>
     <div class="d-flex flex-stack flex-grow-1">
       <div class="fw-bold">
         <h2 class="text-gray-800 fw-bolder">Felicidades, has activado tu cuenta!</h2>
         <div class="text-gray-500 fw-bold fs-6">
             Para iniciar sesión debe ir al siguiente 
             <a class="link-primary fw-bolder cursor-pointer"> enlace</a>.
+        </div>
+      </div>
+    </div>
+  </div>
+  <div *ngIf="status$.value === 0">
+    <div
+      class="
+        notice
+        d-flex
+        bg-light-warning
+        rounded
+        border-warning border border-dashed
+        p-6
+      "
+    >
+      <div class="text-center m-5">
+        <i class="text-warning bi bi-exclamation-triangle mb-5" style="font-size: 3rem;"></i><br>
+      </div>
+      <div class="d-flex flex-stack flex-grow-1">
+        <div class="fw-bold">
+          <h2 class="text-gray-800 fw-bolder">Error!</h2>
+          <div class="text-gray-500 fw-bold fs-6">
+              El enlace ingresado no es válido o ya fue usado.
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+  <div *ngIf="status$.value === -1">
+    <div
+      class="
+        notice
+        d-flex
+        bg-light-info
+        rounded
+        border-info border border-dashed
+        p-6
+      "
+    >
+      <div class="text-center m-5">
+        <i class="text-info bi bi-exclamation-circle mb-5" style="font-size: 3rem;"></i><br>
+      </div>
+      <div class="d-flex flex-stack flex-grow-1">
+        <div class="fw-bold">
+          <h2 class="text-gray-800 fw-bolder">Verificando enlace!</h2>
+          <div class="text-gray-500 fw-bold fs-6">
+              Se está verificando el enlace ingresado.
+          </div>
         </div>
       </div>
     </div>

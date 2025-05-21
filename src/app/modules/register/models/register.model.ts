@@ -53,6 +53,14 @@ export interface PlaceResidence {
     postalCode: string;
 }
 
+export interface IRegisterResponse {
+    mensaje: string;
+}
+
+export interface IRegisterSuccess {
+    message: string;
+}
+
 export interface IRegister {
     identificationType: string;
     identification: string;

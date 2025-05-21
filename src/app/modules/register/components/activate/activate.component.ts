@@ -1,19 +1,21 @@
-import { Component, OnInit } from '@angular/core';
+import { ChangeDetectorRef, Component, OnInit } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
 import { ActivateAccountService } from '../../services/activate-acount.service';
+import { BehaviorSubject } from 'rxjs';
 
 @Component({
   selector: 'app-activate',
-  standalone: true,
-  imports: [],
   templateUrl: './activate.component.html',
   styleUrl: './activate.component.scss'
 })
 export class ActivateComponent implements OnInit {
 
+  status$: BehaviorSubject<number> = new BehaviorSubject(-1);
+
   constructor(
     private route: ActivatedRoute,
     private activateAccountService: ActivateAccountService,
+    private cdr: ChangeDetectorRef,
   ) {
     
   }
@@ -26,5 +28,11 @@ export class ActivateComponent implements OnInit {
         this.activateAccountService.activateAccount(code, id).subscribe();
       }
     });
+    this.activateAccountService.status$.subscribe(value => {
+      if(typeof value === 'boolean') {
+        this.status$.next(value ? 1 : 0);
+      }
+      this.cdr.detectChanges();
+    })
   }
 }

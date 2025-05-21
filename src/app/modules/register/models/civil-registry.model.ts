@@ -12,6 +12,12 @@ export interface CivilRegistry {
     blockNames: boolean;
 }
 
+export interface CivilRegistryError {
+    error: string;
+    message: string;
+    status: number;
+}
+
 export interface CivilRegistryResponse {
     nombre: string;
     apellidosCompletos: string;

@@ -27,6 +27,7 @@ export const CONSTANTS = {
                 invalidDocument: 'La identificación ingresada no es válida',
                 minlength: 'La identificación debe tener 6 caracteres',
                 maxlength: 'Máximo puede tener 20 caracteres',
+                duplicatedDocument: 'La identificación ingresada ya se encuentra registada',
             },
             lastName: {
                 label: 'Apellidos',
@@ -85,6 +86,7 @@ export const CONSTANTS = {
                 required: 'Correo Electrónico Principal es requerido',
                 maxlength: 'El correo Electrónico principal permite máximo 100 caracteres',
                 pattern: 'El Correo Electrónico Principal ingresado no es valido',
+                duplicatedEmail: 'El correo electrónico ya está registrado.',
             },
             confirmEmailAddress: {
                 label: 'Confirmar Correo Electrónico',
@@ -101,20 +103,20 @@ export const CONSTANTS = {
                 required: 'Teléfono Convencional requerido',
                 minlength: 'Teléfono Convencional debe tener 9 caracteres',
                 maxlength: 'Teléfono Convencional debe tener 9 caracteres',
-                pattern: 'Teléfono Convencional solo puede tener números',
+                pattern: 'Teléfono Convencional no es correcto',
             },
             cellPhone: {
                 label: 'Celular #1',
                 required: 'Celular #1 es requerido',
                 minlength: 'Celular #1 debe tener 10 caracteres',
                 maxlength: 'Celular #1 debe tener 10 caracteres',
-                pattern: 'Celular #1 solo puede tener números',
+                pattern: 'Celular #1 no es correcto',
             },
             secondCellPhone: {
                 label: 'Celular #2',
                 minlength: 'Celular #2 debe tener 10 caracteres',
                 maxlength: 'Celular #2 debe tener 10 caracteres',
-                pattern: 'Celular #2 solo puede tener números',
+                pattern: 'Celular #2 es correcto',
                 cellPhoneMatch: 'Celular #2 no debe ser igual a Celular #1',
             },
             country: {

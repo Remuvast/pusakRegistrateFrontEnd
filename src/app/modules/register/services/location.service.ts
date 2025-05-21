@@ -1,8 +1,9 @@
 import { HttpClient } from "@angular/common/http";
 import { EventEmitter, Injectable } from "@angular/core";
-import { BehaviorSubject, map, Observable, tap } from "rxjs";
+import { BehaviorSubject, finalize, map, Observable, tap } from "rxjs";
 import { environment } from "src/environments/environment";
 import { Location, LocationResponse } from "../models/location.model";
+import { NgxSpinnerService } from "ngx-spinner";
 
 @Injectable({
     providedIn: 'root'
@@ -42,10 +43,14 @@ export class LocationService {
 
     private API_URL = `${environment.apiUrl}/ubicaciones`;
 
-    constructor(private http: HttpClient) {
+    constructor(
+        private http: HttpClient,
+        private spinner: NgxSpinnerService,
+    ) {
     }
 
     getCountries(isBirth = false): Observable<Location[]> {
+        this.spinner.show();
         return this.http.get<LocationResponse[]>(`${this.API_URL}/paises`).pipe(
             map((data: LocationResponse[]) => this.mapLocations(data)),
             tap((catalogs: Location[]) => {
@@ -57,11 +62,13 @@ export class LocationService {
                 (isBirth ? this.provincesBirthUpdated : this.provincesUpdated).emit();
                 (isBirth ? this.citiesBirthUpdated : this.citiesUpdated).emit();
                 (isBirth ? this.parishesBirthUpdated : this.parishesUpdated).emit();
-            })
+            }),
+            finalize(() => this.spinner.hide())
         );
     }
 
     getProvinces(countryId: number, isBirth = false): Observable<Location[]> {
+        this.spinner.show();
         return this.http.get<LocationResponse[]>(`${this.API_URL}/provincias/${countryId}`).pipe(
             map((data: LocationResponse[]) => this.mapLocations(data)),
             tap((catalogs: Location[]) => {
@@ -71,11 +78,13 @@ export class LocationService {
                 (isBirth ? this.provincesBirthUpdated : this.provincesUpdated).emit();
                 (isBirth ? this.citiesBirthUpdated : this.citiesUpdated).emit();
                 (isBirth ? this.parishesBirthUpdated : this.parishesUpdated).emit();
-            })
+            }),
+            finalize(() => this.spinner.hide())
         );
     }
 
     getCities(provinceId: number, isBirth = false): Observable<Location[]> {
+        this.spinner.show();
         return this.http.get<LocationResponse[]>(`${this.API_URL}/cantones/${provinceId}`).pipe(
             map((data: LocationResponse[]) => this.mapLocations(data)),
             tap((catalogs: Location[]) => {
@@ -83,17 +92,20 @@ export class LocationService {
                 (isBirth ? this.parishesBirthSubject : this.parishesSubject).next([]);
                 (isBirth ? this.citiesBirthUpdated : this.citiesUpdated).emit();
                 (isBirth ? this.parishesBirthUpdated : this.parishesUpdated).emit();
-            })
+            }),
+            finalize(() => this.spinner.hide())
         );
     }
 
     getParishes(cityId: number, isBirth = false): Observable<Location[]> {
+        this.spinner.show();
         return this.http.get<LocationResponse[]>(`${this.API_URL}/parroquias/${cityId}`).pipe(
             map((data: LocationResponse[]) => this.mapLocations(data)),
             tap((catalogs: Location[]) => {
                 (isBirth ? this.parishesBirthSubject : this.parishesSubject).next(catalogs);
                 (isBirth ? this.parishesBirthUpdated : this.parishesUpdated).emit();
-            })
+            }),
+            finalize(() => this.spinner.hide())
         );
     }
 
