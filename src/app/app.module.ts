@@ -11,6 +11,7 @@ import { AppComponent } from './app.component';
 import { AuthService } from './modules/auth/services/auth.service';
 import { SweetAlert2Module } from '@sweetalert2/ngx-sweetalert2';
 import { NgxSpinnerModule } from 'ngx-spinner';
+import { ToastrModule } from 'ngx-toastr';
 
 function appInitializer(/*authService: AuthService*/) {
   return () => {
@@ -33,6 +34,9 @@ function appInitializer(/*authService: AuthService*/) {
     NgbModule,
     SweetAlert2Module.forRoot(),
     NgxSpinnerModule.forRoot({ type: 'ball-scale-ripple-multiple' }),
+    ToastrModule.forRoot({
+      preventDuplicates: true,
+    }),
   ],
   providers: [
     {

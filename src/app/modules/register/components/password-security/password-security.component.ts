@@ -45,7 +45,7 @@ export class PasswordSecurityComponent implements OnInit {
     this.updateParentModel({}, false);
     this.getQuestions()
     this.questionService.questions$.subscribe((questions: Questions[]) => {
-      if(questions && questions.length > 0) {
+      if(questions && questions.length > 0 && this.questions.length === 0) {
         this.questions = questions;
       }
       this.cdr.detectChanges();

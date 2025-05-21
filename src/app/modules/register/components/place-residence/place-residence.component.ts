@@ -40,29 +40,31 @@ export class PlaceResidenceComponent {
     this.updateParentModel({}, false);
     this.getCountries()
     this.locationService.countries$.subscribe(countries => {
-      if(countries && countries.length > 0) {
+      if(countries && this.countries.length === 0) {
         this.countries = countries;
       }
     })
     this.locationService.provinces$.subscribe(provinces => {
-      if(provinces && provinces.length > 0) {
+      if(provinces) {
         this.provinces = provinces;
       }
     })
     this.locationService.cities$.subscribe(cities => {
-      if(cities && cities.length > 0) {
+      if(cities) {
         this.cities = cities;
       }
     })
     this.locationService.parishes$.subscribe(parishes => {
-      if(parishes && parishes.length > 0) {
+      if(parishes) {
         this.parishes = parishes;
       }
     })
   }
 
   getCountries(): void {
-    this.locationService.getCountries().subscribe();
+    if(this.countries.length === 0 ) {
+      this.locationService.getCountries().subscribe();
+    }
   }
 
   getProvinces(): void {
@@ -156,6 +158,15 @@ export class PlaceResidenceComponent {
       this.updateParentModel(val, this.form.valid);
     });
     this.unsubscribe.push(formChangesSubscr);
+  }
+
+  setZone(): void {
+    const parish = this.parishes.find(x => x.id.toString() === this.f.parishResidence.value);
+    if(parish) {
+      this.form.patchValue({
+        zone: parish.type,
+      });
+    }
   }
 
   ngOnDestroy() {

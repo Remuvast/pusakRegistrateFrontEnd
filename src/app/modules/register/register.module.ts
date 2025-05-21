@@ -1,5 +1,5 @@
 import { NgModule } from '@angular/core';
-import { CommonModule } from '@angular/common';
+import { CommonModule, DatePipe } from '@angular/common';
 import { TranslationModule } from '../i18n';
 import { RegisterRoutingModule } from './register-routing.module';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
@@ -13,6 +13,7 @@ import { PasswordSecurityComponent } from './components/password-security/passwo
 import { NgbTooltipModule } from '@ng-bootstrap/ng-bootstrap';
 import { SharedModule } from 'src/app/_metronic/shared/shared.module';
 import { FinalFormComponent } from './components/final-form/final-form.component';
+import { ActivateComponent } from './components/activate/activate.component';
 
 
 
@@ -25,6 +26,7 @@ import { FinalFormComponent } from './components/final-form/final-form.component
     RegisterComponent,
     MainFormComponent,
     FinalFormComponent,
+    ActivateComponent,
   ],
   imports: [
       CommonModule,
@@ -36,6 +38,7 @@ import { FinalFormComponent } from './components/final-form/final-form.component
       SharedModule,
       HttpClientModule,
   ],
-  exports: []
+  exports: [],
+  providers: [DatePipe],
 })
 export class RegisterModule { }

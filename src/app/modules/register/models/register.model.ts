@@ -53,6 +53,14 @@ export interface PlaceResidence {
     postalCode: string;
 }
 
+export interface IRegisterResponse {
+    mensaje: string;
+}
+
+export interface IRegisterSuccess {
+    message: string;
+}
+
 export interface IRegister {
     identificationType: string;
     identification: string;
@@ -97,6 +105,49 @@ export interface IRegister {
     number: string;
     geographicReference: string;
     postalCode: string;
+}
+
+export interface IRegisterRequest {
+    tipoIdentificacion: string;
+    numeroIdentificacion: string;
+    apellidosNombres: string;
+    apellidos: string;
+    nombres: string;
+    fechaNacimiento: string;
+    codigoGenero: string;
+    codigoEstadoCivil: string;
+    codigoEtnia: string;
+    catalogosTipoDiscapacidadId: string;
+    porcentajeDiscapacidad: number | null;
+    codigoNacionalidad: string;
+    correoPrincipal: string;
+    correoAlterno: string;
+    telefonoConvencional: string;
+    celular: string;
+    telefonoCelular2: string;
+    clave: string;
+    preguntas1Id: string;
+    respuesta1: string;
+    preguntas2Id: string;
+    respuesta2: string;
+    preguntas3Id: string;
+    respuesta3: string;
+    codPaisNacimiento: string;
+    codigoProvinciaNacimiento: string;
+    lugarNacimiento: string;
+    codigoCantonNacimiento: string;
+    codigoParroquiaNacimiento: string;
+    codPaisResidencia: string;
+    codigoProvinciaResidencia: string;
+    codigoCantonResidencia: string;
+    codigoParroquiaResidencia: string;
+    sectorResidencia: string;
+    callePrincipal: string;
+    calleSecundaria: string;
+    numero: string;
+    referencia: string;
+    postalCode: string;
+    codigoZonaResidencia: string;
 }
 
 export const init: IRegister = {

@@ -1,9 +1,10 @@
 import { ChangeDetectorRef, Component } from '@angular/core';
-import { BehaviorSubject, Subscription } from 'rxjs';
-import { init, IRegister } from '../../models/register.model';
+import { BehaviorSubject, first, Subscription } from 'rxjs';
+import { init, IRegister, IRegisterSuccess } from '../../models/register.model';
 import { CONSTANTS } from 'src/app/common/const';
 import { LocationService } from '../../services/location.service';
 import { CatalogService } from '../../services/catalog.service';
+import { RegisterService } from '../../services/register.service';
 
 @Component({
   selector: 'app-main-form',
@@ -12,7 +13,7 @@ import { CatalogService } from '../../services/catalog.service';
 })
 export class MainFormComponent {
 
-  formsCount = 5;
+  formsCount = 4;
   register$: BehaviorSubject<IRegister> =
     new BehaviorSubject<IRegister>(init);
   currentStep$: BehaviorSubject<number> = new BehaviorSubject(1);
@@ -25,6 +26,7 @@ export class MainFormComponent {
   constructor(
     private catalogService: CatalogService,
     private locationService: LocationService,
+    private registerService: RegisterService,
     private cdr: ChangeDetectorRef,
   ) {}
 
@@ -59,6 +61,18 @@ export class MainFormComponent {
     this.locationService.parishesUpdated.subscribe(() => {
       this.cdr.detectChanges()
     });
+    this.locationService.countriesBirthUpdated.subscribe(() => {
+      this.cdr.detectChanges()
+    });
+    this.locationService.provincesBirthUpdated.subscribe(() => {
+      this.cdr.detectChanges()
+    });
+    this.locationService.citiesBirthUpdated.subscribe(() => {
+      this.cdr.detectChanges()
+    });
+    this.locationService.parishesBirthUpdated.subscribe(() => {
+      this.cdr.detectChanges()
+    });
   }
 
   updateRegister = (part: Partial<IRegister>, isFormValid: boolean) => {
@@ -68,15 +82,19 @@ export class MainFormComponent {
     this.isCurrentFormValid$.next(isFormValid);
   };
 
-  nextStep() {
+  nextStep(): void {
     const nextStep = this.currentStep$.value + 1;
+    if(nextStep === 4) {
+      this.saveForm(nextStep)
+      return;
+    }
     if (nextStep > this.formsCount) {
       return;
     }
     this.currentStep$.next(nextStep);
   }
 
-  prevStep() {
+  prevStep(): void {
     const prevStep = this.currentStep$.value - 1;
     const currentRegister = this.register$.value;
     this.register$.next(currentRegister);
@@ -87,7 +105,22 @@ export class MainFormComponent {
     this.currentStep$.next(prevStep);
   }
 
-  ngOnDestroy() {
+  saveForm(nextStep: number): void {
+    this.register$.subscribe(form =>{
+      this.registerService.saveRegister(form)
+        .pipe(first())
+        .subscribe({
+          next: (result: IRegisterSuccess | boolean) => {
+            if(result) {
+              this.currentStep$.next(nextStep);
+              this.cdr.detectChanges()
+            }
+          }
+        });
+    });
+  }
+
+  ngOnDestroy(): void {
     this.unsubscribe.forEach((sb) => sb.unsubscribe());
   }
 

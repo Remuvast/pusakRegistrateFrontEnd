@@ -8,6 +8,7 @@
                         'is-invalid': form.controls['countryBirth'].invalid && form.controls['countryBirth'].touched,
                         'is-valid': form.controls['countryBirth'].valid
                     }"
+                    (change)="getProvinces()"
                 >
                     <option value="">{{labels.country.default}}</option>
                     <option *ngFor="let country of countries" [value]="country.id">{{country.name}}</option>
@@ -25,6 +26,7 @@
                         'is-invalid': form.controls['provinceBirth'].invalid && form.controls['provinceBirth'].touched,
                         'is-valid': form.controls['provinceBirth'].valid
                     }"
+                    (change)="getCities()"
                 >
                     <option value="">{{labels.province.default}}</option>
                     <option *ngFor="let province of provinces" [value]="province.id">{{province.name}}</option>
@@ -44,6 +46,7 @@
                         'is-invalid': form.controls['cityBirth'].invalid && form.controls['cityBirth'].touched,
                         'is-valid': form.controls['cityBirth'].valid
                     }"
+                    (change)="getParishes()"
                 >
                     <option value="">{{labels.city.default}}</option>
                     <option *ngFor="let city of cities" [value]="city.id">{{city.name}}</option>
