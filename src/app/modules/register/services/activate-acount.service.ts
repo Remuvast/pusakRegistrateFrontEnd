@@ -4,6 +4,7 @@ import { NgxSpinnerService } from "ngx-spinner";
 import { ToastrService } from "ngx-toastr";
 import { BehaviorSubject, catchError, finalize, map, Observable, of, tap } from "rxjs";
 import { environment } from "src/environments/environment";
+import { IAccount, IAccountResponse } from "../models/account.model";
 
 @Injectable({
     providedIn: 'root'
@@ -21,17 +22,13 @@ export class ActivateAccountService {
     ) {
     }
 
-    activateAccount(code: string, id: string): Observable<boolean | string> {
+    activateAccount(code: string, id: string): Observable<boolean | IAccount> {
         this.spinner.show();
-        return this.http.get<string>(`${this.API_URL}?id=${id}&codigo=${code}`).pipe(
-            map((data: string) => data),
-            tap((response: string) => {
-                if(response === 'Cuenta activada exitosamente.') {
-                    this.statusSubject.next(true);
-                    return of(true)
-                }
-                this.statusSubject.next(false);
-                return of(false)
+        return this.http.get<IAccountResponse>(`${this.API_URL}?id=${id}&codigo=${code}`).pipe(
+            map((response: IAccountResponse) => this.mapResponse(response)),
+            tap((response: IAccount) => {
+                this.statusSubject.next(response.success);
+                return of(response.success)
             }),
             catchError((err) => {
                 if(typeof err.error === 'string') {
@@ -42,5 +39,12 @@ export class ActivateAccountService {
             }),
             finalize(() => this.spinner.hide())
         );
+    }
+
+    mapResponse(response: IAccountResponse): IAccount {
+        return {
+            message: response.mensaje,
+            success: response.success,
+        }
     }
 }
