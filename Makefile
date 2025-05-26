@@ -1,15 +1,18 @@
-# Variables
+# Detecta si 'docker compose' o 'docker-compose' está disponible
+DOCKER_COMPOSE := $(shell command -v "docker-compose" >/dev/null 2>&1 && echo "docker-compose" || echo "docker compose")
+
 SERVICE_NAME=angular-app
-DOCKER_COMPOSE=docker-compose
 PORT=4200
 
-# Construye los servicios usando docker-compose
+# Construye los servicios usando Docker Compose
 build:
+	@echo "🔧 Usando: $(DOCKER_COMPOSE)"
 	@echo "🔧 Construyendo imagen con Docker Compose..."
 	$(DOCKER_COMPOSE) build
 
 # Levanta el servicio en segundo plano
 up:
+	@echo "🚀 Usando: $(DOCKER_COMPOSE)"
 	@echo "🚀 Levantando el frontend en http://localhost:$(PORT)"
 	$(DOCKER_COMPOSE) up -d
 
@@ -29,7 +32,7 @@ status:
 logs:
 	$(DOCKER_COMPOSE) logs -f $(SERVICE_NAME)
 
-# Limpia contenedores, redes, y volúmenes (¡cuidado!)
+# Limpia contenedores, redes y volúmenes
 clean: down
 	@echo "🧹 Limpiando volúmenes..."
 	$(DOCKER_COMPOSE) down -v --remove-orphans
