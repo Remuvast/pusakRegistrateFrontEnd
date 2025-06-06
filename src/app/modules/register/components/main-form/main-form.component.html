@@ -43,7 +43,7 @@
       >
         <div class="current">
           <ng-container *ngIf="currentStep$.value === 1">
-            <app-personal-information 
+            <app-personal-information
               class="w-100"
               [updateParentModel]="updateRegister"
               [defaultValues]="register$.value"
@@ -51,15 +51,15 @@
           </ng-container>
 
           <ng-container *ngIf="currentStep$.value === 2">
-            <app-place-residence 
+            <app-place-residence
               class="w-100"
               [updateParentModel]="updateRegister"
               [defaultValues]="register$.value"
             ></app-place-residence>
           </ng-container>
-          
+
           <ng-container *ngIf="currentStep$.value === 3">
-            <app-password-security 
+            <app-password-security
               class="w-100"
               [updateParentModel]="updateRegister"
               [defaultValues]="register$.value"
@@ -88,6 +88,9 @@
               <h4 class="text-gray-800 fw-bolder">{{labels.alertMessageTitle}}</h4>
               <div class="fs-6 text-gray-600">
                 {{labels.alertMessage}}
+              </div>
+              <div class="fs-6 text-gray-600">
+                {{labels.alert}}
               </div>
             </div>
           </div>

@@ -60,7 +60,7 @@ export class PersonalInformationComponent implements OnInit {
     private toast: ToastrService,
     private userService: UserService,
   ) {
-    
+
   }
 
   ngOnInit(): void {
@@ -148,11 +148,22 @@ export class PersonalInformationComponent implements OnInit {
       }
     })
     this.wsService.civilRegistryError$.subscribe(error => {
-      if(error?.message) {
-        this.toast.warning(error.message, 'Error');
+      if (!error?.message) return;
+
+      this.toast.warning(error.message, 'Error');
+
+      if (
+        error.status === 409 &&
+        error.message.toLowerCase().includes('fallecido')
+      ) {
+        this.addError('identification', 'invalidIdentification');
+      } else if (error.status === 409) {
         this.addError('identification', 'duplicatedDocument');
+      } else {
+        this.addError('identification', 'invalidDocument');
       }
-    })
+    });
+
     this.userService.email$.subscribe((data: CheckEmail | null) => {
       if(data?.exist) {
         this.toast.warning(data.message, 'Error');
@@ -242,7 +253,7 @@ export class PersonalInformationComponent implements OnInit {
       identificationType: value,
       identification: '',
       lastName: '',
-      name: '', 
+      name: '',
       birthdate: '',
       gender: '',
       maritalStatus: '',
@@ -273,7 +284,7 @@ export class PersonalInformationComponent implements OnInit {
       disabilityType?.setValidators([Validators.required]);
       disabilityPercent?.setValidators(
         [
-          Validators.required, 
+          Validators.required,
           Validators.min(1),
           Validators.max(100),
           Validators.pattern(/^\d+$/),
@@ -325,7 +336,7 @@ export class PersonalInformationComponent implements OnInit {
     const currentErrors = control?.errors || {};
     control?.setErrors({ ...currentErrors, [errorKey]: true });
   }
-  
+
   checkCivilRegistryWS(): void {
     this.wsService.getDataFromCivilRegister(this.f.identification.value).subscribe();
   }
@@ -342,11 +353,11 @@ export class PersonalInformationComponent implements OnInit {
     this.form = this.fb.group(
       {
         identificationType: [
-          this.defaultValues.identificationType, 
+          this.defaultValues.identificationType,
           [Validators.required]
         ],
         identification: [
-          this.defaultValues.identification, 
+          this.defaultValues.identification,
           [
             Validators.required,
             Validators.minLength(6),
@@ -354,14 +365,14 @@ export class PersonalInformationComponent implements OnInit {
           ]
         ],
         lastName: [
-          this.defaultValues.lastName, 
+          this.defaultValues.lastName,
           [
             Validators.required,
             Validators.maxLength(100),
           ]
         ],
         name: [
-          this.defaultValues.name, 
+          this.defaultValues.name,
           [
             Validators.required,
             Validators.maxLength(100),
@@ -371,22 +382,22 @@ export class PersonalInformationComponent implements OnInit {
           this.defaultValues.fullName,
         ],
         birthdate: [
-          this.defaultValues.birthdate, 
+          this.defaultValues.birthdate,
           [
             Validators.required,
             maxDateValidator(),
           ]
         ],
         gender: [
-          this.defaultValues.gender, 
+          this.defaultValues.gender,
           [Validators.required]
         ],
         maritalStatus: [
-          this.defaultValues.maritalStatus, 
+          this.defaultValues.maritalStatus,
           [Validators.required]
         ],
         ethnicity: [
-          this.defaultValues.ethnicity, 
+          this.defaultValues.ethnicity,
           [Validators.required]
         ],
         disability: [
@@ -399,11 +410,11 @@ export class PersonalInformationComponent implements OnInit {
           this.defaultValues.disabilityPercent
         ],
         nacionality: [
-          this.defaultValues.nacionality, 
+          this.defaultValues.nacionality,
           [Validators.required]
         ],
         emailAddress: [
-          this.defaultValues.emailAddress, 
+          this.defaultValues.emailAddress,
           [
             Validators.required,
             // eslint-disable-next-line no-useless-escape
@@ -412,7 +423,7 @@ export class PersonalInformationComponent implements OnInit {
           ]
         ],
         confirmEmailAddress: [
-          this.defaultValues.confirmEmailAddress, 
+          this.defaultValues.confirmEmailAddress,
           [
             Validators.required,
             matchFields('emailAddress'),
@@ -429,16 +440,15 @@ export class PersonalInformationComponent implements OnInit {
           ]
         ],
         phoneNumber: [
-          this.defaultValues.phoneNumber, 
+          this.defaultValues.phoneNumber,
           [
             Validators.required,
-            Validators.pattern(/^(0[2-7])\d{7}$/),
             Validators.minLength(9),
             Validators.maxLength(9),
           ]
         ],
         cellPhone: [
-          this.defaultValues.cellPhone, 
+          this.defaultValues.cellPhone,
           [
             Validators.required,
             Validators.pattern(/^09\d{8}$/),
@@ -456,19 +466,19 @@ export class PersonalInformationComponent implements OnInit {
           ]
         ],
         countryBirth: [
-          this.defaultValues.countryBirth, 
+          this.defaultValues.countryBirth,
           Validators.required
         ],
         provinceBirth: [
-          this.defaultValues.provinceBirth, 
+          this.defaultValues.provinceBirth,
           Validators.required
         ],
         cityBirth: [
-          this.defaultValues.cityBirth, 
+          this.defaultValues.cityBirth,
           Validators.required
         ],
         parishBirth: [
-          this.defaultValues.parishBirth, 
+          this.defaultValues.parishBirth,
           Validators.required
         ],
       }

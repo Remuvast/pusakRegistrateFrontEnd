@@ -4,6 +4,7 @@ export const PASSPORT = 'pasaporte';
 export const CONSTANTS = {
     register: {
         alertMessage: '* Debes completar correctamente los campos mandatorios del formulario para continuar.',
+        alert: '* Si presenta inconvenientes al registrar sus datos puede dirigir un correo electrónico a: soportebecas@senescyt.gob.ec; favor detallar nombres y apellidos completos, número de identificación y su requerimiento.',
         alertMessageTitle: 'Atención!',
         back: 'Atras',
         next: 'Siguiente',
