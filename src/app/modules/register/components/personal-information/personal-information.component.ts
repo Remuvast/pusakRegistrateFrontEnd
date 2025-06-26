@@ -17,6 +17,8 @@ import { normalize } from 'src/app/validators/fullname.validator';
 import { ToastrService } from 'ngx-toastr';
 import { UserService } from '../../services/user.service';
 import { CheckEmail } from '../../models/user.model';
+import { Disability } from '../../models/disability.model';
+import { DisabilityService } from '../../services/disability.service';
 
 @Component({
   selector: 'app-personal-information',
@@ -43,6 +45,7 @@ export class PersonalInformationComponent implements OnInit {
   provinces: Location[] = [];
   cities: Location[] = [];
   parishes: Location[] = [];
+  disability: Disability;
   blockNames: boolean = false;
   fullname: string = '';
   isLoadingLocations$: Observable<boolean>;
@@ -59,6 +62,7 @@ export class PersonalInformationComponent implements OnInit {
     private locationService: LocationService,
     private toast: ToastrService,
     private userService: UserService,
+    private disabilityService: DisabilityService,
   ) {
 
   }
@@ -199,11 +203,22 @@ export class PersonalInformationComponent implements OnInit {
           this.form.get('lastName')?.enable();
         }
         this.blockNames = data.blockNames;
-      } else {
-        //hacer lo del toast
-        //this.toast
       }
-    })
+    });
+    this.disabilityService.disability$.subscribe(disabilityResponse => {
+      if(disabilityResponse) {
+        this.disability = disabilityResponse;
+        if(this.disability.wsAvailable) {
+          this.fillDisability();
+        } else {
+          this.toast.warning(this.labels.disability.wsNotAvailable, this.labels.disability.title);
+        }
+      }
+    });
+    this.disabilityService.disabilityError$.subscribe(error => {
+      if (!error?.message) return;
+      this.toast.warning(error.message, 'Error');
+    });
   }
 
   getCountries(): void {
@@ -289,6 +304,9 @@ export class PersonalInformationComponent implements OnInit {
           Validators.max(100),
           Validators.pattern(/^\d+$/),
         ]);
+      if(this.disability) {
+        this.fillDisability()
+      }
     } else {
       disabilityType?.clearValidators();
       disabilityPercent?.clearValidators();
@@ -339,6 +357,7 @@ export class PersonalInformationComponent implements OnInit {
 
   checkCivilRegistryWS(): void {
     this.wsService.getDataFromCivilRegister(this.f.identification.value).subscribe();
+    this.disabilityService.getDataFromDisability(this.f.identification.value).subscribe();
   }
 
   checkIdentificationType(): boolean {
@@ -347,6 +366,32 @@ export class PersonalInformationComponent implements OnInit {
   }
   checkEmail(): void {
     this.userService.checkEmail(this.f.emailAddress.value).subscribe();
+  }
+
+  fillDisability(): void {
+    if(this.disability.type) {
+      const select = this.disabilityTypes.find(x => x.name === this.disability.type);
+      if(select) {
+        this.form.patchValue({
+          disabilityType: select.id,
+          disabilityPercent: this.disability.percent
+        });
+        this.form.get('disabilityType')?.disable();
+        this.form.get('disabilityPercent')?.disable();
+      } else {
+        this.form.patchValue({
+          disabilityType: ''
+        });
+        this.form.get('disabilityType')?.enable();
+        this.form.get('disabilityPercent')?.enable();
+      }
+    } else {
+      this.form.patchValue({
+        disabilityType: ''
+      });
+      this.form.get('disabilityType')?.enable();
+      this.form.get('disabilityPercent')?.enable();
+    }
   }
 
   initForm(): void {

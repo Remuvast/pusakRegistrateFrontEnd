@@ -63,7 +63,9 @@ export const CONSTANTS = {
                 required: 'Etnia es requerido',
             },
             disability: {
-                label: 'Discapacidad'
+                label: 'Discapacidad',
+                wsNotAvailable: 'El servicio de discapacidad del ministerio de salud publica no se encuentra disponible, puede continuar el registro sin la discapacidad o intente mas tarde',
+                title: 'Consulta de discapacidad'
             },
             disabilityType: {
                 label: 'Tipo de Discapacidad',
