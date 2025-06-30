@@ -1,0 +1,138 @@
+<div class="card">
+  <div class="card-body">
+    <div
+      class="stepper stepper-links d-flex flex-column pt-15"
+      id="kt_create_account_stepper"
+    >
+      <div class="stepper-nav mb-5" *ngIf="currentStep$.value < 4">
+        <div
+          class="stepper-item"
+          [ngClass]="{
+            current: currentStep$.value === 1,
+            completed: currentStep$.value > 1
+          }"
+        >
+          <h3 class="stepper-title">{{labels.generalDataTitle}}</h3>
+        </div>
+
+        <div
+          class="stepper-item"
+          [ngClass]="{
+            current: currentStep$.value === 2,
+            completed: currentStep$.value > 2
+          }"
+        >
+          <h3 class="stepper-title">{{labels.placeResidenceTitle}}</h3>
+        </div>
+
+        <div
+          class="stepper-item"
+          [ngClass]="{
+            current: currentStep$.value === 3,
+            completed: currentStep$.value > 3
+          }"
+        >
+          <h3 class="stepper-title">{{labels.passwordSecurityTitle}}</h3>
+        </div>
+      </div>
+
+      <form
+        class="mx-auto mw-600px w-100 pt-15 pb-10"
+        noValidate
+        id="kt_create_account_form"
+      >
+        <div class="current">
+          <ng-container *ngIf="currentStep$.value === 1">
+            <app-personal-information
+              class="w-100"
+              [updateParentModel]="updateRegister"
+              [defaultValues]="register$.value"
+            ></app-personal-information>
+          </ng-container>
+
+          <ng-container *ngIf="currentStep$.value === 2">
+            <app-place-residence
+              class="w-100"
+              [updateParentModel]="updateRegister"
+              [defaultValues]="register$.value"
+            ></app-place-residence>
+          </ng-container>
+
+          <ng-container *ngIf="currentStep$.value === 3">
+            <app-password-security
+              class="w-100"
+              [updateParentModel]="updateRegister"
+              [defaultValues]="register$.value"
+            ></app-password-security>
+          </ng-container>
+
+          <ng-container *ngIf="currentStep$.value === 4">
+            <app-final-form class="w-100"></app-final-form>
+          </ng-container>
+        </div>
+
+        <div
+          class="
+            notice
+            d-flex
+            bg-light-danger
+            rounded
+            border-danger border border-dashed
+            p-6
+          "
+          *ngIf="!isCurrentFormValid$.value && currentStep$.value !== 4"
+        >
+          <span class="svg-icon fs-2tx text-warning me-4"></span>
+          <div class="d-flex flex-stack flex-grow-1">
+            <div class="fw-bold">
+              <h4 class="text-gray-800 fw-bolder">{{labels.alertMessageTitle}}</h4>
+              <div class="fs-6 text-gray-600">
+                {{labels.alertMessage}}
+              </div>
+              <div class="fs-6 text-gray-600">
+                {{labels.alert}}
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <div class="d-flex flex-stack pt-15">
+          <div class="mr-2">
+            <ng-container *ngIf="currentStep$.value !== 1 && currentStep$.value !== 4">
+              <button
+                type="button"
+                class="btn btn-lg btn-light-primary me-3"
+                (click)="prevStep()"
+              >
+                <app-keenicon name="arrow-left" class="fs-3 ms-4 me-1"></app-keenicon>
+                {{labels.back}}
+              </button>
+            </ng-container>
+          </div>
+
+          <ng-container *ngIf="currentStep$.value !== formsCount">
+            <div>
+              <button
+                type="button"
+                class="btn btn-lg btn-primary me-3"
+                [disabled]="!isCurrentFormValid$.value"
+                (click)="nextStep()"
+                [title]="!isCurrentFormValid$.value ? 'Debes completar correctamente el formulario' : 'Formulario correcto'"
+              >
+                <span class="indicator-label">
+                  <ng-container *ngIf="currentStep$.value < formsCount - 1">
+                    {{labels.next}} {{ " " }}
+                    <app-keenicon name="arrow-right" class="fs-3 ms-2 me-0"></app-keenicon>
+                  </ng-container>
+                  <ng-container *ngIf="currentStep$.value === formsCount - 1">
+                    {{labels.save}}
+                  </ng-container>
+                </span>
+              </button>
+            </div>
+          </ng-container>
+        </div>
+      </form>
+    </div>
+  </div>
+</div>

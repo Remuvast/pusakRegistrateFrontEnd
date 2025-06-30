@@ -1,0 +1,63 @@
+<div class="page-container">
+  <header class="header">
+    <table
+      width="100%"
+      border="0"
+      cellpadding="0"
+      cellspacing="0"
+      bgcolor="#2d006b"
+      style="table-layout:fixed;">
+      <tr>
+        <td valign="top" width="33%" style="padding:10px;">
+          <img
+            src="../../../assets/media/logos/HEader-SNCYT.png"
+            alt="Secretaría Educación Superior"
+            style="max-height:60px;">
+        </td>
+        <td valign="middle" align="center" width="34%">
+          <img
+            src="../../../assets/media/logos/banner_centro.png"
+            alt="Pusak"
+            style="max-height:60px;">
+        </td>
+        <td valign="bottom" align="right" width="33%" style="padding:10px;">
+          <img
+            src="../../../assets/media/logos/Header_Ecu.png"
+            alt="El Nuevo Ecuador"
+            style="max-height:60px;">
+        </td>
+      </tr>
+    </table>
+  </header>
+
+  <div class="d-flex flex-column flex-lg-row flex-column-fluid">
+      <!--begin::Body-->
+      <div class="d-flex flex-column flex-lg-row-fluid w-lg-50 p-10 order-2 order-lg-1">
+        <!--begin::Form-->
+        <div class="d-flex flex-center flex-column flex-lg-row-fluid">
+          <!--begin::Wrapper-->
+          <div class="<?php echo $params['wrapperClass']?> p-10">
+            <router-outlet></router-outlet>
+          </div>
+          <!--end::Wrapper-->
+        </div>
+        <!--end::Form-->
+      </div>
+      <!--end::Body-->
+
+    </div>
+
+  <footer class="footer">
+      <div class="footer-row top-row">
+        <img src="../../../assets/media/logos/Footer_Ecu.png" alt="Imagen izquierda" class="footer-img">
+        <div class="footer-text">
+          <p class="text-muted">Punto de Atención al Usuario: Whymper E7-37 y Alpallana, edificio Delfos, Quito</p>
+          <p class="text-muted">Edificio Matriz: Alpallana E7-183 entre Av. Diego de Almagro y Whymper. Código Postal: 170518. Quito - Ecuador</p>
+          <p class="text-muted">Teléfono: 593-2 3934-300</p>
+        </div>
+      </div>
+      <div class="footer-row bottom-row">
+        <img src="../../../assets/media/logos/Footer_line.png" alt="Imagen inferior" class="footer-full-img">
+      </div>
+  </footer>
+</div>
