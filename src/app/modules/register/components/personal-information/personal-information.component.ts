@@ -50,7 +50,6 @@ export class PersonalInformationComponent implements OnInit {
   fullname: string = '';
   isLoadingLocations$: Observable<boolean>;
   isLoadingSubject: BehaviorSubject<boolean>;
-
   get f() {
     return this.form.controls;
   }

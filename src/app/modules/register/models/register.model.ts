@@ -197,6 +197,6 @@ export const init: IRegister = {
 }
 
 export interface Step {
-    name: string; 
+    name: string;
     completed?: boolean;
 }
