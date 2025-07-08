@@ -9,7 +9,22 @@ services:
     ports:
       - "4200:80"
     volumes:
-      - ./src:/app/src  # Volumen solo para sincronizar el código fuente
-      - /app/node_modules  # Evitar errores de dependencias
+      - ./src:/app/src
+      - /app/node_modules
     environment:
       - NODE_ENV=production
+    networks:
+      - pusak-net
+
+  backend:
+    image: restapi-java
+    container_name: restapi-java
+    ports:
+      - "8080:8080"
+    networks:
+      - pusak-net
+
+networks:
+  pusak-net:
+    driver: bridge
+    external: true
