@@ -16,14 +16,6 @@ services:
     networks:
       - pusak-net
 
-  backend:
-    image: restapi-java
-    container_name: restapi-java
-    ports:
-      - "8080:8080"
-    networks:
-      - pusak-net
-
 networks:
   pusak-net:
     driver: bridge
