@@ -75,7 +75,7 @@ export class RegisterService {
             correoAlterno: data.secondEmailAddress,
             correoPrincipal: data.emailAddress,
             porcentajeDiscapacidad: data.disabilityPercent,
-            catalogosTipoDiscapacidadId: data.disabilityType,
+            codigoTipoDiscapacidad: data.disabilityType,
             fechaNacimiento: data.birthdate,
             lugarNacimiento: data.placeBirth,
             nombres: data.name,

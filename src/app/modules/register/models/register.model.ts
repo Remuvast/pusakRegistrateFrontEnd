@@ -117,7 +117,7 @@ export interface IRegisterRequest {
     codigoGenero: string;
     codigoEstadoCivil: string;
     codigoEtnia: string;
-    catalogosTipoDiscapacidadId: string;
+    codigoTipoDiscapacidad: string;
     porcentajeDiscapacidad: number | null;
     codigoNacionalidad: string;
     correoPrincipal: string;

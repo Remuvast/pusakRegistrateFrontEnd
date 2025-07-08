@@ -50,6 +50,7 @@ export class PersonalInformationComponent implements OnInit {
   fullname: string = '';
   isLoadingLocations$: Observable<boolean>;
   isLoadingSubject: BehaviorSubject<boolean>;
+  mostrarSeccionDiscapacidad = false;
   get f() {
     return this.form.controls;
   }
@@ -204,16 +205,25 @@ export class PersonalInformationComponent implements OnInit {
         this.blockNames = data.blockNames;
       }
     });
+
     this.disabilityService.disability$.subscribe(disabilityResponse => {
-      if(disabilityResponse) {
+      if (disabilityResponse) {
         this.disability = disabilityResponse;
-        if(this.disability.wsAvailable) {
-          this.fillDisability();
+        if (this.disability.wsAvailable) {
+          if (this.disability.type && this.disability.percent) {
+            this.fillDisability();
+          }
         } else {
-          this.toast.warning(this.labels.disability.wsNotAvailable, this.labels.disability.title);
+          this.toast.warning(
+            this.labels.disability.wsNotAvailable,
+            this.labels.disability.title
+          );
         }
       }
     });
+
+
+
     this.disabilityService.disabilityError$.subscribe(error => {
       if (!error?.message) return;
       this.toast.warning(error.message, 'Error');
@@ -367,31 +377,42 @@ export class PersonalInformationComponent implements OnInit {
     this.userService.checkEmail(this.f.emailAddress.value).subscribe();
   }
 
-  fillDisability(): void {
-    if(this.disability.type) {
-      const select = this.disabilityTypes.find(x => x.name === this.disability.type);
-      if(select) {
-        this.form.patchValue({
+ fillDisability(): void {
+  if (this.disability?.type) {
+    this.mostrarSeccionDiscapacidad = true;
+
+    const select = this.disabilityTypes.find(x => x.name === this.disability.type);
+    if (select) {
+      // Usa patchValue con emitEvent: false
+      this.form.patchValue(
+        {
+          disability: true,
           disabilityType: select.id,
           disabilityPercent: this.disability.percent
-        });
-        this.form.get('disabilityType')?.disable();
-        this.form.get('disabilityPercent')?.disable();
-      } else {
-        this.form.patchValue({
-          disabilityType: ''
-        });
-        this.form.get('disabilityType')?.enable();
-        this.form.get('disabilityPercent')?.enable();
-      }
+        },
+        { emitEvent: false }
+      );
+
+      this.form.get('disability')?.disable();
+      this.form.get('disabilityType')?.disable();
+      this.form.get('disabilityPercent')?.disable();
     } else {
-      this.form.patchValue({
-        disabilityType: ''
-      });
+      this.form.patchValue(
+        {
+          disability: false,
+          disabilityType: '',
+          disabilityPercent: ''
+        },
+        { emitEvent: false }
+      );
+
+      this.form.get('disability')?.enable();
       this.form.get('disabilityType')?.enable();
       this.form.get('disabilityPercent')?.enable();
     }
   }
+}
+
 
   initForm(): void {
     this.form = this.fb.group(

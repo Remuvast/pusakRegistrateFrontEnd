@@ -64,7 +64,7 @@ export const CONSTANTS = {
             },
             disability: {
                 label: 'Discapacidad',
-                wsNotAvailable: 'El servicio de discapacidad del ministerio de salud publica no se encuentra disponible, puede continuar el registro sin la discapacidad o intente mas tarde',
+                wsNotAvailable: 'Al momento el servicio de consulta de información de Discapacidad proporcionada por el Ministerio de Salud Pública no se encuentra disponible. Usted puede continuar con el registro sin la información de Discapacidad, caso contrario intente con el registro más tarde.',
                 title: 'Consulta de discapacidad'
             },
             disabilityType: {
