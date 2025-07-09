@@ -6,7 +6,7 @@ export const environment = {
   production: true,
   appVersion: 'v8.2.4',
   isMockEnabled: true,
-  apiUrl: 'http://10.181.1.114:8080/api',
+  apiUrl: 'http://blissful_jemison:8080/api',
   appThemeName: 'Metronic',
   appPreviewDocsUrl: 'https://preview.keenthemes.com/metronic8/angular/docs',
   appPreviewChangelogUrl:
