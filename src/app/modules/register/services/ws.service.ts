@@ -53,6 +53,9 @@ export class WSService {
             identification: data.cedula,
             mothersLastName: data.apellidoMaterno,
             sex: genero,
+            cityBirth: data.cantonNacimiento,
+            parishBirth: data.parroquiaNacimiento,
+            provinceBirth: data.provinciaNacimiento,
         }
     }
 }

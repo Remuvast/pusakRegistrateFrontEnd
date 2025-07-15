@@ -10,6 +10,9 @@ export interface CivilRegistry {
     fullName: string;
     globalData: string;
     blockNames: boolean;
+    provinceBirth: string;
+    cityBirth: string;
+    parishBirth: string;
 }
 
 export interface CivilRegistryError {
@@ -30,4 +33,7 @@ export interface CivilRegistryResponse {
     nombresApellidos: string;
     datosGlobales: string;
     nombreBloqueado: boolean
+    provinciaNacimiento: string;
+    cantonNacimiento: string;
+    parroquiaNacimiento: string;
 }

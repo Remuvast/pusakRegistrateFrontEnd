@@ -1,6 +1,7 @@
 export const REGEX_IDENTIFICATION = /^[a-zA-Z0-9-]{1,20}$/i;
 export const CI = 'CI';
 export const PASSPORT = 'pasaporte';
+export const ECUADOR = 'ECUADOR';
 export const CONSTANTS = {
     register: {
         alertMessage: '* Debes completar correctamente los campos mandatorios del formulario para continuar.',
@@ -119,26 +120,26 @@ export const CONSTANTS = {
                 label: 'Celular #2',
                 minlength: 'Celular #2 debe tener 10 caracteres',
                 maxlength: 'Celular #2 debe tener 10 caracteres',
-                pattern: 'Celular #2 es correcto',
+                pattern: 'Celular #2 no es correcto',
                 cellPhoneMatch: 'Celular #2 no debe ser igual a Celular #1',
             },
             country: {
-                label: 'País',
+                label: 'País de nacimiento',
                 default: 'Seleccione País',
                 required: 'País es requerido',
             },
             province: {
-                label: 'Estado / Provincia',
+                label: 'Estado / Provincia de nacimiento',
                 default: 'Seleccione Estado / Provincia',
                 required: 'Estado / Provincia es requerido',
             },
             city: {
-                label: 'Cantón / Ciudad',
+                label: 'Cantón / Ciudad de nacimiento',
                 default: 'Seleccione Cantón / Ciudad',
                 required: 'Cantón / Ciudad es requerido',
             },
             parish: {
-                label: 'Parroquia',
+                label: 'Parroquia de nacimiento',
                 default: 'Seleccione parroquia',
                 required: 'Parroquia es requerido',
             },
@@ -192,22 +193,22 @@ export const CONSTANTS = {
         },
         placeBirth: {
             country: {
-                label: 'País',
+                label: 'País de residencia',
                 default: 'Seleccione País',
                 required: 'País es requerido',
             },
             province: {
-                label: 'Estado / Provincia',
+                label: 'Estado / Provincia de residencia',
                 default: 'Seleccione Estado / Provincia',
                 required: 'Estado / Provincia es requerido',
             },
             city: {
-                label: 'Cantón / Ciudad',
+                label: 'Cantón / Ciudad de residencia',
                 default: 'Seleccione Cantón / Ciudad',
                 required: 'Cantón / Ciudad es requerido',
             },
             parish: {
-                label: 'Parroquia',
+                label: 'Parroquia de residencia',
                 default: 'Seleccione parroquia',
                 required: 'Parroquia es requerido',
             },

@@ -125,6 +125,11 @@
           }"></ng-container>
             </div>
         </div>
+        <div class="row" *ngIf="birthAddress">
+            <div class="col-sm-12 mb-3">
+                <span><b>Datos traídos del registro civil de lugar de nacimiento</b> {{birthAddress}} </span>
+            </div>
+        </div>
         <div class="row">
             <div class="mb-3 col-lg-6 col-sm-12">
                 <label for="countryBirth" class="form-label required">{{labels.country.label}}</label>
@@ -176,7 +181,7 @@
                     control: form.controls['cityBirth']
                 }"></ng-container>
             </div>
-            <div class="mb-3 col-lg-6 col-sm-12">
+            <div *ngIf="showParishBirth" class="mb-3 col-lg-6 col-sm-12">
                 <label for="parishBirth" class="form-label required">{{labels.parish.label}}</label>
                 <select id="parishBirth" class="form-select form-select-sm form-select-solid"
                     formControlName="parishBirth" [ngClass]="{

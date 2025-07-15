@@ -57,7 +57,7 @@
                     control: form.controls['cityResidence']
                 }"></ng-container>
             </div>
-            <div class="mb-3 col-lg-6 col-sm-12">
+            <div *ngIf="showParishResidence" class="mb-3 col-lg-6 col-sm-12">
                 <label for="parishResidence" class="form-label required">{{labels.parish.label}}</label>
                 <select id="parishResidence" class="form-control" formControlName="parishResidence"
                     [ngClass]="{

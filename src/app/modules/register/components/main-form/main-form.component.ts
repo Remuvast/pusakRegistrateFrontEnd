@@ -16,7 +16,7 @@ export class MainFormComponent {
   formsCount = 4;
   register$: BehaviorSubject<IRegister> =
     new BehaviorSubject<IRegister>(init);
-  currentStep$: BehaviorSubject<number> = new BehaviorSubject(1);
+  currentStep$: BehaviorSubject<number> = new BehaviorSubject(2);
   isCurrentFormValid$: BehaviorSubject<boolean> = new BehaviorSubject<boolean>(
     false
   );
