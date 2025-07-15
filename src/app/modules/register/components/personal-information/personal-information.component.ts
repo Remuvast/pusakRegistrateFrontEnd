@@ -4,7 +4,7 @@ import { IRegister } from '../../models/register.model';
 import { BehaviorSubject, Observable, Subscription } from 'rxjs';
 import { validateEcuadorianIdentification } from 'src/app/validators/identification.validator';
 import { maxDateValidator } from 'src/app/validators/birthdate.validator';
-import { CI, CONSTANTS } from 'src/app/common/const';
+import { CI, CONSTANTS, ECUADOR } from 'src/app/common/const';
 import { CatalogService } from '../../services/catalog.service';
 import { Catalogs, CatalogTypes } from '../../models/catalog.model';
 import { matchFields } from 'src/app/validators/match-fields.validator';
@@ -50,6 +50,8 @@ export class PersonalInformationComponent implements OnInit {
   fullname: string = '';
   isLoadingLocations$: Observable<boolean>;
   isLoadingSubject: BehaviorSubject<boolean>;
+  showParishBirth: boolean = true;
+  birthAddress: string;
   mostrarSeccionDiscapacidad = false;
   get f() {
     return this.form.controls;
@@ -72,6 +74,24 @@ export class PersonalInformationComponent implements OnInit {
     this.updateParentModel({}, !!this.form?.get('identificationType')?.value);
     this.form?.get('disability')?.valueChanges.subscribe(value => {
       this.updateValidations(value);
+    });
+    this.form?.get('countryBirth')?.valueChanges.subscribe(value => {
+      this.updateValidationsParish(value);
+    });
+    this.form?.get('cellPhone')?.valueChanges.subscribe(value => {
+      if (value && value.length > 10) {
+        this.form.get('cellPhone')?.setValue(value.substring(0, 10), { emitEvent: false });
+      }
+    });
+    this.form?.get('phoneNumber')?.valueChanges.subscribe(value => {
+      if (value && value.length > 9) {
+        this.form.get('phoneNumber')?.setValue(value.substring(0, 9), { emitEvent: false });
+      }
+    });
+    this.form?.get('secondCellPhone')?.valueChanges.subscribe(value => {
+      if (value && value.length > 10) {
+        this.form.get('secondCellPhone')?.setValue(value.substring(0, 10), { emitEvent: false });
+      }
     });
     this.getCatalogs()
     this.getCountries()
@@ -203,6 +223,7 @@ export class PersonalInformationComponent implements OnInit {
           this.form.get('lastName')?.enable();
         }
         this.blockNames = data.blockNames;
+        this.birthAddress = `Provincia: ${data.provinceBirth} - Ciudad / Canton: ${data.cityBirth} - Parroquia: ${data.parishBirth}`;
       }
     });
 
@@ -221,8 +242,6 @@ export class PersonalInformationComponent implements OnInit {
         }
       }
     });
-
-
 
     this.disabilityService.disabilityError$.subscribe(error => {
       if (!error?.message) return;
@@ -299,6 +318,7 @@ export class PersonalInformationComponent implements OnInit {
     this.form.get('name')?.enable();
     this.form.get('identification')?.enable();
     this.form.get('lastName')?.enable();
+    this.birthAddress = '';
   }
 
   updateValidations(disability: boolean): void {
@@ -324,6 +344,23 @@ export class PersonalInformationComponent implements OnInit {
     }
     disabilityType?.updateValueAndValidity();
     disabilityPercent?.updateValueAndValidity();
+  }
+
+  updateValidationsParish(value: number) {
+    const ecuador = this.countries.find(x => x.id.toString() === value.toString() && x.name === ECUADOR);
+    const parishBirth = this.form.get('parishBirth');
+    if(ecuador) {
+      this.showParishBirth = true;
+      parishBirth?.setValidators(
+        [
+          Validators.required,
+        ]);
+    } else {
+      this.showParishBirth = false;
+      parishBirth?.clearValidators();
+      parishBirth?.setValue('');
+    }
+    parishBirth?.updateValueAndValidity();
   }
 
   checkIdentification(): void {
@@ -491,7 +528,6 @@ export class PersonalInformationComponent implements OnInit {
           this.defaultValues.confirmEmailAddress,
           [
             Validators.required,
-            matchFields('emailAddress'),
           ]
         ],
         secondEmailAddress: [
@@ -546,6 +582,8 @@ export class PersonalInformationComponent implements OnInit {
           this.defaultValues.parishBirth,
           Validators.required
         ],
+      }, {
+        validators: matchFields('emailAddress', 'confirmEmailAddress')
       }
     );
     const formChangesSubscr = this.form.valueChanges.subscribe((val) => {

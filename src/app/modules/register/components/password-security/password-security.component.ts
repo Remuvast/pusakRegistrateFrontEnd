@@ -1,13 +1,11 @@
 import { ChangeDetectorRef, Component, Input, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { IRegister } from '../../models/register.model';
-import { first, Subscription } from 'rxjs';
+import { Subscription } from 'rxjs';
 import { CONSTANTS } from 'src/app/common/const';
-import { passwordMatchValidator } from 'src/app/validators/password-mismatch.validator';
 import { QuestionService } from '../../services/question.service';
 import { Questions } from '../../models/questions.model';
-import { matchFields } from 'src/app/validators/match-fields.validator';
-import { distinctQuestionsValidator } from 'src/app/validators/distinct-questions.validator';
+import { combinatedValidator } from 'src/app/validators/combinated-control.validator';
 
 @Component({
   selector: 'app-password-security',
@@ -76,7 +74,6 @@ export class PasswordSecurityComponent implements OnInit {
           this.defaultValues.confirmPassword, 
           [
             Validators.required,
-            matchFields('password'),
           ],
         ],
         securityQuestionOne: [
@@ -120,7 +117,7 @@ export class PasswordSecurityComponent implements OnInit {
         ],
       },
       {
-        validators: distinctQuestionsValidator('securityQuestionOne', 'securityQuestionTwo', 'securityQuestionThree')
+        validators: combinatedValidator
       }
     );
     const formChangesSubscr = this.form.valueChanges.subscribe((val) => {
@@ -133,12 +130,4 @@ export class PasswordSecurityComponent implements OnInit {
     this.unsubscribe.forEach((sb) => sb.unsubscribe());
   }
 
-  /*passwordSecurityForm: FormGroup;
-  @Output() complete = new EventEmitter<void>();
-
-  completeStep() {
-    if (this.passwordSecurityForm.valid) {
-      this.complete.emit();
-    }
-  }*/
 }

@@ -2,7 +2,7 @@ import { Component, Input } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { IRegister } from '../../models/register.model';
 import { Subscription } from 'rxjs';
-import { CONSTANTS } from 'src/app/common/const';
+import { CONSTANTS, ECUADOR } from 'src/app/common/const';
 import { LocationService } from '../../services/location.service';
 import { Location } from "../../models/location.model";
 
@@ -25,6 +25,7 @@ export class PlaceResidenceComponent {
   provinces: Location[] = [];
   cities: Location[] = [];
   parishes: Location[] = [];
+  showParishResidence: boolean = true;
 
   get f() {
     return this.form.controls;
@@ -39,6 +40,12 @@ export class PlaceResidenceComponent {
     this.initForm();
     this.updateParentModel({}, false);
     this.getCountries()
+    this.form?.get('countryResidence')?.valueChanges.subscribe(value => {
+      this.updateValidationsParish(value);
+    });
+    this.form?.get('number')?.valueChanges.subscribe(value => {
+      console.log(value, this.form);
+    });
     this.locationService.countries$.subscribe(countries => {
       if(countries && this.countries.length === 0) {
         this.countries = countries;
@@ -80,6 +87,24 @@ export class PlaceResidenceComponent {
   getParishes(): void {
     const cityId: number = this.f.cityResidence.value;
     this.locationService.getParishes(cityId).subscribe();
+  }
+
+  updateValidationsParish(value: number) {
+    const ecuador = this.countries.find(x => x.id.toString() === value.toString() && x.name === ECUADOR);
+    const parishResidence = this.form.get('parishResidence');
+    console.log(ecuador)
+    if(ecuador) {
+      this.showParishResidence = true;
+      parishResidence?.setValidators(
+        [
+          Validators.required,
+        ]);
+    } else {
+      this.showParishResidence = false;
+      parishResidence?.clearValidators();
+      parishResidence?.setValue('');
+    }
+    parishResidence?.updateValueAndValidity();
   }
 
   initForm(): void {
