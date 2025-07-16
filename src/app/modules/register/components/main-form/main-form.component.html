@@ -1,7 +1,10 @@
 <div class="card">
+  <div class="card-header justify-content-center">
+    <h2 class="mt-5">Regístrate</h2>
+  </div>
   <div class="card-body">
     <div
-      class="stepper stepper-links d-flex flex-column pt-15"
+      class="stepper stepper-links d-flex flex-column"
       id="kt_create_account_stepper"
     >
       <div class="stepper-nav mb-5" *ngIf="currentStep$.value < 4">
@@ -37,7 +40,7 @@
       </div>
 
       <form
-        class="mx-auto mw-600px w-100 pt-15 pb-10"
+        class="mx-auto mw-600px w-100 pt-10"
         noValidate
         id="kt_create_account_form"
       >
