@@ -40,7 +40,7 @@ export class PasswordSecurityComponent implements OnInit {
 
   ngOnInit(): void {
     this.initForm();
-    this.updateParentModel({}, false);
+    this.updateParentModel({}, !!this.form?.valid);
     this.getQuestions()
     this.questionService.questions$.subscribe((questions: Questions[]) => {
       if(questions && questions.length > 0 && this.questions.length === 0) {

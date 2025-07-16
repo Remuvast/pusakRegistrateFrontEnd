@@ -38,19 +38,11 @@ export class PlaceResidenceComponent {
 
   ngOnInit(): void {
     this.initForm();
-    this.updateParentModel({}, false);
+    this.updateParentModel({}, !!this.form?.valid);
     this.getCountries();
     this.loadCatalogs();
-    this.form?.get('countryResidence')?.valueChanges.subscribe(value => {
-      this.updateValidationsParishResidence(value);
-    });
     if(this.defaultValues.countryResidence) {
-      const country = this.countries.find(x => x.id?.toString() === this.defaultValues.countryResidence && x.name === ECUADOR)
-      if(country) {
-        this.showParishResidence = true;
-      } else {
-        this.showParishResidence = false;
-      }
+      this.updateValidationsParishResidence(this.defaultValues.countryResidence);
     }
   }
 
@@ -61,17 +53,17 @@ export class PlaceResidenceComponent {
       }
     })
     this.locationService.provinces$.subscribe(provinces => {
-      if(provinces) {
+      if(provinces && !this.provinces.find(x => x.parentId?.toString() === this.defaultValues.countryResidence)) {
         this.provinces = provinces;
       }
     })
     this.locationService.cities$.subscribe(cities => {
-      if(cities) {
+      if(cities && !this.cities.find(x => x.parentId?.toString() === this.defaultValues.provinceResidence)) {
         this.cities = cities;
       }
     })
     this.locationService.parishes$.subscribe(parishes => {
-      if(parishes) {
+      if(parishes && !this.parishes.find(x => x.parentId?.toString() === this.defaultValues.cityResidence)) {
         this.parishes = parishes;
       }
     })
@@ -84,30 +76,37 @@ export class PlaceResidenceComponent {
 
   getProvinces(): void {
     const countryId: number = this.f.countryResidence.value;
-    this.locationService.getProvinces(countryId).subscribe();
-    this.form.patchValue({
-      provinceResidence: '',
-      cityResidence: '',
-      parishResidence: '',
-    })
+    this.updateValidationsParishResidence(countryId?.toString());
+    if(countryId) {
+      this.locationService.getProvinces(countryId).subscribe();
+      this.form.patchValue({
+        provinceResidence: '',
+        cityResidence: '',
+        parishResidence: '',
+      })
+    }
   }
 
   getCities(): void {
     const provinceId: number = this.f.provinceResidence.value;
-    this.locationService.getCities(provinceId).subscribe();
-    this.form.patchValue({
-      cityResidence: '',
-      parishResidence: '',
-    })
+    if(provinceId) {
+      this.locationService.getCities(provinceId).subscribe();
+      this.form.patchValue({
+        cityResidence: '',
+        parishResidence: '',
+      })
+    }
   }
 
   getParishes(): void {
     const cityId: number = this.f.cityResidence.value;
-    if(this.countries.find(x => x.id.toString() === this.f.countryResidence.value && x.name === ECUADOR)) {
-      this.locationService.getParishes(cityId).subscribe();
-      this.form.patchValue({
-        parishResidence: '',
-      })
+    if(cityId) {
+      if(this.countries.find(x => x.id.toString() === this.f.countryResidence.value && x.name === ECUADOR)) {
+        this.locationService.getParishes(cityId).subscribe();
+        this.form.patchValue({
+          parishResidence: '',
+        })
+      }
     }
   }
 

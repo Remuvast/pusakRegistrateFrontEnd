@@ -53,6 +53,7 @@ export class PersonalInformationComponent implements OnInit {
   showParishBirth: boolean = true;
   birthAddress: string;
   mostrarSeccionDiscapacidad = false;
+  isFirstTime = true;
   get f() {
     return this.form.controls;
   }
@@ -165,17 +166,17 @@ export class PersonalInformationComponent implements OnInit {
       }
     })
     this.locationService.provincesBirth$.subscribe(provinces => {
-      if(provinces) {
+      if(provinces && !this.provinces.find(x => x.parentId?.toString() === this.defaultValues.countryBirth)) {
         this.provinces = provinces;
       }
     })
     this.locationService.citiesBirth$.subscribe(cities => {
-      if(cities) {
+      if(cities && !this.cities.find(x => x.parentId?.toString() === this.defaultValues.provinceBirth)) {
         this.cities = cities;
       }
     })
     this.locationService.parishesBirth$.subscribe(parishes => {
-      if(parishes) {
+      if(parishes && this.parishes.find(x => x.parentId?.toString() === this.defaultValues.cityBirth)) {
         this.parishes = parishes;
       }
     })
@@ -259,36 +260,42 @@ export class PersonalInformationComponent implements OnInit {
 
   getCountries(): void {
     if(this.countries.length === 0) {
-      this.locationService.getCountries().subscribe();
+      this.locationService.getCountries(true).subscribe();
     }
   }
 
   getProvinces(): void {
     const countryId: number = this.f.countryBirth.value;
-    this.locationService.getProvinces(countryId, true).subscribe();
-    this.form.patchValue({
-      provinceBirth: '',
-      cityBirth: '',
-      parishBirth: '',
-    })
+    if(countryId) {
+      this.locationService.getProvinces(countryId, true).subscribe();
+      this.form.patchValue({
+        provinceBirth: '',
+        cityBirth: '',
+        parishBirth: '',
+      })
+    }
   }
 
   getCities(): void {
     const provinceId: number = this.f.provinceBirth.value;
-    this.locationService.getCities(provinceId, true).subscribe();
-    this.form.patchValue({
-      cityBirth: '',
-      parishBirth: '',
-    })
+    if(provinceId) {
+      this.locationService.getCities(provinceId, true).subscribe();
+      this.form.patchValue({
+        cityBirth: '',
+        parishBirth: '',
+      })
+    }
   }
 
   getParishes(): void {
     const cityId: number = this.f.cityBirth.value;
-    if(this.countries.find(x => x.id.toString() === this.f.countryBirth.value && x.name === ECUADOR)) {
-      this.locationService.getParishes(cityId, true).subscribe();
-      this.form.patchValue({
-        parishBirth: '',
-      })
+    if(cityId) {
+      if(this.countries.find(x => x.id.toString() === this.f.countryBirth.value && x.name === ECUADOR)) {
+        this.locationService.getParishes(cityId, true).subscribe();
+        this.form.patchValue({
+          parishBirth: '',
+        })
+      }
     }
   }
 

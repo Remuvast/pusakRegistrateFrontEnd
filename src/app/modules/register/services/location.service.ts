@@ -26,7 +26,7 @@ export class LocationService {
     parishesUpdated = new EventEmitter<void>();
 
     private countriesBirthSubject = new BehaviorSubject<Location[]>([]);
-    countriesBirth$ = this.countriesSubject.asObservable();
+    countriesBirth$ = this.countriesBirthSubject.asObservable();
     countriesBirthUpdated = new EventEmitter<void>();
 
     private provincesBirthSubject = new BehaviorSubject<Location[]>([]);
@@ -54,14 +54,25 @@ export class LocationService {
         return this.http.get<LocationResponse[]>(`${this.API_URL}/paises`).pipe(
             map((data: LocationResponse[]) => this.mapLocations(data)),
             tap((catalogs: Location[]) => {
-                (isBirth ? this.countriesBirthSubject : this.countriesSubject).next(catalogs);
-                (isBirth ? this.provincesBirthSubject : this.provincesSubject).next([]);
-                (isBirth ? this.citiesBirthSubject : this.citiesSubject).next([]);
-                (isBirth ? this.parishesBirthSubject : this.parishesSubject).next([]);
-                (isBirth ? this.countriesBirthUpdated : this.countriesUpdated).emit();
-                (isBirth ? this.provincesBirthUpdated : this.provincesUpdated).emit();
-                (isBirth ? this.citiesBirthUpdated : this.citiesUpdated).emit();
-                (isBirth ? this.parishesBirthUpdated : this.parishesUpdated).emit();
+                if(isBirth) {
+                    this.countriesBirthSubject.next(catalogs);
+                    this.provincesBirthSubject.next([]);
+                    this.citiesBirthSubject.next([]);
+                    this.parishesBirthSubject.next([]);
+                    this.countriesBirthUpdated.emit();
+                    this.provincesBirthUpdated.emit();
+                    this.citiesBirthUpdated.emit();
+                    this.parishesBirthUpdated.emit();    
+                } else {
+                    this.countriesSubject.next(catalogs);
+                    this.provincesSubject.next([]);
+                    this.citiesSubject.next([]);
+                    this.parishesSubject.next([]);
+                    this.countriesUpdated.emit();
+                    this.provincesUpdated.emit();
+                    this.citiesUpdated.emit();
+                    this.parishesUpdated.emit();
+                }
             }),
             finalize(() => this.spinner.hide())
         );
@@ -72,12 +83,21 @@ export class LocationService {
         return this.http.get<LocationResponse[]>(`${this.API_URL}/provincias/${countryId}`).pipe(
             map((data: LocationResponse[]) => this.mapLocations(data)),
             tap((catalogs: Location[]) => {
-                (isBirth ? this.provincesBirthSubject : this.provincesSubject).next(catalogs);
-                (isBirth ? this.citiesBirthSubject : this.citiesSubject).next([]);
-                (isBirth ? this.parishesBirthSubject : this.parishesSubject).next([]);
-                (isBirth ? this.provincesBirthUpdated : this.provincesUpdated).emit();
-                (isBirth ? this.citiesBirthUpdated : this.citiesUpdated).emit();
-                (isBirth ? this.parishesBirthUpdated : this.parishesUpdated).emit();
+                if(isBirth) {
+                    this.provincesBirthSubject.next(catalogs);
+                    this.citiesBirthSubject.next([]);
+                    this.parishesBirthSubject.next([]);
+                    this.provincesBirthUpdated.emit();
+                    this.citiesBirthUpdated.emit();
+                    this.parishesBirthUpdated.emit();
+                } else {
+                    this.provincesSubject.next(catalogs);
+                    this.citiesSubject.next([]);
+                    this.parishesSubject.next([]);
+                    this.provincesUpdated.emit();
+                    this.citiesUpdated.emit();
+                    this.parishesUpdated.emit();
+                }
             }),
             finalize(() => this.spinner.hide())
         );
@@ -88,10 +108,17 @@ export class LocationService {
         return this.http.get<LocationResponse[]>(`${this.API_URL}/cantones/${provinceId}`).pipe(
             map((data: LocationResponse[]) => this.mapLocations(data)),
             tap((catalogs: Location[]) => {
-                (isBirth ? this.citiesBirthSubject : this.citiesSubject).next(catalogs);
-                (isBirth ? this.parishesBirthSubject : this.parishesSubject).next([]);
-                (isBirth ? this.citiesBirthUpdated : this.citiesUpdated).emit();
-                (isBirth ? this.parishesBirthUpdated : this.parishesUpdated).emit();
+                if(isBirth) {
+                    this.citiesBirthSubject.next(catalogs);
+                    this.parishesBirthSubject.next([]);
+                    this.citiesBirthUpdated.emit();
+                    this.parishesBirthUpdated.emit();
+                } else {
+                    this.citiesSubject.next(catalogs);
+                    this.parishesSubject.next([]);
+                    this.citiesUpdated.emit();
+                    this.parishesUpdated.emit();
+                }
             }),
             finalize(() => this.spinner.hide())
         );
@@ -102,8 +129,13 @@ export class LocationService {
         return this.http.get<LocationResponse[]>(`${this.API_URL}/parroquias/${cityId}`).pipe(
             map((data: LocationResponse[]) => this.mapLocations(data)),
             tap((catalogs: Location[]) => {
-                (isBirth ? this.parishesBirthSubject : this.parishesSubject).next(catalogs);
-                (isBirth ? this.parishesBirthUpdated : this.parishesUpdated).emit();
+                if(isBirth) {
+                    this.parishesBirthSubject.next(catalogs);
+                    this.parishesBirthUpdated.emit();
+                } else {
+                    this.parishesSubject.next(catalogs);
+                    this.parishesUpdated.emit();
+                }
             }),
             finalize(() => this.spinner.hide())
         );

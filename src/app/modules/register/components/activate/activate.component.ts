@@ -2,6 +2,7 @@ import { ChangeDetectorRef, Component, OnInit } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
 import { ActivateAccountService } from '../../services/activate-acount.service';
 import { BehaviorSubject } from 'rxjs';
+import { environment } from 'src/environments/environment';
 
 @Component({
   selector: 'app-activate',
@@ -11,6 +12,7 @@ import { BehaviorSubject } from 'rxjs';
 export class ActivateComponent implements OnInit {
 
   status$: BehaviorSubject<number> = new BehaviorSubject(-1);
+  url = environment.casLogin
 
   constructor(
     private route: ActivatedRoute,
