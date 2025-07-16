@@ -1,6 +1,6 @@
 import { Component, Input, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
-import { IRegister } from '../../models/register.model';
+import { init, IRegister } from '../../models/register.model';
 import { BehaviorSubject, Observable, Subscription } from 'rxjs';
 import { validateEcuadorianIdentification } from 'src/app/validators/identification.validator';
 import { maxDateValidator } from 'src/app/validators/birthdate.validator';
@@ -292,25 +292,12 @@ export class PersonalInformationComponent implements OnInit {
   }
 
   clearForm(value: string): void {
+    const resetedValue = {
+      ...init, identificationType: value,
+    }
+    this.updateParentModel(resetedValue, true);
     this.form.reset({
-      identificationType: value,
-      identification: '',
-      lastName: '',
-      name: '',
-      birthdate: '',
-      gender: '',
-      maritalStatus: '',
-      ethnicity: '',
-      disability: false,
-      disabilityType: '',
-      disabilityPercent: null,
-      nacionality: '',
-      emailAddress: '',
-      confirmEmailAddress: '',
-      secondEmailAddress: '',
-      phoneNumber: '',
-      cellPhone: '',
-      secondCellPhone: '',
+      identificationType: value
     });
     this.form.get('birthdate')?.enable();
     this.form.get('maritalStatus')?.enable();
@@ -347,7 +334,7 @@ export class PersonalInformationComponent implements OnInit {
   }
 
   updateValidationsParish(value: number) {
-    const ecuador = this.countries.find(x => x.id.toString() === value.toString() && x.name === ECUADOR);
+    const ecuador = this.countries.find(x => x.id?.toString() === value?.toString() && x.name === ECUADOR);
     const parishBirth = this.form.get('parishBirth');
     if(ecuador) {
       this.showParishBirth = true;

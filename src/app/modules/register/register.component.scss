@@ -32,6 +32,15 @@
         align-self: flex-end;
     }
 
+    .image-centered {
+        display: flex;
+        justify-content: center; 
+        img {
+            max-height:60px;
+            max-width: 200px;
+        } 
+    }
+
     /* Estructura base */
     html,
     body {

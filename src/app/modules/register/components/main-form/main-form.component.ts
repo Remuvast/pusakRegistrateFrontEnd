@@ -1,4 +1,4 @@
-import { ChangeDetectorRef, Component } from '@angular/core';
+import { ChangeDetectorRef, Component, ElementRef, ViewChild } from '@angular/core';
 import { BehaviorSubject, first, Subscription } from 'rxjs';
 import { init, IRegister, IRegisterSuccess } from '../../models/register.model';
 import { CONSTANTS } from 'src/app/common/const';
@@ -16,7 +16,7 @@ export class MainFormComponent {
   formsCount = 4;
   register$: BehaviorSubject<IRegister> =
     new BehaviorSubject<IRegister>(init);
-  currentStep$: BehaviorSubject<number> = new BehaviorSubject(2);
+  currentStep$: BehaviorSubject<number> = new BehaviorSubject(1);
   isCurrentFormValid$: BehaviorSubject<boolean> = new BehaviorSubject<boolean>(
     false
   );
@@ -92,6 +92,7 @@ export class MainFormComponent {
       return;
     }
     this.currentStep$.next(nextStep);
+    this.moveToUp();
   }
 
   prevStep(): void {
@@ -103,6 +104,13 @@ export class MainFormComponent {
       return;
     }
     this.currentStep$.next(prevStep);
+    this.moveToUp();
+  }
+
+  moveToUp() {
+    setTimeout(() => {
+      window.scrollTo({ top: 0, behavior: 'smooth' });
+    }, 100);
   }
 
   saveForm(nextStep: number): void {
