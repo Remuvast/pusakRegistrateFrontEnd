@@ -97,6 +97,14 @@ export class PersonalInformationComponent implements OnInit {
     this.getCountries()
     this.loadCatalogs()
     this.validateNames();
+    if(this.defaultValues.countryBirth) {
+      const country = this.countries.find(x => x.id.toString() === this.defaultValues.countryBirth && x.name === ECUADOR)
+      if(country) {
+        this.showParishBirth = true;
+      } else {
+        this.showParishBirth = false;
+      }
+    }
   }
 
   validateNames(): void {
@@ -276,10 +284,12 @@ export class PersonalInformationComponent implements OnInit {
 
   getParishes(): void {
     const cityId: number = this.f.cityBirth.value;
-    this.locationService.getParishes(cityId, true).subscribe();
-    this.form.patchValue({
-      parishBirth: '',
-    })
+    if(this.countries.find(x => x.id.toString() === this.f.countryBirth.value && x.name === ECUADOR)) {
+      this.locationService.getParishes(cityId, true).subscribe();
+      this.form.patchValue({
+        parishBirth: '',
+      })
+    }
   }
 
   getCatalogs(): void {
