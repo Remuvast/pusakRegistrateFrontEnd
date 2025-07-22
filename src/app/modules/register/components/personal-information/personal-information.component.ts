@@ -95,7 +95,6 @@ export class PersonalInformationComponent implements OnInit {
       }
     });
     this.getCatalogs()
-    this.getCountries()
     this.loadCatalogs()
     this.validateNames();
     if(this.defaultValues.countryBirth) {
@@ -161,7 +160,9 @@ export class PersonalInformationComponent implements OnInit {
       }
     })
     this.locationService.countriesBirth$.subscribe(countries => {
-      if(countries && this.countries.length === 0) {
+      if(countries.length === 0) {
+        this.getCountries()
+      } else {
         this.countries = countries;
       }
     })
