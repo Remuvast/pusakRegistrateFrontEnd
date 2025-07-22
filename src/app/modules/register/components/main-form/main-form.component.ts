@@ -114,18 +114,20 @@ export class MainFormComponent {
   }
 
   saveForm(nextStep: number): void {
-    this.register$.subscribe(form =>{
-      this.registerService.saveRegister(form)
-        .pipe(first())
-        .subscribe({
-          next: (result: IRegisterSuccess | boolean) => {
-            if(result) {
-              this.currentStep$.next(nextStep);
-              this.cdr.detectChanges()
+    if(nextStep === 4) {
+      this.register$.subscribe(form =>{
+        this.registerService.saveRegister(form)
+          .pipe(first())
+          .subscribe({
+            next: (result: IRegisterSuccess | boolean) => {
+              if(result) {
+                this.currentStep$.next(nextStep);
+                this.cdr.detectChanges()
+              }
             }
-          }
-        });
-    });
+          });
+      });
+    }
   }
 
   ngOnDestroy(): void {
