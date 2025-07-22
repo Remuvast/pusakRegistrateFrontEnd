@@ -37,7 +37,7 @@ clean: down
 	@echo "🧹 Limpiando volúmenes..."
 	$(DOCKER_COMPOSE) down -v --remove-orphans
 
-# Ayuda
+# Ayuda  con los contenedores
 help:
 	@echo "🛠️  Comandos disponibles:"
 	@echo "  make build     👉 Construye la imagen del frontend"
