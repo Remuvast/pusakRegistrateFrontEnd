@@ -52,7 +52,7 @@ export class PersonalInformationComponent implements OnInit {
   isLoadingSubject: BehaviorSubject<boolean>;
   showParishBirth: boolean = true;
   birthAddress: string;
-  mostrarSeccionDiscapacidad = false;
+  showDisabilitySection = false;
   isFirstTime = true;
   get f() {
     return this.form.controls;
@@ -176,7 +176,7 @@ export class PersonalInformationComponent implements OnInit {
       }
     })
     this.locationService.parishesBirth$.subscribe(parishes => {
-      if(parishes && this.parishes.find(x => x.parentId?.toString() === this.defaultValues.cityBirth)) {
+      if(parishes && !this.parishes.find(x => x.parentId?.toString() === this.defaultValues.cityBirth)) {
         this.parishes = parishes;
       }
     })
@@ -241,7 +241,10 @@ export class PersonalInformationComponent implements OnInit {
         this.disability = disabilityResponse;
         if (this.disability.wsAvailable) {
           if (this.disability.type && this.disability.percent) {
-            this.fillDisability();
+            this.showDisabilitySection = true;
+            setTimeout(() => {
+              this.fillDisability();
+            }, 500);
           }
         } else {
           this.toast.warning(
@@ -290,7 +293,7 @@ export class PersonalInformationComponent implements OnInit {
   getParishes(): void {
     const cityId: number = this.f.cityBirth.value;
     if(cityId) {
-      if(this.countries.find(x => x.id.toString() === this.f.countryBirth.value && x.name === ECUADOR)) {
+      if(this.countries.some(x => x.id.toString() === this.f.countryBirth.value && x.name === ECUADOR)) {
         this.locationService.getParishes(cityId, true).subscribe();
         this.form.patchValue({
           parishBirth: '',
@@ -309,6 +312,13 @@ export class PersonalInformationComponent implements OnInit {
   }
 
   clearForm(value: string): void {
+    this.disability = {
+      percent: 0,
+      type: '',
+      value: '',
+      wsAvailable: false,
+    }
+    this.showDisabilitySection = false
     const resetedValue = {
       ...init, identificationType: value,
     }
@@ -323,6 +333,24 @@ export class PersonalInformationComponent implements OnInit {
     this.form.get('identification')?.enable();
     this.form.get('lastName')?.enable();
     this.birthAddress = '';
+    const identification = this.form.get('identification');
+    if(value === CI) {
+      this.labels.identification.minlength = 'La identificación debe tener 10 caracteres';
+      this.labels.identification.maxlength = 'La identificación debe tener 10 caracteres';
+      identification?.setValidators([
+        Validators.required,
+        Validators.minLength(10),
+        Validators.maxLength(10),
+      ])
+    } else {
+      this.labels.identification.minlength = 'La identificación debe tener mínimo 6 caracteres';
+      this.labels.identification.maxlength = 'La identificación máximo puede tener 20 caracteres';
+      identification?.setValidators([
+        Validators.required,
+        Validators.minLength(6),
+        Validators.maxLength(20),
+      ])
+    }
   }
 
   updateValidations(disability: boolean): void {
@@ -338,7 +366,10 @@ export class PersonalInformationComponent implements OnInit {
           Validators.pattern(/^\d+$/),
         ]);
       if(this.disability) {
-        this.fillDisability()
+        this.showDisabilitySection = true;
+        setTimeout(() => {
+          this.fillDisability();
+        }, 500);
       }
     } else {
       disabilityType?.clearValidators();
@@ -420,7 +451,6 @@ export class PersonalInformationComponent implements OnInit {
 
  fillDisability(): void {
   if (this.disability?.type) {
-    this.mostrarSeccionDiscapacidad = true;
 
     const select = this.disabilityTypes.find(x => x.name === this.disability.type);
     if (select) {
