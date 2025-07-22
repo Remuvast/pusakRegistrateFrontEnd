@@ -8,6 +8,6 @@ export function maxDateValidator(): ValidatorFn {
     const today = new Date();
     today.setHours(0, 0, 0, 0);
     date.setHours(0, 0, 0, 0);
-    return date > today ? { invalidDate: true } : null;
+    return date >= today ? { invalidDate: true } : null;
   };
 }

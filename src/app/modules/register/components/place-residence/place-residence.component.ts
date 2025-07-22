@@ -39,7 +39,6 @@ export class PlaceResidenceComponent {
   ngOnInit(): void {
     this.initForm();
     this.updateParentModel({}, !!this.form?.valid);
-    this.getCountries();
     this.loadCatalogs();
     if(this.defaultValues.countryResidence) {
       this.updateValidationsParishResidence(this.defaultValues.countryResidence);
@@ -48,8 +47,10 @@ export class PlaceResidenceComponent {
 
   loadCatalogs(): void {
     this.locationService.countries$.subscribe(countries => {
-      if(countries && this.countries.length === 0) {
+      if(countries && countries.length > 0) {
         this.countries = countries;
+      } else {
+        this.getCountries();
       }
     })
     this.locationService.provinces$.subscribe(provinces => {

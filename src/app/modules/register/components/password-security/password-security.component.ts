@@ -1,4 +1,4 @@
-import { ChangeDetectorRef, Component, Input, OnInit } from '@angular/core';
+import { AfterViewInit, ChangeDetectorRef, Component, Input, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { IRegister } from '../../models/register.model';
 import { Subscription } from 'rxjs';
@@ -40,11 +40,15 @@ export class PasswordSecurityComponent implements OnInit {
 
   ngOnInit(): void {
     this.initForm();
-    this.updateParentModel({}, !!this.form?.valid);
-    this.getQuestions()
+    const isValid = this.f.password.value && this.f.confirmPassword.value && this.f.password.value === this.f.confirmPassword.value
+      && this.f.securityQuestionOne.value && this.f.securityQuestionTwo.value && this.f.securityQuestionThree.value
+      && this.f.securityAnswerOne.value && this.f.securityAnswerTwo.value && this.f.securityAnswerThree.value
+    this.updateParentModel({}, isValid);
     this.questionService.questions$.subscribe((questions: Questions[]) => {
-      if(questions && questions.length > 0 && this.questions.length === 0) {
+      if(questions && questions.length > 0) {
         this.questions = questions;
+      } else {
+        this.getQuestions()
       }
       this.cdr.detectChanges();
     })
