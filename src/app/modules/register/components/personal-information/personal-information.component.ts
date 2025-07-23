@@ -16,7 +16,7 @@ import { Location } from '../../models/location.model';
 import { normalize } from 'src/app/validators/fullname.validator';
 import { ToastrService } from 'ngx-toastr';
 import { UserService } from '../../services/user.service';
-import { CheckEmail } from '../../models/user.model';
+import { CheckEmail, CheckIdentification } from '../../models/user.model';
 import { Disability } from '../../models/disability.model';
 import { DisabilityService } from '../../services/disability.service';
 
@@ -99,6 +99,7 @@ export class PersonalInformationComponent implements OnInit {
     this.validateNames();
     if(this.defaultValues.countryBirth) {
       const country = this.countries.find(x => x.id.toString() === this.defaultValues.countryBirth && x.name === ECUADOR)
+      this.updateValidationsParish(Number(this.defaultValues.countryBirth));
       if(country) {
         this.showParishBirth = true;
       } else {
@@ -191,8 +192,6 @@ export class PersonalInformationComponent implements OnInit {
         error.message.toLowerCase().includes('fallecido')
       ) {
         this.addError('identification', 'invalidIdentification');
-      } else if (error.status === 409) {
-        this.addError('identification', 'duplicatedDocument');
       } else {
         this.addError('identification', 'invalidDocument');
       }
@@ -206,6 +205,25 @@ export class PersonalInformationComponent implements OnInit {
         this.removeError('emailAddress', 'duplicatedEmail');
       }
     })
+
+    this.userService.identification$.subscribe((data: CheckIdentification | null) => {
+      if(data?.exist) {
+        this.toast.warning(data.message, 'Error');
+        this.addError('identification', 'duplicatedDocument');
+      } else {
+        this.removeError('identification', 'duplicatedDocument');
+        if(this.checkIdentificationType()) {
+          const validIdentification = validateEcuadorianIdentification(this.f.identification.value)
+          if(validIdentification) {
+            this.removeError('identification', 'invalidDocument');
+            this.checkCivilRegistryWS();
+          } else {
+            this.addError('identification', 'invalidDocument');
+          }
+        }
+      }
+    })
+
     this.wsService.civilRegistry$.subscribe((data: CivilRegistry | null) => {
       if(data) {
         const maritalStatus = this.maritalStatuses.filter(x => x.name.toLocaleLowerCase() === data.maritalStatus.toLocaleLowerCase());
@@ -319,7 +337,7 @@ export class PersonalInformationComponent implements OnInit {
       value: '',
       wsAvailable: false,
     }
-    this.showDisabilitySection = false
+    
     const resetedValue = {
       ...init, identificationType: value,
     }
@@ -336,6 +354,7 @@ export class PersonalInformationComponent implements OnInit {
     this.birthAddress = '';
     const identification = this.form.get('identification');
     if(value === CI) {
+
       this.labels.identification.minlength = 'La identificación debe tener 10 caracteres';
       this.labels.identification.maxlength = 'La identificación debe tener 10 caracteres';
       identification?.setValidators([
@@ -343,7 +362,11 @@ export class PersonalInformationComponent implements OnInit {
         Validators.minLength(10),
         Validators.maxLength(10),
       ])
+      this.showDisabilitySection = false;
     } else {
+      if(value) {
+        this.showDisabilitySection = true;
+      }
       this.labels.identification.minlength = 'La identificación debe tener mínimo 6 caracteres';
       this.labels.identification.maxlength = 'La identificación máximo puede tener 20 caracteres';
       identification?.setValidators([
@@ -401,16 +424,24 @@ export class PersonalInformationComponent implements OnInit {
 
   checkIdentification(): void {
     if(!!this.f.identificationType.value && this.f.identification.value){
-      if(this.checkIdentificationType()) {
-        const validIdentification = validateEcuadorianIdentification(this.f.identification.value)
-        if(validIdentification) {
-          this.removeError('identification', 'invalidDocument');
-          this.checkCivilRegistryWS();
-        } else {
-          this.addError('identification', 'invalidDocument');
+      this.existIdentification();
+      /**Aqui va logica mal hecha pedida por el funcional */
+      if(!this.checkIdentificationType()) {
+        if(this.f.identification?.value?.length === 10 && this.isNumber(this.f.identification.value)) {
+          const validIdentification = validateEcuadorianIdentification(this.f.identification.value.toString())
+          if(validIdentification) {
+            this.addError('identification', 'invalidDocumentEntered');
+          } else {
+            this.removeError('identification', 'invalidDocumentEntered');
+          }
         }
       }
+      /**Aqui termina logica mal hecha pedida por el funcional */
     }
+  }
+
+  isNumber(value: any): boolean {
+    return !isNaN(value);
   }
 
   removeErrors(): void {
@@ -446,8 +477,13 @@ export class PersonalInformationComponent implements OnInit {
     const value = this.identificationTypes.filter(x => CI === this.f.identificationType.value );
     return value.length > 0;
   }
+
   checkEmail(): void {
     this.userService.checkEmail(this.f.emailAddress.value).subscribe();
+  }
+
+  existIdentification(): void {
+    this.userService.checkIdentification(this.f.identification.value).subscribe();
   }
 
  fillDisability(): void {
