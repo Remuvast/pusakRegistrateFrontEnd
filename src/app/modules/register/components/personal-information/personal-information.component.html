@@ -35,7 +35,8 @@
               { validation: 'invalidDocument', message: labels.identification.invalidDocument },
               { validation: 'minlength', message: labels.identification.minlength },
               { validation: 'maxlength', message: labels.identification.maxlength },
-              { validation: 'duplicatedDocument', message: labels.identification.duplicatedDocument }
+              { validation: 'duplicatedDocument', message: labels.identification.duplicatedDocument },
+              { validation: 'invalidDocumentEntered', message: labels.identification.invalidDocumentEntered },
             ]">
                     <ng-container [ngTemplateOutlet]="formError" [ngTemplateOutletContext]="{
               validation: err.validation,
@@ -127,7 +128,7 @@
         </div>
         <div class="row" *ngIf="birthAddress">
             <div class="col-sm-12 mb-3">
-                <span><b>Datos traídos del registro civil de lugar de nacimiento</b> {{birthAddress}} </span>
+                <span><b>Ingrese los datos obtenidos del servicio web del Registro Civil para lugar de nacimiento según la información mostrada a continuación:</b> {{birthAddress}} </span>
             </div>
         </div>
         <div class="row">
@@ -246,7 +247,7 @@
                 />
               </div>
               <div class="mb-3 col-lg-6 col-sm-12">
-                <label for="disabilityType" class="form-label required">{{labels.disabilityType.label}}</label>
+                <label for="disabilityType" [class]="'form-label ' + (f.disability.value ? 'required' : '')">{{labels.disabilityType.label}}</label>
                 <select
                   id="disabilityType"
                   class="form-select form-select-sm form-select-solid"
@@ -268,7 +269,7 @@
             </div>
             <div class="row">
               <div class="mb-3 col-lg-6 col-sm-12">
-                <label for="disabilityPercent" class="form-label required">{{labels.disabilityPercent.label}}</label>
+                <label for="disabilityPercent" [class]="'form-label ' + (f.disability.value ? 'required' : '')">{{labels.disabilityPercent.label}}</label>
                 <input
                   id="disabilityPercent"
                   type="number"

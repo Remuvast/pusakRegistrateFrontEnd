@@ -6,7 +6,8 @@ export const CONSTANTS = {
     register: {
         alertMessage: '* Debes completar correctamente los campos mandatorios del formulario para continuar.',
         alert: '* Si presenta inconvenientes al registrar sus datos puede dirigir un correo electrónico a: soportebecas@senescyt.gob.ec; favor detallar nombres y apellidos completos, número de identificación y su requerimiento.',
-        alertMessageTitle: 'Atención!',
+        validData: '* El usuario es responsable de la veracidad y exactitud de la información ingresada. Cualquier error, falsedad o uso indebido será de su exclusiva responsabilidad.',
+        alertMessageTitle: '¡Atención!',
         back: 'Atras',
         next: 'Siguiente',
         save: 'Guardar',
@@ -29,7 +30,8 @@ export const CONSTANTS = {
                 invalidDocument: 'La identificación ingresada no es válida',
                 minlength: 'La identificación debe tener 6 caracteres',
                 maxlength: 'Máximo puede tener 20 caracteres',
-                duplicatedDocument: 'La identificación ingresada ya se encuentra registada',
+                duplicatedDocument: 'La identificación ingresada ya se encuentra registrada',
+                invalidDocumentEntered: 'La identificación ingresada corresponde a una cédula de identidad ecuatoriana, selecciona el tipo de identificación CÉDULA',
             },
             lastName: {
                 label: 'Apellidos',
