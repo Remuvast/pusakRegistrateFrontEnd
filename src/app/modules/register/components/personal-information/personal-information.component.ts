@@ -79,6 +79,17 @@ export class PersonalInformationComponent implements OnInit {
     this.form?.get('countryBirth')?.valueChanges.subscribe(value => {
       this.updateValidationsParish(value);
     });
+    this.form?.get('identification')?.valueChanges.subscribe(value => {
+      if (this.f.identificationType.value === CI) {
+        if (value && value.length > 10) {
+          this.form.get('identification')?.setValue(value.substring(0, 10), { emitEvent: false });
+        }
+      } else {
+        if (value && value.length > 20) {
+          this.form.get('identification')?.setValue(value.substring(0, 20), { emitEvent: false });
+        }
+      }
+    });
     this.form?.get('cellPhone')?.valueChanges.subscribe(value => {
       if (value && value.length > 10) {
         this.form.get('cellPhone')?.setValue(value.substring(0, 10), { emitEvent: false });
@@ -97,25 +108,27 @@ export class PersonalInformationComponent implements OnInit {
     this.getCatalogs()
     this.loadCatalogs()
     this.validateNames();
-    if(this.defaultValues.countryBirth) {
+    if (this.defaultValues.countryBirth) {
       const country = this.countries.find(x => x.id.toString() === this.defaultValues.countryBirth && x.name === ECUADOR)
       this.updateValidationsParish(Number(this.defaultValues.countryBirth));
-      if(country) {
+      if (country) {
         this.showParishBirth = true;
       } else {
         this.showParishBirth = false;
       }
     }
+    this.showDisabilitySection = !!this.defaultValues.disability;
+    this.updateValidations(this.showDisabilitySection)
   }
 
   validateNames(): void {
     this.form.valueChanges.subscribe(values => {
-      if(this.f.identificationType.value === CI) {
+      if (this.f.identificationType.value === CI) {
         const name = values.name;
         const lastName = values.lastName;
-        if(name && lastName) {
+        if (name && lastName) {
           const combinated = `${lastName} ${name}`.trim();
-          if(combinated === this.fullname) {
+          if (combinated === this.fullname) {
             this.removeErrors()
           } else {
             this.addErrors()
@@ -131,54 +144,54 @@ export class PersonalInformationComponent implements OnInit {
 
   loadCatalogs(): void {
     this.catalogService.disability$.subscribe((disabilities: Catalogs[]) => {
-      if(disabilities && this.disabilityTypes.length === 0) {
+      if (disabilities && this.disabilityTypes.length === 0) {
         this.disabilityTypes = disabilities;
       }
     })
     this.catalogService.ethnicity$.subscribe((ethnicities: Catalogs[]) => {
-      if(ethnicities && this.ethnicities.length === 0) {
+      if (ethnicities && this.ethnicities.length === 0) {
         this.ethnicities = ethnicities
       }
     })
     this.catalogService.identificationType$.subscribe((identificationTypes: Catalogs[]) => {
-      if(identificationTypes && this.identificationTypes.length === 0) {
+      if (identificationTypes && this.identificationTypes.length === 0) {
         this.identificationTypes = identificationTypes
       }
     })
     this.catalogService.maritalStatus$.subscribe((maritalStautes: Catalogs[]) => {
-      if(maritalStautes && this.maritalStatuses.length === 0) {
+      if (maritalStautes && this.maritalStatuses.length === 0) {
         this.maritalStatuses = maritalStautes
       }
     })
     this.catalogService.nacionality$.subscribe((nacionalities: Catalogs[]) => {
-      if(nacionalities && this.nacionalities.length === 0) {
+      if (nacionalities && this.nacionalities.length === 0) {
         this.nacionalities = nacionalities
       }
     })
     this.catalogService.gender$.subscribe((genders: Catalogs[]) => {
-      if(genders && this.genders.length === 0) {
+      if (genders && this.genders.length === 0) {
         this.genders = genders
       }
     })
     this.locationService.countriesBirth$.subscribe(countries => {
-      if(countries.length === 0) {
+      if (countries.length === 0) {
         this.getCountries()
       } else {
         this.countries = countries;
       }
     })
     this.locationService.provincesBirth$.subscribe(provinces => {
-      if(provinces && !this.provinces.find(x => x.parentId?.toString() === this.defaultValues.countryBirth)) {
+      if (provinces && !this.provinces.find(x => x.parentId?.toString() === this.defaultValues.countryBirth)) {
         this.provinces = provinces;
       }
     })
     this.locationService.citiesBirth$.subscribe(cities => {
-      if(cities && !this.cities.find(x => x.parentId?.toString() === this.defaultValues.provinceBirth)) {
+      if (cities && !this.cities.find(x => x.parentId?.toString() === this.defaultValues.provinceBirth)) {
         this.cities = cities;
       }
     })
     this.locationService.parishesBirth$.subscribe(parishes => {
-      if(parishes && !this.parishes.find(x => x.parentId?.toString() === this.defaultValues.cityBirth)) {
+      if (parishes && !this.parishes.find(x => x.parentId?.toString() === this.defaultValues.cityBirth)) {
         this.parishes = parishes;
       }
     })
@@ -198,7 +211,7 @@ export class PersonalInformationComponent implements OnInit {
     });
 
     this.userService.email$.subscribe((data: CheckEmail | null) => {
-      if(data?.exist) {
+      if (data?.exist) {
         this.toast.warning(data.message, 'Error');
         this.addError('emailAddress', 'duplicatedEmail');
       } else {
@@ -207,14 +220,14 @@ export class PersonalInformationComponent implements OnInit {
     })
 
     this.userService.identification$.subscribe((data: CheckIdentification | null) => {
-      if(data?.exist) {
+      if (data?.exist) {
         this.toast.warning(data.message, 'Error');
         this.addError('identification', 'duplicatedDocument');
       } else {
         this.removeError('identification', 'duplicatedDocument');
-        if(this.checkIdentificationType()) {
+        if (this.checkIdentificationType()) {
           const validIdentification = validateEcuadorianIdentification(this.f.identification.value)
-          if(validIdentification) {
+          if (validIdentification) {
             this.removeError('identification', 'invalidDocument');
             this.checkCivilRegistryWS();
           } else {
@@ -225,7 +238,7 @@ export class PersonalInformationComponent implements OnInit {
     })
 
     this.wsService.civilRegistry$.subscribe((data: CivilRegistry | null) => {
-      if(data) {
+      if (data) {
         const maritalStatus = this.maritalStatuses.filter(x => x.name.toLocaleLowerCase() === data.maritalStatus.toLocaleLowerCase());
         const gender = this.genders.filter(x => x.name === data.sex);
         const [day, month, year] = data.birthDate.split('/');
@@ -243,7 +256,7 @@ export class PersonalInformationComponent implements OnInit {
         this.form.get('maritalStatus')?.disable();
         this.form.get('gender')?.disable();
         this.form.get('identification')?.disable();
-        if(data.blockNames) {
+        if (data.blockNames) {
           this.form.get('name')?.disable();
           this.form.get('lastName')?.disable();
         } else {
@@ -281,14 +294,14 @@ export class PersonalInformationComponent implements OnInit {
   }
 
   getCountries(): void {
-    if(this.countries.length === 0) {
+    if (this.countries.length === 0) {
       this.locationService.getCountries(true).subscribe();
     }
   }
 
   getProvinces(): void {
     const countryId: number = this.f.countryBirth.value;
-    if(countryId) {
+    if (countryId) {
       this.locationService.getProvinces(countryId, true).subscribe();
       this.form.patchValue({
         provinceBirth: '',
@@ -300,7 +313,7 @@ export class PersonalInformationComponent implements OnInit {
 
   getCities(): void {
     const provinceId: number = this.f.provinceBirth.value;
-    if(provinceId) {
+    if (provinceId) {
       this.locationService.getCities(provinceId, true).subscribe();
       this.form.patchValue({
         cityBirth: '',
@@ -311,8 +324,8 @@ export class PersonalInformationComponent implements OnInit {
 
   getParishes(): void {
     const cityId: number = this.f.cityBirth.value;
-    if(cityId) {
-      if(this.countries.some(x => x.id.toString() === this.f.countryBirth.value && x.name === ECUADOR)) {
+    if (cityId) {
+      if (this.countries.some(x => x.id.toString() === this.f.countryBirth.value && x.name === ECUADOR)) {
         this.locationService.getParishes(cityId, true).subscribe();
         this.form.patchValue({
           parishBirth: '',
@@ -337,7 +350,7 @@ export class PersonalInformationComponent implements OnInit {
       value: '',
       wsAvailable: false,
     }
-    
+
     const resetedValue = {
       ...init, identificationType: value,
     }
@@ -353,7 +366,7 @@ export class PersonalInformationComponent implements OnInit {
     this.form.get('lastName')?.enable();
     this.birthAddress = '';
     const identification = this.form.get('identification');
-    if(value === CI) {
+    if (value === CI) {
 
       this.labels.identification.minlength = 'La identificación debe tener 10 caracteres';
       this.labels.identification.maxlength = 'La identificación debe tener 10 caracteres';
@@ -364,7 +377,7 @@ export class PersonalInformationComponent implements OnInit {
       ])
       this.showDisabilitySection = false;
     } else {
-      if(value) {
+      if (value) {
         this.showDisabilitySection = true;
       }
       this.labels.identification.minlength = 'La identificación debe tener mínimo 6 caracteres';
@@ -389,7 +402,7 @@ export class PersonalInformationComponent implements OnInit {
           Validators.max(100),
           Validators.pattern(/^\d+$/),
         ]);
-      if(this.disability) {
+      if (this.disability) {
         this.showDisabilitySection = true;
         setTimeout(() => {
           this.fillDisability();
@@ -408,7 +421,7 @@ export class PersonalInformationComponent implements OnInit {
   updateValidationsParish(value: number) {
     const ecuador = this.countries.find(x => x.id?.toString() === value?.toString() && x.name === ECUADOR);
     const parishBirth = this.form.get('parishBirth');
-    if(ecuador) {
+    if (ecuador) {
       this.showParishBirth = true;
       parishBirth?.setValidators(
         [
@@ -423,13 +436,13 @@ export class PersonalInformationComponent implements OnInit {
   }
 
   checkIdentification(): void {
-    if(!!this.f.identificationType.value && this.f.identification.value){
+    if (!!this.f.identificationType.value && this.f.identification.value) {
       this.existIdentification();
       /**Aqui va logica mal hecha pedida por el funcional */
-      if(!this.checkIdentificationType()) {
-        if(this.f.identification?.value?.length === 10 && this.isNumber(this.f.identification.value)) {
+      if (!this.checkIdentificationType()) {
+        if (this.f.identification?.value?.length === 10 && this.isNumber(this.f.identification.value)) {
           const validIdentification = validateEcuadorianIdentification(this.f.identification.value.toString())
-          if(validIdentification) {
+          if (validIdentification) {
             this.addError('identification', 'invalidDocumentEntered');
           } else {
             this.removeError('identification', 'invalidDocumentEntered');
@@ -451,7 +464,7 @@ export class PersonalInformationComponent implements OnInit {
   removeError(key: string, errorKey: string): void {
     const control = this.f[key];
     const currentErrors = control?.errors || {};
-    if(currentErrors[errorKey]) {
+    if (currentErrors[errorKey]) {
       delete currentErrors[errorKey]
     }
     control?.setErrors(Object.keys(currentErrors).length ? currentErrors : null);
@@ -474,7 +487,7 @@ export class PersonalInformationComponent implements OnInit {
   }
 
   checkIdentificationType(): boolean {
-    const value = this.identificationTypes.filter(x => CI === this.f.identificationType.value );
+    const value = this.identificationTypes.filter(x => CI === this.f.identificationType.value);
     return value.length > 0;
   }
 
@@ -486,40 +499,56 @@ export class PersonalInformationComponent implements OnInit {
     this.userService.checkIdentification(this.f.identification.value).subscribe();
   }
 
- fillDisability(): void {
-  if (this.disability?.type) {
+  fillDisability(): void {
+    if (this.disability?.type) {
 
-    const select = this.disabilityTypes.find(x => x.name === this.disability.type);
-    if (select) {
-      // Usa patchValue con emitEvent: false
-      this.form.patchValue(
-        {
-          disability: true,
-          disabilityType: select.id,
-          disabilityPercent: this.disability.percent
-        },
-        { emitEvent: false }
-      );
+      const select = this.disabilityTypes.find(x => x.name === this.disability.type);
+      if (select) {
+        // Usa patchValue con emitEvent: false
+        this.form.patchValue(
+          {
+            disability: true,
+            disabilityType: select.id,
+            disabilityPercent: this.disability.percent
+          },
+          { emitEvent: false }
+        );
 
-      this.form.get('disability')?.disable();
-      this.form.get('disabilityType')?.disable();
-      this.form.get('disabilityPercent')?.disable();
-    } else {
-      this.form.patchValue(
-        {
-          disability: false,
-          disabilityType: '',
-          disabilityPercent: ''
-        },
-        { emitEvent: false }
-      );
+        this.form.get('disability')?.disable();
+        this.form.get('disabilityType')?.disable();
+        this.form.get('disabilityPercent')?.disable();
+      } else {
+        this.form.patchValue(
+          {
+            disability: false,
+            disabilityType: '',
+            disabilityPercent: ''
+          },
+          { emitEvent: false }
+        );
 
-      this.form.get('disability')?.enable();
-      this.form.get('disabilityType')?.enable();
-      this.form.get('disabilityPercent')?.enable();
+        this.form.get('disability')?.enable();
+        this.form.get('disabilityType')?.enable();
+        this.form.get('disabilityPercent')?.enable();
+      }
     }
   }
-}
+
+  validateNumberInput(event: KeyboardEvent, isCI: boolean) {
+    const allowedKeys = [
+      'Backspace', 'ArrowLeft', 'ArrowRight', 'Tab', 'Delete'
+    ];
+    
+    // Permitir teclas especiales y control
+    if (allowedKeys.includes(event.key)) {
+      return;
+    }
+
+    // Solo números del 0 al 9
+    if (!/^[0-9]$/.test(event.key) && ((isCI && this.f.identificationType.value === CI) || !isCI)) {
+      event.preventDefault(); // Bloquea el carácter
+    }
+  }
 
 
   initForm(): void {
@@ -615,6 +644,7 @@ export class PersonalInformationComponent implements OnInit {
           this.defaultValues.phoneNumber,
           [
             Validators.required,
+            Validators.pattern(/^0\d{8}$/),
             Validators.minLength(9),
             Validators.maxLength(9),
           ]
@@ -654,8 +684,8 @@ export class PersonalInformationComponent implements OnInit {
           Validators.required
         ],
       }, {
-        validators: matchFields('emailAddress', 'confirmEmailAddress')
-      }
+      validators: matchFields('emailAddress', 'confirmEmailAddress')
+    }
     );
     const formChangesSubscr = this.form.valueChanges.subscribe((val) => {
       this.updateParentModel(val, this.form.valid);
