@@ -268,7 +268,10 @@ export class PersonalInformationComponent implements OnInit {
         } else {
           this.toast.warning(
             this.labels.disability.wsNotAvailable,
-            this.labels.disability.title
+            this.labels.disability.title,
+            {
+              timeOut: 20000,
+            }
           );
         }
       }
@@ -337,7 +340,7 @@ export class PersonalInformationComponent implements OnInit {
       value: '',
       wsAvailable: false,
     }
-    
+
     const resetedValue = {
       ...init, identificationType: value,
     }
