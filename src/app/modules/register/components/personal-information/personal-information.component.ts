@@ -54,6 +54,8 @@ export class PersonalInformationComponent implements OnInit {
   birthAddress: string;
   showDisabilitySection = false;
   isFirstTime = true;
+  numberRegex = /^[0-9]$/;
+  alphanumericRegex = /^[a-zA-Z0-9]$/;
   get f() {
     return this.form.controls;
   }
@@ -537,7 +539,7 @@ export class PersonalInformationComponent implements OnInit {
     }
   }
 
-  validateNumberInput(event: KeyboardEvent, isCI: boolean) {
+  validateInput(event: KeyboardEvent, regex: RegExp) {
     const allowedKeys = [
       'Backspace', 'ArrowLeft', 'ArrowRight', 'Tab', 'Delete'
     ];
@@ -548,11 +550,18 @@ export class PersonalInformationComponent implements OnInit {
     }
 
     // Solo números del 0 al 9
-    if (!/^[0-9]$/.test(event.key) && ((isCI && this.f.identificationType.value === CI) || !isCI)) {
+    if (!regex.test(event.key)) {
       event.preventDefault(); // Bloquea el carácter
     }
   }
 
+  validateIdentification(event: KeyboardEvent): void {
+    if(this.f.identificationType.value === CI) {
+      this.validateInput(event, this.numberRegex);
+    } else {
+      this.validateInput(event, this.alphanumericRegex);
+    }
+  }
 
   initForm(): void {
     this.form = this.fb.group(
