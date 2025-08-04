@@ -540,18 +540,22 @@ export class PersonalInformationComponent implements OnInit {
   }
 
   validateInput(event: KeyboardEvent, regex: RegExp) {
-    const allowedKeys = [
-      'Backspace', 'ArrowLeft', 'ArrowRight', 'Tab', 'Delete'
-    ];
-    
+    const allowedKeys = ['Backspace', 'ArrowLeft', 'ArrowRight', 'Tab', 'Delete'];
+
     // Permitir teclas especiales y control
     if (allowedKeys.includes(event.key)) {
       return;
     }
 
-    // Solo números del 0 al 9
+    // Bloquear combinaciones de teclas con Alt, Ctrl o Meta
+    if (event.altKey || event.ctrlKey || event.metaKey) {
+      event.preventDefault();
+      return;
+    }
+
+    // Validar contra regex
     if (!regex.test(event.key)) {
-      event.preventDefault(); // Bloquea el carácter
+      event.preventDefault();
     }
   }
 
@@ -562,6 +566,39 @@ export class PersonalInformationComponent implements OnInit {
       this.validateInput(event, this.alphanumericRegex);
     }
   }
+  
+  validateIdentificationOnPaste(event: ClipboardEvent): void {
+    if(this.f.identificationType.value === CI) {
+      this.validatePaste(event, this.numberRegex);
+    } else {
+      this.validatePaste(event, this.alphanumericRegex);
+    }
+  }
+
+  validatePaste(event: ClipboardEvent, regex: RegExp) {
+    const pasteData = event.clipboardData?.getData('text') || '';
+
+    if (![...pasteData].every(char => regex.test(char))) {
+      event.preventDefault(); // Evita pegar si hay algún caracter inválido
+    }
+  }
+
+  sanitizeIdentification(event: Event): void {
+    if(this.f.identificationType.value === CI) {
+      this.sanitizeInput(event, this.numberRegex);
+    } else {
+      this.sanitizeInput(event, this.alphanumericRegex);
+    }
+  }
+
+  sanitizeInput(event: Event, regex: RegExp) {
+    const input = event.target as HTMLInputElement;
+    const cleanValue = [...input.value].filter(char => regex.test(char)).join('');
+    if (input.value !== cleanValue) {
+      input.value = cleanValue;
+    }
+  }
+
 
   initForm(): void {
     this.form = this.fb.group(
