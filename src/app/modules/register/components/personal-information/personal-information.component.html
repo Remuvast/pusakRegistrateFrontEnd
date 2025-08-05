@@ -393,7 +393,7 @@
                 <input id="phoneNumber" type="text" class="form-control form-control-sm form-control-solid"
                     formControlName="phoneNumber" 
                     (keydown)="validateInput($event, numberRegex)"
-                    (input)="sanitizeInput($event, numberRegex)"
+                    (input)="sanitizeInput($event, numberRegex, 'phoneNumber')"
                     (paste)="validatePaste($event, numberRegex)" [ngClass]="{
                         'is-invalid': form.controls['phoneNumber'].invalid && form.controls['phoneNumber'].touched,
                         'is-valid': form.controls['phoneNumber'].valid
@@ -425,7 +425,7 @@
                 <label for="cellPhone" class="form-label required">{{labels.cellPhone.label}}</label>
                 <input id="cellPhone" type="text" class="form-control form-control-sm form-control-solid"
                     (keydown)="validateInput($event, numberRegex)"
-                    (input)="sanitizeInput($event, numberRegex)"
+                    (input)="sanitizeInput($event, numberRegex, 'cellPhone')"
                     (paste)="validatePaste($event, numberRegex)"
                     formControlName="cellPhone" [ngClass]="{
                         'is-invalid': form.controls['cellPhone'].invalid && form.controls['cellPhone'].touched,
@@ -458,7 +458,7 @@
                     formControlName="secondCellPhone" 
                     (keydown)="validateInput($event, numberRegex)"
                     (paste)="validatePaste($event, numberRegex)" 
-                    (input)="sanitizeInput($event, numberRegex)"
+                    (input)="sanitizeInput($event, numberRegex, 'secondCellPhone')"
                     [ngClass]="{
                         'is-invalid': form.controls['secondCellPhone'].invalid && form.controls['secondCellPhone'].touched,
                         'is-valid': form.controls['secondCellPhone'].valid
