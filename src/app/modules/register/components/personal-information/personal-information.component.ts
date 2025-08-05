@@ -585,17 +585,18 @@ export class PersonalInformationComponent implements OnInit {
 
   sanitizeIdentification(event: Event): void {
     if(this.f.identificationType.value === CI) {
-      this.sanitizeInput(event, this.numberRegex);
+      this.sanitizeInput(event, this.numberRegex, 'identification');
     } else {
-      this.sanitizeInput(event, this.alphanumericRegex);
+      this.sanitizeInput(event, this.alphanumericRegex, 'identification');
     }
   }
 
-  sanitizeInput(event: Event, regex: RegExp) {
+  sanitizeInput(event: Event, regex: RegExp, field: string) {
     const input = event.target as HTMLInputElement;
     const cleanValue = [...input.value].filter(char => regex.test(char)).join('');
     if (input.value !== cleanValue) {
       input.value = cleanValue;
+      this.form?.get(field)?.setValue(cleanValue, { emitEvent: false });
     }
   }
 
