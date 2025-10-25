@@ -12,7 +12,7 @@ export const environment = {
   appPreviewChangelogUrl:
     'https://preview.keenthemes.com/metronic8/angular/docs/changelog',
   USERDATA_KEY: 'ssss-user',
-  casLogin: 'https://pusaktest.fomentoacademico.gob.ec/cas/login',
+  casLogin: 'https://pusaklocal.senescyt.gob.ec:8443/cas/login',
 
 };
 

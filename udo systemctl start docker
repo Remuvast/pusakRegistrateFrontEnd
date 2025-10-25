@@ -1,0 +1,20 @@
+[0;1;32m●[0m docker.service - Docker Application Container Engine
+     Loaded: loaded (/lib/systemd/system/docker.service; enabled; vendor preset: enabled)
+     Active: [0;1;32mactive (running)[0m since Tue 2025-08-19 10:58:46 -05; 1 months 24 days ago
+TriggeredBy: [0;1;32m●[0m docker.socket
+       Docs: https://docs.docker.com
+   Main PID: 1574 (dockerd)
+      Tasks: 12
+     Memory: 1.6G
+     CGroup: /system.slice/docker.service
+             └─1574 /usr/bin/dockerd -H fd:// --containerd=/run/containerd/containerd.sock
+
+oct 13 14:49:30 lmaldonado dockerd[1574]: time="2025-10-13T14:49:30.680031913-05:00" level=info msg="ignoring event" container=8a55515101af0e7e820702a52dec0de8f73c96dc4150bcf1dc423fbd38394613 module=libcontainerd namespace=moby topic=/tasks/delete type="*events.TaskDelete"
+oct 13 14:50:27 lmaldonado dockerd[1574]: time="2025-10-13T14:50:27.579402203-05:00" level=info msg="ignoring event" container=bdfe9ea2234432bb28a7ef3120052a075e02e56e00c8e47871f4b17abee38ab9 module=libcontainerd namespace=moby topic=/tasks/delete type="*events.TaskDelete"
+oct 13 14:53:14 lmaldonado dockerd[1574]: time="2025-10-13T14:53:14.549787714-05:00" level=info msg="ignoring event" container=7fd1cfffcb2155b70201558cac3cebc6e0b4afce9ad5dae5c07b403920db5440 module=libcontainerd namespace=moby topic=/tasks/delete type="*events.TaskDelete"
+oct 13 14:53:43 lmaldonado dockerd[1574]: time="2025-10-13T14:53:43.801894663-05:00" level=info msg="Layer sha256:d6b7533d8412406e2cec1ad7b05ec672aabc2124d904ebd0d659a0d8cdaff670 cleaned up"
+oct 13 14:59:06 lmaldonado dockerd[1574]: time="2025-10-13T14:59:06.796613384-05:00" level=info msg="No non-localhost DNS nameservers are left in resolv.conf. Using default external servers"
+oct 13 14:59:13 lmaldonado dockerd[1574]: time="2025-10-13T14:59:13.084309333-05:00" level=info msg="ignoring event" container=a4b0b632713c6bdffa82d5938f351978ab7bfdb9961afee09cae5379784bac40 module=libcontainerd namespace=moby topic=/tasks/delete type="*events.TaskDelete"
+oct 13 15:04:50 lmaldonado dockerd[1574]: time="2025-10-13T15:04:50.827316153-05:00" level=info msg="ignoring event" container=ff1874cb7cb8f1216b553274f3861d8fcc50cc2142acbd33d1b6baf33a31d116 module=libcontainerd namespace=moby topic=/tasks/delete type="*events.TaskDelete"
+oct 13 15:05:11 lmaldonado dockerd[1574]: time="2025-10-13T15:05:11.643580071-05:00" level=info msg="Layer sha256:686597ecadd4f7d0291c32962388d4692c202f070bd8991ca017831b880fa3a3 cleaned up"
+Warning: journal has been rotated since unit was started, output may be incomplete.
