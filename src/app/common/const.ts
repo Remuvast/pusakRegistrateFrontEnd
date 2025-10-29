@@ -5,7 +5,9 @@ export const ECUADOR = 'ECUADOR';
 export const CONSTANTS = {
     register: {
         alertMessage: '* Debes completar correctamente los campos mandatorios del formulario para continuar.',
-        alert: '* Si presenta inconvenientes al registrar sus datos puede dirigir un correo electrónico a: soportebecas@senescyt.gob.ec; favor detallar nombres y apellidos completos, número de identificación y su requerimiento.',
+        //rsmunoz Línea gráfica Senescyt a Minedec
+        alert: '* Si presenta inconvenientes al registrar sus datos puede dirigir un correo electrónico a: soportebecas@educacion.gob.ec; favor detallar nombres y apellidos completos, número de identificación y su requerimiento.',
+        //alert: '* Si presenta inconvenientes al registrar sus datos puede dirigir un correo electrónico a: soportebecas@senescyt.gob.ec; favor detallar nombres y apellidos completos, número de identificación y su requerimiento.',
         validData: '* El usuario es responsable de la veracidad y exactitud de la información ingresada. Cualquier error, falsedad o uso indebido será de su exclusiva responsabilidad.',
         alertMessageTitle: '¡Atención!',
         back: 'Atras',
