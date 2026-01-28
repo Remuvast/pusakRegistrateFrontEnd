@@ -48,3 +48,8 @@ testem.log
 # System Files
 .DS_Store
 Thumbs.db
+
+# Nunca subir archivos example
+*example(LOCAL)*
+*example(PREyPRO)*
+*example*
