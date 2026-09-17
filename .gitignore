@@ -53,3 +53,6 @@ Thumbs.db
 *example(LOCAL)*
 *example(PREyPRO)*
 *example*
+
+# No subir archivo de configuracion
+nginx.conf

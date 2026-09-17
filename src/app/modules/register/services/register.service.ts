@@ -34,13 +34,23 @@ export class RegisterService {
                 }
                 return response;
             }),
+
+            // renes-munoz - Registro Controlado 
             catchError(err => {
+            
                 this.statusSubject.next(false);
-                if(typeof err.error === 'string') {
-                    this.toastr.warning(err.error, 'Error');
-                }
-                return of(false);
+            
+                const mensaje = err?.error?.mensaje
+                    || (typeof err.error === 'string' ? err.error : null)
+                    || 'No se pudo completar el registro. Por favor, inténtelo nuevamente más tarde.';
+            
+                return of({
+                    message: mensaje,
+                    error: true
+                } as any);
             }),
+
+
             finalize(() => this.spinner.hide())
         );
     }

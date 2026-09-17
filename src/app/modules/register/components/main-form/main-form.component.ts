@@ -13,6 +13,8 @@ import { RegisterService } from '../../services/register.service';
 })
 export class MainFormComponent {
 
+  errorRegistro: string = '';
+
   formsCount = 4;
   register$: BehaviorSubject<IRegister> =
     new BehaviorSubject<IRegister>(init);
@@ -83,6 +85,9 @@ export class MainFormComponent {
   };
 
   nextStep(): void {
+
+    this.errorRegistro = '';
+
     const nextStep = this.currentStep$.value + 1;
     if(nextStep === 4) {
       this.saveForm(nextStep)
@@ -96,6 +101,9 @@ export class MainFormComponent {
   }
 
   prevStep(): void {
+
+    this.errorRegistro = '';
+
     const prevStep = this.currentStep$.value - 1;
     const currentRegister = this.register$.value;
     this.register$.next(currentRegister);
@@ -114,21 +122,51 @@ export class MainFormComponent {
   }
 
   saveForm(nextStep: number): void {
-    if(nextStep === 4) {
-      this.register$.subscribe(form =>{
-        this.registerService.saveRegister(form)
-          .pipe(first())
-          .subscribe({
-            next: (result: IRegisterSuccess | boolean) => {
-              if(result) {
-                this.currentStep$.next(nextStep);
-                this.cdr.detectChanges()
-              }
-            }
-          });
-      });
+
+    if (nextStep === 4) {
+
+        this.errorRegistro = '';
+
+        this.register$
+            .pipe(first())
+            .subscribe(form => {
+
+                this.registerService.saveRegister(form)
+                    .pipe(first())
+                    .subscribe({
+
+                        next: (result: IRegisterSuccess | boolean) => {
+
+                            if (
+                                result &&
+                                typeof result !== 'boolean' &&
+                                (result as any).error
+                            ) {
+
+                                this.errorRegistro = (result as any).message;
+
+                                this.cdr.detectChanges();
+
+                                return;
+                            }
+
+                            if (result) {
+
+                                this.currentStep$.next(nextStep);
+
+                                this.cdr.detectChanges();
+
+                            }
+
+                        }
+
+                    });
+
+            });
+
     }
-  }
+
+}
 
   ngOnDestroy(): void {
     this.unsubscribe.forEach((sb) => sb.unsubscribe());

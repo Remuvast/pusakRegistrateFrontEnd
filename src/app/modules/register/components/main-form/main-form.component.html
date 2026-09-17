@@ -44,6 +44,7 @@
         noValidate
         id="kt_create_account_form"
       >
+     
         <div class="current">
           <ng-container *ngIf="currentStep$.value === 1">
             <app-personal-information
@@ -101,6 +102,15 @@
             </div>
           </div>
         </div>
+
+        <div
+        *ngIf="errorRegistro"
+        class="alert alert-danger mb-5"
+        role="alert"
+      >
+        <strong>ERROR</strong><br />
+        {{ errorRegistro }}
+      </div>
 
         <div class="d-flex flex-stack pt-15">
           <div class="mr-2">
